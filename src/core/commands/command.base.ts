@@ -46,6 +46,13 @@ export default abstract class Command {
 	abstract metadata: CommandMetadata | ContextMenuMetadata;
 	public readonly run?: (client: TriviousClient, interaction: CommandInteraction) => Promise<void>;
 
+	public define() {
+		return {
+			data: this.data,
+			metadata: this.metadata,
+		};
+	}
+
 	public toJSON() {
 		return this.data.toJSON();
 	}
