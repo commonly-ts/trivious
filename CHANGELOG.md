@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/commonly-ts/trivious/compare/v1.1.9...v1.1.10) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add define() method to base classes ([aa97f27](https://github.com/commonly-ts/trivious/commit/aa97f27b66f9d295383901a34ae569dd6277df69))
+
 ## [1.1.9](https://github.com/commonly-ts/trivious/compare/v1.1.8...v1.1.9) (2025-11-29)
 
 
