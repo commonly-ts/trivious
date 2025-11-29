@@ -23,7 +23,6 @@ export default class EventRegistry extends BaseRegistry<Event> {
 
 	async load(directory: string = join(FRAMEWORK_ROOT, "events")): Promise<this> {
 		if (!await exists(directory)) {
-			console.log(`[EventRegistry] No events directory found at: ${directory}`);
 			return this;
 		}
 

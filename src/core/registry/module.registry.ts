@@ -23,7 +23,6 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 
 	async load(directory: string = join(FRAMEWORK_ROOT, "modules")): Promise<this> {
 		if (!await exists(directory)) {
-			console.log(`[ModuleRegistry] No modules directory found at: ${directory}`);
 			return this;
 		}
 

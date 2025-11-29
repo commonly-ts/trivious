@@ -24,7 +24,6 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 
 	async load(directory: string = join(FRAMEWORK_ROOT, "components")): Promise<this> {
 		if (!await exists(directory)) {
-			console.log(`[ComponentRegistry] No components directory found at: ${directory}`);
 			return this;
 		}
 
