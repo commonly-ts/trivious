@@ -1,3 +1,10 @@
+## [1.1.26](https://github.com/commonly-ts/trivious/compare/v1.1.25...v1.1.26) (2025-11-29)
+
+
+### Bug Fixes
+
+* specific importFile functions ([9534c73](https://github.com/commonly-ts/trivious/commit/9534c73408441484ca6dedf01505ec5b4bda01ff))
+
 ## [1.1.25](https://github.com/commonly-ts/trivious/compare/v1.1.24...v1.1.25) (2025-11-29)
 
 
