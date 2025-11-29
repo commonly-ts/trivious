@@ -47,6 +47,7 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 			}
 		}
 
+		console.log(`[Trivious :: ModuleRegistry] Loaded ${this.items.size} modules`);
 		return this;
 	}
 

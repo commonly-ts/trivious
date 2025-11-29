@@ -48,6 +48,7 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 			}
 		}
 
+		console.log(`[Trivious :: ComponentRegistry] Loaded ${this.items.size} components`);
 		return this;
 	}
 }

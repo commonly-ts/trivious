@@ -81,6 +81,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 			this.items.set(command.data.name, command);
 		}
 
+		console.log(`[Trivious :: CommandRegistry] Loaded ${this.items.size} commands`);
 		return this;
 	}
 }

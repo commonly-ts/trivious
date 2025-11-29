@@ -47,6 +47,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 		}
 
+		console.log(`[Trivious :: EventRegistry] Loaded ${this.items.size} events`);
 		return this;
 	}
 
