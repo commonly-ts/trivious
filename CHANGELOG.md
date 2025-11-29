@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/commonly-ts/trivious/compare/v1.1.0...v1.1.1) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add resolveUserPath utility and update registry loading ([78b81ef](https://github.com/commonly-ts/trivious/commit/78b81efb0ba3647aeb02b1bfaf10d34b11b6db6c))
+
 # [1.1.0](https://github.com/commonly-ts/trivious/compare/v1.0.2...v1.1.0) (2025-11-29)
 
 
