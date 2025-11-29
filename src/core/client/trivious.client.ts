@@ -13,6 +13,7 @@ export default class TriviousClient extends Client {
 
 	async register() {
 		await this.registries.loadAll(this._options);
+		console.log("[Trivious] Loaded all registries");
 	}
 
 	async start() {
@@ -21,8 +22,8 @@ export default class TriviousClient extends Client {
 			else throw new Error("Invalid token reference");
 		}
 
-		await this.login(process.env[this._options.tokenReference]);
 		this.registries.bind(this);
+		await this.login(process.env[this._options.tokenReference]);
 	}
 
 	async deploy() {
@@ -37,5 +38,6 @@ export default class TriviousClient extends Client {
 
 		const rest = new REST({ version: "10" }).setToken(token);
 		await rest.put(Routes.applicationCommands(clientId), { body });
+		console.log(`[Trivious] Deployed ${body.length} commands`);
 	}
 }
