@@ -39,6 +39,11 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 	}
 
 	async load(directory: string = join(FRAMEWORK_ROOT, "commands")) {
+		if (!await exists(directory)) {
+			console.log(`[CommandRegistry] No commands directory found at: ${directory}`);
+			return this;
+		}
+
 		const entries = await fs.readdir(directory, { withFileTypes: true });
 
 		for (const entry of entries) {
