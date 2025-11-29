@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
+import { Client, REST, Routes } from "discord.js";
 import { TriviousClientOptions } from "src/shared/typings/client.js";
 import { registries } from "../registry/index.js";
 

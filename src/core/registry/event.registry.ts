@@ -12,26 +12,37 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			return this;
 		}
 
-		const entries = await fs.readdir(directory, { withFileTypes: true });
+		const files = await fs.readdir(directory);
+		for (const file of files) {
+			const stat = await fs.lstat(join(directory, file));
+			if (!stat.isDirectory()) continue;
 
-		for (const entry of entries) {
-			const fullPath = join(directory, entry.name);
-			if (!entry.isDirectory()) continue;
+			const event = await this.importFile(join(directory, file));
+			if (!event) continue;
 
-			const eventFiles = (await fs.readdir(fullPath)).filter(
-				file =>
-					(file.endsWith(".ts") || file.endsWith(".js")) &&
-					!file.startsWith("index.") &&
-					!file.endsWith(".d.ts")
-			);
-
-			for (const file of eventFiles) {
-				const event = await this.importFile(join(fullPath, file));
-				if (!event) continue;
-
-				this.items.set(event.name, event);
-			}
+			this.items.set(event.name, event);
 		}
+
+		// const entries = await fs.readdir(directory, { withFileTypes: true });
+
+		// for (const entry of entries) {
+		// 	const fullPath = join(directory, entry.name);
+		// 	if (!entry.isDirectory()) continue;
+
+		// 	const eventFiles = (await fs.readdir(fullPath)).filter(
+		// 		file =>
+		// 			(file.endsWith(".ts") || file.endsWith(".js")) &&
+		// 			!file.startsWith("index.") &&
+		// 			!file.endsWith(".d.ts")
+		// 	);
+
+		// 	for (const file of eventFiles) {
+		// 		const event = await this.importFile(join(fullPath, file));
+		// 		if (!event) continue;
+
+		// 		this.items.set(event.name, event);
+		// 	}
+		// }
 
 		console.log(`[Trivious :: EventRegistry] Loaded ${this.items.size} events`);
 		return this;
