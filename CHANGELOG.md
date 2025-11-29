@@ -1,3 +1,10 @@
+## [1.1.27](https://github.com/commonly-ts/trivious/compare/v1.1.26...v1.1.27) (2025-11-29)
+
+
+### Bug Fixes
+
+* specific handlers for events and modules ([b590269](https://github.com/commonly-ts/trivious/commit/b59026963e8c6b69c6e45d742e8b9844a9d8446c))
+
 ## [1.1.26](https://github.com/commonly-ts/trivious/compare/v1.1.25...v1.1.26) (2025-11-29)
 
 
