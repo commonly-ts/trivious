@@ -30,5 +30,4 @@ export type ButtonInteraction = DJS_ButtonInteraction<CacheType>;
 export type StringSelectMenuInteraction = DJS_StringSelectMenuInteraction<CacheType>;
 export type ModalSubmitInteraction = DJS_ModalSubmitInteraction<CacheType>;
 
-// Common discord.js things
 export { Collection, ClientEvents } from "discord.js";
