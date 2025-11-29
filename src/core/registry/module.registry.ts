@@ -13,11 +13,10 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: new () => Module };
+			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: Module };
 			};
-			const importedClass = imports.default as new () => Module;
-			return new importedClass();
+			return imports;
 		} catch (error: any) {
 			console.error(error);
 			return null;
@@ -50,7 +49,6 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 			}
 		}
 
-		console.log(`[Trivious :: ModuleRegistry] Loaded ${this.items.size} modules`);
 		return this;
 	}
 

@@ -106,6 +106,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 
 	public setOwnerOnly(): this {
 		this._permission = PermissionLevel.BOT_OWNER;
+		this._ownerOnly = true;
 		return this;
 	}
 

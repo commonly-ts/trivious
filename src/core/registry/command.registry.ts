@@ -15,11 +15,10 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: new () => Command };
 			};
-			const importedClass = imports.default as new () => Command;
-			return new importedClass();
+			return new imports();
 		} catch (error: any) {
 			console.error(error);
 			return null;
@@ -28,12 +27,10 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
-			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: new () => Subcommand };
 			};
-			const importedClass = imports.default as new () => Subcommand;
-
-			const subcommand = new importedClass();
+			const subcommand = new imports();
 			if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
 				return null;
 			return subcommand;
@@ -86,7 +83,6 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 			this.items.set(command.data.name, command);
 		}
 
-		console.log(`[Trivious :: CommandRegistry] Loaded ${this.items.size} commands`);
 		return this;
 	}
 }

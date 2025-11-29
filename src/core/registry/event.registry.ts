@@ -13,11 +13,10 @@ export default class EventRegistry extends BaseRegistry<Event> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: new () => Event };
+			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: Event };
 			};
-			const importedClass = imports.default as new () => Event;
-			return new importedClass();
+			return imports;
 		} catch (error: any) {
 			console.error(error);
 			return null;
@@ -45,7 +44,6 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 		}
 
-		console.log(`[Trivious :: EventRegistry] Loaded ${this.items.size} events`);
 		return this;
 	}
 

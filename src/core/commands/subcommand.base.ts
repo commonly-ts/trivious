@@ -10,7 +10,6 @@ import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js
 import TriviousClient from "../client/trivious.client.js";
 
 export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
-	private builder = new SlashCommandSubcommandBuilder();
 	private _active = true;
 	private _ownerOnly = false;
 	private _permission = PermissionLevel.USER;
@@ -23,6 +22,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 
 	public setOwnerOnly(): this {
 		this._permission = PermissionLevel.BOT_OWNER;
+		this._ownerOnly = true;
 		return this;
 	}
 
@@ -38,7 +38,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 
 	public build() {
 		return {
-			data: this.builder,
+			data: this as SlashCommandSubcommandBuilder,
 			metadata: {
 				active: this._active,
 				ownerOnly: this._ownerOnly,
