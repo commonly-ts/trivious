@@ -20,7 +20,7 @@ const getPackageRoot = (): string => {
 
 export const FRAMEWORK_PACKAGE_ROOT = getPackageRoot();
 
-export function getCorePath(options: { userPath?: string, coreDirectory: string }): string {
+export function getCorePath(options: { userPath?: string; coreDirectory: string }): string {
 	const { userPath, coreDirectory } = options;
 	if (userPath) {
 		return resolveUserPath(userPath);
