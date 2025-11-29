@@ -1,3 +1,11 @@
+## [1.1.7](https://github.com/commonly-ts/trivious/compare/v1.1.6...v1.1.7) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor command registry to use getCorePath ([daebeee](https://github.com/commonly-ts/trivious/commit/daebeee10a1bd147f5e7154c5c2bdadcd0e541cb))
+* Refactor registry path resolution and core path utilities ([696a935](https://github.com/commonly-ts/trivious/commit/696a9354f233b12c498a1779f6c8b1461b4cf89a))
+
 ## [1.1.6](https://github.com/commonly-ts/trivious/compare/v1.1.5...v1.1.6) (2025-11-29)
 
 
