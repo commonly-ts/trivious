@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/commonly-ts/trivious/compare/v1.1.8...v1.1.9) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor permission checks in command base ([9e541a2](https://github.com/commonly-ts/trivious/commit/9e541a2e39cb95166e3ce6c66d7d801143b2e748))
+
 ## [1.1.8](https://github.com/commonly-ts/trivious/compare/v1.1.7...v1.1.8) (2025-11-29)
 
 
