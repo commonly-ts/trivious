@@ -1,3 +1,10 @@
+## [1.1.20](https://github.com/commonly-ts/trivious/compare/v1.1.19...v1.1.20) (2025-11-29)
+
+
+### Bug Fixes
+
+* updated deploy ([f94b50a](https://github.com/commonly-ts/trivious/commit/f94b50a970a4d0ec50efdca38ec8524fff4110ed))
+
 ## [1.1.19](https://github.com/commonly-ts/trivious/compare/v1.1.18...v1.1.19) (2025-11-29)
 
 
