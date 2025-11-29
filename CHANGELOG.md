@@ -1,3 +1,10 @@
+## [1.1.15](https://github.com/commonly-ts/trivious/compare/v1.1.14...v1.1.15) (2025-11-29)
+
+
+### Bug Fixes
+
+* fix entrypoint exports ([d730ab0](https://github.com/commonly-ts/trivious/commit/d730ab007fbdafd75542d20afbb882ade1fc9173))
+
 ## [1.1.14](https://github.com/commonly-ts/trivious/compare/v1.1.13...v1.1.14) (2025-11-29)
 
 
