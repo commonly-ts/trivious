@@ -15,13 +15,13 @@ export { default as TriviousClient } from "./core/client/trivious.client.js";
 export { default as Command } from "./core/commands/command.base.js";
 export { default as Subcommand } from "./core/commands/subcommand.base.js";
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
-export type { CommandBuilder } from "./core/commands/command.base.js";
-export type { SubcommandBuilder } from "./core/commands/subcommand.base.js";
+export { CommandBuilder, ContextMenuBuilder } from "./core/commands/command.base.js";
+export { SubcommandBuilder } from "./core/commands/subcommand.base.js";
 
 // Components
 export { default as Component } from "./core/components/component.base.js";
 export { default as ComponentRegistry } from "./core/registry/component.registry.js";
-export type { ComponentBuilder } from "./core/components/component.base.js";
+export { ComponentBuilder } from "./core/components/component.base.js";
 
 // Typings
 export * from "./shared/typings/index.js";
