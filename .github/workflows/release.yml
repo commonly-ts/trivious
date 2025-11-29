@@ -2,27 +2,31 @@ name: Release
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run semantic release
-        id: semrel
+      - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm install
-          npx semantic-release
+        run: npx semantic-release
