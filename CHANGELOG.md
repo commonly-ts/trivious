@@ -1,3 +1,10 @@
+## [1.1.12](https://github.com/commonly-ts/trivious/compare/v1.1.11...v1.1.12) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor class order in command, subcommand, and component bases ([dfcddc8](https://github.com/commonly-ts/trivious/commit/dfcddc8d649353a4178ff219660f6c93a046be95))
+
 ## [1.1.11](https://github.com/commonly-ts/trivious/compare/v1.1.10...v1.1.11) (2025-11-29)
 
 
