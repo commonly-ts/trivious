@@ -13,8 +13,9 @@ export abstract class BaseRegistry<T> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: imported } = (await import(pathToFileURL(filePath).href)) as { default: T };
-			return imported;
+			const imports = (await import(pathToFileURL(filePath).href)) as { default: T };
+			const importedClass = imports.default as new () => T;
+			return new importedClass();
 		} catch (error: any) {
 			console.error(error);
 			return null;

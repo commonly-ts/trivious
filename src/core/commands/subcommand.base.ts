@@ -58,13 +58,6 @@ export default abstract class Subcommand {
 		interaction: ChatInputCommandInteraction<CacheType>
 	) => Promise<void>;
 
-	public define() {
-		return {
-			data: this.data,
-			metadata: this.metadata,
-		};
-	}
-
 	async reply(
 		interaction: ChatInputCommandInteraction<CacheType>,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions

@@ -53,12 +53,6 @@ export default abstract class Component {
 	abstract metadata: ComponentMetadata;
 	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
 
-	public define() {
-		return {
-			metadata: this.metadata,
-		};
-	}
-
 	async reply(
 		interaction: ComponentInteraction,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
