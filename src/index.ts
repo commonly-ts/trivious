@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import type {
 	CacheType,
 	ChatInputCommandInteraction as DJS_ChatInputCommandInteraction,
