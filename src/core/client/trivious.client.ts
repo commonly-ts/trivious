@@ -30,6 +30,8 @@ export default class TriviousClient extends Client {
 		const token = process.env[this._options.tokenReference];
 		if (!clientId || !token) throw new Error("Invalid clientId or token reference");
 
+		await this.registries.commands.load(this._options.corePaths.commandsPath);
+
 		const slashCommands = Array.from(this.registries.commands.get().values());
 		const body = [...slashCommands.map(command => command.toJSON())];
 
