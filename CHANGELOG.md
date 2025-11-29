@@ -1,3 +1,10 @@
+## [1.1.28](https://github.com/commonly-ts/trivious/compare/v1.1.27...v1.1.28) (2025-11-29)
+
+
+### Bug Fixes
+
+* updated registries ([03a9189](https://github.com/commonly-ts/trivious/commit/03a9189ac0f99db0cbf56c12c4318f338fd63c7e))
+
 ## [1.1.27](https://github.com/commonly-ts/trivious/compare/v1.1.26...v1.1.27) (2025-11-29)
 
 
