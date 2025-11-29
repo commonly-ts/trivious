@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/commonly-ts/trivious/compare/v1.1.4...v1.1.5) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add registry load logging and fix command loading ([bf8400d](https://github.com/commonly-ts/trivious/commit/bf8400d31d22391bf9d6c5b775acdb425809fb74))
+
 ## [1.1.4](https://github.com/commonly-ts/trivious/compare/v1.1.3...v1.1.4) (2025-11-29)
 
 
