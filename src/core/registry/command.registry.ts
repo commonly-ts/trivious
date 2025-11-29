@@ -1,6 +1,7 @@
 import { Collection, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry, CommandMetadata } from "src/shared/typings/index.js";
+import { pathToFileURL } from "node:url";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 
@@ -11,7 +12,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 	protected items = new Collection<string, Command>();
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
-			const { default: subcommand } = (await import(filePath)) as { default: Subcommand };
+			const { default: subcommand } = (await import(pathToFileURL(filePath).href)) as { default: Subcommand };
 			if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
 				return null;
 			return subcommand;
