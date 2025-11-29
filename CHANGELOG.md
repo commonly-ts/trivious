@@ -1,3 +1,10 @@
+## [1.1.25](https://github.com/commonly-ts/trivious/compare/v1.1.24...v1.1.25) (2025-11-29)
+
+
+### Bug Fixes
+
+* update ([325baed](https://github.com/commonly-ts/trivious/commit/325baedac35368b6b60da8dea18dd28380c2a07a))
+
 ## [1.1.24](https://github.com/commonly-ts/trivious/compare/v1.1.23...v1.1.24) (2025-11-29)
 
 
