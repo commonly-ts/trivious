@@ -1,12 +1,29 @@
 import { Collection } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry } from "src/shared/typings/index.js";
+import { pathToFileURL } from "node:url";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import Component from "../components/component.base.js";
 
 export default class ComponentRegistry extends BaseRegistry<Component> {
 	protected items = new Collection<string, Component>();
+
+	protected async importFile(filePath: string): Promise<Component | null> {
+		try {
+			this.clearCache(filePath);
+
+			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: new () => Component };
+			};
+			const importedClass = imports.default as new () => Component;
+			return new importedClass();
+		} catch (error: any) {
+			console.error(error);
+			return null;
+		}
+	}
+
 	async load(directory: string = getCorePath({ coreDirectory: "components" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;

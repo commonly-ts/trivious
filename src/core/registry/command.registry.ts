@@ -10,6 +10,22 @@ import Subcommand from "../commands/subcommand.base.js";
 
 export default class CommandRegistry extends BaseRegistry<Command> {
 	protected items = new Collection<string, Command>();
+
+	protected async importFile(filePath: string): Promise<Command | null> {
+		try {
+			this.clearCache(filePath);
+
+			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: new () => Command };
+			};
+			const importedClass = imports.default as new () => Command;
+			return new importedClass();
+		} catch (error: any) {
+			console.error(error);
+			return null;
+		}
+	}
+
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
 			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
