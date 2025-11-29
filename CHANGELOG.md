@@ -1,3 +1,10 @@
+## [1.1.11](https://github.com/commonly-ts/trivious/compare/v1.1.10...v1.1.11) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor dynamic import handling for registry ([28752f9](https://github.com/commonly-ts/trivious/commit/28752f9659b0ba584deb11471539db2bae267c39))
+
 ## [1.1.10](https://github.com/commonly-ts/trivious/compare/v1.1.9...v1.1.10) (2025-11-29)
 
 
