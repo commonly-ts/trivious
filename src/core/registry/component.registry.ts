@@ -1,4 +1,5 @@
 import { Collection } from "discord.js";
+import { FRAMEWORK_ROOT } from "src/shared/utility/functions.js";
 import { BaseRegistry } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
@@ -21,7 +22,7 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 		}
 	}
 
-	async load(directory: string = join(__dirname, "../components")): Promise<this> {
+	async load(directory: string = join(FRAMEWORK_ROOT, "components")): Promise<this> {
 		const entries = await fs.readdir(directory, { withFileTypes: true });
 
 		for (const entry of entries) {

@@ -4,6 +4,7 @@ import CommandRegistry from "./command.registry.js";
 import ComponentRegistry from "./component.registry.js";
 import EventRegistry from "./event.registry.js";
 import ModuleRegistry from "./module.registry.js";
+import path from "node:path";
 
 export const registries = () => ({
 	commands: new CommandRegistry(),
@@ -12,11 +13,21 @@ export const registries = () => ({
 	modules: new ModuleRegistry(),
 
 	async loadAll(options: TriviousClientOptions) {
+		const corePaths = options.corePaths;
+
 		await Promise.all([
-			this.commands.load(options.corePaths.commandsPath),
-			this.components.load(options.corePaths.componentsPath),
-			this.events.load(options.corePaths.eventsPath),
-			this.modules.load(options.corePaths.modulesPath),
+			this.commands.load(
+				corePaths.commandsPath ? path.join(process.cwd(), corePaths.commandsPath) : undefined
+			),
+			this.components.load(
+				corePaths.componentsPath ? path.join(process.cwd(), corePaths.componentsPath) : undefined
+			),
+			this.events.load(
+				corePaths.eventsPath ? path.join(process.cwd(), corePaths.eventsPath) : undefined
+			),
+			this.modules.load(
+				corePaths.modulesPath ? path.join(process.cwd(), corePaths.modulesPath) : undefined
+			),
 		]);
 	},
 

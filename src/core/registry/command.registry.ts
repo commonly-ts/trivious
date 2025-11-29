@@ -1,5 +1,5 @@
 import { Collection, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
-import { exists } from "src/shared/utility/functions.js";
+import { exists, FRAMEWORK_ROOT } from "src/shared/utility/functions.js";
 import { BaseRegistry, CommandMetadata } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
@@ -38,7 +38,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 		}
 	}
 
-	async load(directory: string = join(__dirname, "../commands")) {
+	async load(directory: string = join(FRAMEWORK_ROOT, "commands")) {
 		const entries = await fs.readdir(directory, { withFileTypes: true });
 
 		for (const entry of entries) {
