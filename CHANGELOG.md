@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/commonly-ts/trivious/compare/v1.0.1...v1.0.2) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor corePaths structure in client options ([59664f4](https://github.com/commonly-ts/trivious/commit/59664f43538707c9c3d2de388047a651221dc8a4))
+
 ## [1.0.1](https://github.com/commonly-ts/trivious/compare/v1.0.0...v1.0.1) (2025-11-29)
 
 
