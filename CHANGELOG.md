@@ -1,3 +1,11 @@
+## [1.1.3](https://github.com/commonly-ts/trivious/compare/v1.1.2...v1.1.3) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add dotenv config import to index.ts ([1058140](https://github.com/commonly-ts/trivious/commit/10581403d38f9a9077d712802ef85f594e2cc8b6))
+* Remove debug logs from registry load methods ([655c21a](https://github.com/commonly-ts/trivious/commit/655c21a36060641276406fa9cbfa264836ad55f2))
+
 ## [1.1.2](https://github.com/commonly-ts/trivious/compare/v1.1.1...v1.1.2) (2025-11-29)
 
 
