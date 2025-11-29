@@ -16,7 +16,7 @@ export abstract class BaseRegistry<T> {
 			const { default: imported } = (await import(pathToFileURL(filePath).href)) as { default: T };
 			return imported;
 		} catch (error: any) {
-			console.error(`Failed to load at ${filePath}:`, error?.message ?? error);
+			console.error(error);
 			return null;
 		}
 	}
@@ -26,6 +26,6 @@ export abstract class BaseRegistry<T> {
 		try {
 			const resvoled = require.resolve(filePath);
 			delete require.cache[resvoled];
-		} catch {}
+		} catch { }
 	}
 }
