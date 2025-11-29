@@ -1,12 +1,25 @@
 import { Collection } from "discord.js";
+import { pathToFileURL } from "node:url";
 
 export abstract class BaseRegistry<T> {
 	protected abstract items: Collection<string, T>;
-	protected abstract importFile(filePath: string): Promise<T | null>;
 	protected abstract load(directory: string): Promise<this>;
 
 	get() {
 		return this.items;
+	}
+
+	protected async importFile(filePath: string): Promise<T | null> {
+		try {
+			this.clearCache(filePath);
+
+			const imported = await import(pathToFileURL(filePath).href);
+
+			return (imported.default ?? imported) as T;
+		} catch (error: any) {
+			console.error(`Failed to load at ${filePath}:`, error?.message ?? error);
+			return null;
+		}
 	}
 
 	protected async clearCache(filePath: string) {

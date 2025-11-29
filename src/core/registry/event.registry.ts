@@ -7,20 +7,6 @@ import TriviousClient from "../client/trivious.client.js";
 
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
-	protected async importFile(filePath: string): Promise<Event | null> {
-		try {
-			this.clearCache(filePath);
-
-			const imported = await import(filePath);
-			const event: Event = imported.default ?? imported;
-
-			return event;
-		} catch (error: any) {
-			console.error(`Failed to load event at ${filePath}:`, error);
-			return null;
-		}
-	}
-
 	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;

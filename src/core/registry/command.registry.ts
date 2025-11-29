@@ -9,21 +9,6 @@ import Subcommand from "../commands/subcommand.base.js";
 
 export default class CommandRegistry extends BaseRegistry<Command> {
 	protected items = new Collection<string, Command>();
-	protected async importFile(filePath: string): Promise<Command | null> {
-		try {
-			this.clearCache(filePath);
-
-			const imported = await import(filePath);
-			const command: Command = imported.default ?? imported;
-
-			if (!command.data.name || !(command.data instanceof SlashCommandBuilder)) return null;
-			return command;
-		} catch (error: any) {
-			console.error(`Failed to load command at ${filePath}:`, error);
-			return null;
-		}
-	}
-
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
 			const imported = await import(filePath);

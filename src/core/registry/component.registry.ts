@@ -7,21 +7,6 @@ import Component from "../components/component.base.js";
 
 export default class ComponentRegistry extends BaseRegistry<Component> {
 	protected items = new Collection<string, Component>();
-	protected async importFile(filePath: string): Promise<Component | null> {
-		try {
-			this.clearCache(filePath);
-
-			const imported = await import(filePath);
-			const component: Component = imported.default ?? imported;
-
-			if (!component.metadata.customId) return null;
-			return component;
-		} catch (error: any) {
-			console.error(`Failed to load component at ${filePath}:`, error);
-			return null;
-		}
-	}
-
 	async load(directory: string = getCorePath({ coreDirectory: "components" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;

@@ -7,20 +7,6 @@ import TriviousClient from "../client/trivious.client.js";
 
 export default class ModuleRegistry extends BaseRegistry<Module> {
 	protected items = new Collection<string, Module>();
-	protected async importFile(filePath: string): Promise<Module | null> {
-		try {
-			this.clearCache(filePath);
-
-			const imported = await import(filePath);
-			const moduleEvent: Module = imported.default ?? imported;
-
-			return moduleEvent;
-		} catch (error: any) {
-			console.error(`Failed to load module at ${filePath}:`, error);
-			return null;
-		}
-	}
-
 	async load(directory: string = getCorePath({ coreDirectory: "module" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;
