@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/commonly-ts/trivious/compare/v1.1.7...v1.1.8) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor importFile logic to BaseRegistry ([88dba6b](https://github.com/commonly-ts/trivious/commit/88dba6b995fb86f18266567c4a491323b5dd8362))
+
 ## [1.1.7](https://github.com/commonly-ts/trivious/compare/v1.1.6...v1.1.7) (2025-11-29)
 
 
