@@ -1,3 +1,10 @@
+## [1.1.23](https://github.com/commonly-ts/trivious/compare/v1.1.22...v1.1.23) (2025-11-29)
+
+
+### Bug Fixes
+
+* updated events file searching ([38ee38b](https://github.com/commonly-ts/trivious/commit/38ee38b3945ab93e2ecd7ba3ba1a00dd52a3ba33))
+
 ## [1.1.22](https://github.com/commonly-ts/trivious/compare/v1.1.21...v1.1.22) (2025-11-29)
 
 
