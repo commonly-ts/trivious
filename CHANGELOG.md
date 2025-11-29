@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/commonly-ts/trivious/compare/v1.0.2...v1.1.0) (2025-11-29)
+
+
+### Bug Fixes
+
+* Fix interface property block syntax in client typings ([f4a9d35](https://github.com/commonly-ts/trivious/commit/f4a9d35c031c09884c79848ccae9f85c488b976b))
+* Load commands before registering slash commands ([5a2ac63](https://github.com/commonly-ts/trivious/commit/5a2ac636124b5e35f1e10e512ce50db1659fbb11))
+
+
+### Features
+
+* Refactor registry loading to use FRAMEWORK_ROOT ([dd11b6a](https://github.com/commonly-ts/trivious/commit/dd11b6a93eabbcf5df05f6c4e73e19e4d4acf15e))
+
 ## [1.0.2](https://github.com/commonly-ts/trivious/compare/v1.0.1...v1.0.2) (2025-11-29)
 
 
