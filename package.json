@@ -3,8 +3,7 @@
 	"version": "1.0.0",
 	"private": "true",
 	"type": "module",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.js",
+	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
@@ -12,11 +11,11 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs",
 			"default": "./dist/index.js"
-		},
-		"./package.json": "./package.json"
+		}
 	},
 	"files": [
-		"dist"
+		"dist",
+		"package.json"
 	],
 	"scripts": {
 		"build": "tsup",
@@ -26,7 +25,8 @@
 		"test": "vitest run --pass-with-no-tests",
 		"coverage": "vitest run --coverage",
 		"dev": "tsup --watch",
-		"release": "semantic-release"
+		"release": "semantic-release",
+		"prepare": "npm run build"
 	},
 	"devDependencies": {
 		"@semantic-release/changelog": "^6.0.3",
