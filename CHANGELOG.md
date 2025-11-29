@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/commonly-ts/trivious/compare/v1.1.3...v1.1.4) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add logging to TriviousClient methods ([b571d3e](https://github.com/commonly-ts/trivious/commit/b571d3ee6acc31f99c319e3a91db9c91de93a4f9))
+
 ## [1.1.3](https://github.com/commonly-ts/trivious/compare/v1.1.2...v1.1.3) (2025-11-29)
 
 
