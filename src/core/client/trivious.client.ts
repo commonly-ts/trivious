@@ -12,7 +12,7 @@ export default class TriviousClient extends Client {
 	}
 
 	async register() {
-		await this.registries.loadAll();
+		await this.registries.loadAll(this._options);
 	}
 
 	async start() {

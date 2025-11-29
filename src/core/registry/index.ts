@@ -1,3 +1,4 @@
+import { TriviousClientOptions } from "src/shared/typings/client.js";
 import TriviousClient from "../client/trivious.client.js";
 import CommandRegistry from "./command.registry.js";
 import ComponentRegistry from "./component.registry.js";
@@ -10,12 +11,12 @@ export const registries = () => ({
 	events: new EventRegistry(),
 	modules: new ModuleRegistry(),
 
-	async loadAll() {
+	async loadAll(options: TriviousClientOptions) {
 		await Promise.all([
-			this.commands.load(),
-			this.components.load(),
-			this.events.load(),
-			this.modules.load(),
+			this.commands.load(options.corePaths.commandsPath),
+			this.components.load(options.corePaths.componentsPath),
+			this.events.load(options.corePaths.eventsPath),
+			this.modules.load(options.corePaths.modulesPath),
 		]);
 	},
 
