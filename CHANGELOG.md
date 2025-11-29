@@ -1,3 +1,10 @@
+## [1.1.21](https://github.com/commonly-ts/trivious/compare/v1.1.20...v1.1.21) (2025-11-29)
+
+
+### Bug Fixes
+
+* fixes bro ([0d038d6](https://github.com/commonly-ts/trivious/commit/0d038d63f42bb9b41e4793a9d2096d305d97f10c))
+
 ## [1.1.20](https://github.com/commonly-ts/trivious/compare/v1.1.19...v1.1.20) (2025-11-29)
 
 
