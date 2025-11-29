@@ -16,7 +16,7 @@ export default abstract class Component {
 	abstract metadata: ComponentMetadata;
 	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
 
-	protected async reply(
+	async reply(
 		interaction: ComponentInteraction,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
 	) {

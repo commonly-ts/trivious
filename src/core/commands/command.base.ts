@@ -19,6 +19,28 @@ import {
 import TriviousClient from "../client/trivious.client.js";
 import Subcommand from "./subcommand.base.js";
 
+function hasPermission(options: {
+	permission: PermissionLevel;
+	user?: User;
+	member?: GuildMember;
+}) {
+	const { permission, user, member } = options;
+
+	if (user) {
+		if (permission === PermissionLevel.BOT_OWNER) {
+			return !(user.id === "424764032667484171");
+		}
+		return true;
+	}
+
+	if (member) {
+		const memberPermission = getPermissionLevel(member);
+		return permission > memberPermission;
+	}
+
+	return false;
+}
+
 export default abstract class Command {
 	abstract data: SlashCommandBuilder | ContextMenuCommandBuilder;
 	abstract metadata: CommandMetadata | ContextMenuMetadata;
@@ -43,36 +65,14 @@ export default abstract class Command {
 		await interaction.reply(newOptions);
 	}
 
-	private hasPermission(options: {
-		permission: PermissionLevel;
-		user?: User;
-		member?: GuildMember;
-	}) {
-		const { permission, user, member } = options;
-
-		if (user) {
-			if (permission === PermissionLevel.BOT_OWNER) {
-				return !(user.id === "424764032667484171");
-			}
-			return true;
-		}
-
-		if (member) {
-			const memberPermission = getPermissionLevel(member);
-			return permission > memberPermission;
-		}
-
-		return false;
-	}
-
-	private async doGuildPermissionCheck(
+	async validateGuildPermission(
 		interaction: CommandInteraction,
 		permission: PermissionLevel,
 		doReply: boolean = true
 	) {
 		if (interaction.isContextMenuCommand() || (this.metadata as CommandMetadata).guildOnly) {
 			const member = interaction.member as GuildMember;
-			const memberHasPermission = this.hasPermission({ permission, member });
+			const memberHasPermission = hasPermission({ permission, member });
 
 			if (!memberHasPermission) {
 				if (doReply)
@@ -92,7 +92,7 @@ export default abstract class Command {
 		if (this.data instanceof ContextMenuBuilder || interaction.isContextMenuCommand()) {
 			if (!run) return;
 
-			const memberHasPermission = await this.doGuildPermissionCheck(
+			const memberHasPermission = await this.validateGuildPermission(
 				interaction,
 				this.metadata.permission,
 				false
@@ -103,7 +103,7 @@ export default abstract class Command {
 
 		const metadata = this.metadata as CommandMetadata;
 		if (run) {
-			const memberHasPermission = await this.doGuildPermissionCheck(
+			const memberHasPermission = await this.validateGuildPermission(
 				interaction,
 				metadata.permission,
 				false
@@ -112,7 +112,7 @@ export default abstract class Command {
 		}
 
 		if (run) {
-			const memberHasPermission = await this.doGuildPermissionCheck(
+			const memberHasPermission = await this.validateGuildPermission(
 				interaction,
 				metadata.permission,
 				false
@@ -135,7 +135,7 @@ export default abstract class Command {
 			return;
 		}
 
-		const memberHasPermission = await this.doGuildPermissionCheck(
+		const memberHasPermission = await this.validateGuildPermission(
 			interaction,
 			subcommand.metadata.permission
 		);
