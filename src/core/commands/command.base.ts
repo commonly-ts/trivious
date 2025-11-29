@@ -41,7 +41,6 @@ function hasPermission(options: {
 	return false;
 }
 
-
 export class CommandBuilder extends SlashCommandBuilder {
 	private _active = true;
 	private _guildOnly = false;

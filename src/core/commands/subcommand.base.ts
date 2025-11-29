@@ -9,7 +9,6 @@ import {
 import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
 import TriviousClient from "../client/trivious.client.js";
 
-
 export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	private builder = new SlashCommandSubcommandBuilder();
 	private _active = true;

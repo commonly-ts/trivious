@@ -12,7 +12,12 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 	protected items = new Collection<string, Command>();
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
-			const { default: subcommand } = (await import(pathToFileURL(filePath).href)) as { default: Subcommand };
+			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: new () => Subcommand };
+			};
+			const importedClass = imports.default as new () => Subcommand;
+
+			const subcommand = new importedClass();
 			if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
 				return null;
 			return subcommand;

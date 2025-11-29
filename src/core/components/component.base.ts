@@ -12,7 +12,6 @@ import {
 } from "src/shared/typings/index.js";
 import TriviousClient from "../client/trivious.client.js";
 
-
 export class ComponentBuilder {
 	private _customId = "";
 	private _permission = PermissionLevel.USER;

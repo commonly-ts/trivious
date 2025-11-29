@@ -13,7 +13,9 @@ export abstract class BaseRegistry<T> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: imports } = (await import(pathToFileURL(filePath).href)) as { default: { default: new () => T } };
+			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: new () => T };
+			};
 			const importedClass = imports.default as new () => T;
 			return new importedClass();
 		} catch (error: any) {
@@ -27,6 +29,6 @@ export abstract class BaseRegistry<T> {
 		try {
 			const resvoled = require.resolve(filePath);
 			delete require.cache[resvoled];
-		} catch { }
+		} catch {}
 	}
 }
