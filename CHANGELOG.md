@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/commonly-ts/trivious/compare/v1.1.12...v1.1.13) (2025-11-29)
+
+
+### Bug Fixes
+
+* Refactor context menu and error logging logic ([7b7df63](https://github.com/commonly-ts/trivious/commit/7b7df63c67049264085c46ed5bc19336195b4e89))
+
 ## [1.1.12](https://github.com/commonly-ts/trivious/compare/v1.1.11...v1.1.12) (2025-11-29)
 
 
