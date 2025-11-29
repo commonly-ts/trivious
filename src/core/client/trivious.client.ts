@@ -31,15 +31,7 @@ export default class TriviousClient extends Client {
 		const token = process.env[this._options.tokenReference];
 		if (!clientId || !token) throw new Error("Invalid clientId or token reference");
 
-		const baseClient = new TriviousClient({
-			clientIdReference: "",
-			tokenReference: "",
-			intents: [GatewayIntentBits.Guilds],
-			corePaths: {},
-		});
-		await baseClient.registries.commands.load(this._options.corePaths.commandsPath);
-
-		const slashCommands = Array.from(baseClient.registries.commands.get().values());
+		const slashCommands = Array.from(this.registries.commands.get().values());
 		const body = [...slashCommands.map(command => command.toJSON())];
 
 		const rest = new REST({ version: "10" }).setToken(token);

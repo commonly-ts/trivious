@@ -47,7 +47,6 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 			else continue;
 
 			const command = await this.importFile(commandFile);
-			console.log(command, command?.metadata);
 			if (!command) continue;
 			if (!command.metadata.active) continue;
 
