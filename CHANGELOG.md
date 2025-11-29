@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/commonly-ts/trivious/compare/v1.1.1...v1.1.2) (2025-11-29)
+
+
+### Bug Fixes
+
+* Add directory existence checks to registry loaders ([d223e60](https://github.com/commonly-ts/trivious/commit/d223e606398d5e9ccd34acd60abaaf53a6623b5b))
+
 ## [1.1.1](https://github.com/commonly-ts/trivious/compare/v1.1.0...v1.1.1) (2025-11-29)
 
 
