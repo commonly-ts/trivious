@@ -15,12 +15,13 @@ export default class EventRegistry extends BaseRegistry<Event> {
 		const files = await fs.readdir(directory);
 		for (const file of files) {
 			const stat = await fs.lstat(join(directory, file));
-			if (!stat.isDirectory()) continue;
+			if (stat.isDirectory()) this.load(join(directory, file));
+			if (file.endsWith(".js")) {
+				const event = await this.importFile(join(directory, file));
+				if (!event) continue;
 
-			const event = await this.importFile(join(directory, file));
-			if (!event) continue;
-
-			this.items.set(event.name, event);
+				this.items.set(event.name, event);
+			}
 		}
 
 		// const entries = await fs.readdir(directory, { withFileTypes: true });
