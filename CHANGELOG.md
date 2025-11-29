@@ -1,3 +1,10 @@
+## [1.1.22](https://github.com/commonly-ts/trivious/compare/v1.1.21...v1.1.22) (2025-11-29)
+
+
+### Bug Fixes
+
+* events file handling ([8dd19bb](https://github.com/commonly-ts/trivious/commit/8dd19bb636d0f325c2c78cac488fef1d8ef092e3))
+
 ## [1.1.21](https://github.com/commonly-ts/trivious/compare/v1.1.20...v1.1.21) (2025-11-29)
 
 
