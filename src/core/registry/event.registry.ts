@@ -1,12 +1,30 @@
 import { ClientEvents, Collection } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Event } from "src/shared/typings/index.js";
+import { pathToFileURL } from "node:url";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
+
+	protected async importFile(filePath: string): Promise<Event | null> {
+		try {
+			this.clearCache(filePath);
+
+			const { default: imports } = (await import(pathToFileURL(filePath).href)) as {
+				default: { default: new () => Event };
+			};
+			const importedClass = imports.default as new () => Event;
+			return new importedClass();
+		} catch (error: any) {
+			console.error(error);
+			return null;
+		}
+	}
+
+
 	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
 		if (!(await exists(directory))) return this;
 
