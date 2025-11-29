@@ -1,3 +1,10 @@
+## [1.1.17](https://github.com/commonly-ts/trivious/compare/v1.1.16...v1.1.17) (2025-11-29)
+
+
+### Bug Fixes
+
+* Fixed file imports ([7e96586](https://github.com/commonly-ts/trivious/commit/7e96586b30433f44d8e0c2d9c84fcfbfa5c5831e))
+
 ## [1.1.16](https://github.com/commonly-ts/trivious/compare/v1.1.15...v1.1.16) (2025-11-29)
 
 
