@@ -1,3 +1,10 @@
+## [1.1.14](https://github.com/commonly-ts/trivious/compare/v1.1.13...v1.1.14) (2025-11-29)
+
+
+### Bug Fixes
+
+* Update error logging in registry classes ([5321af7](https://github.com/commonly-ts/trivious/commit/5321af7b72e3f8570c4daec437c10da4db5bad13))
+
 ## [1.1.13](https://github.com/commonly-ts/trivious/compare/v1.1.12...v1.1.13) (2025-11-29)
 
 
