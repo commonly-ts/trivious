@@ -188,7 +188,7 @@ export default abstract class Command {
 	public async execute(client: TriviousClient, interaction: CommandInteraction) {
 		const { run, reply } = this;
 
-		if (this.data instanceof ContextMenuBuilder || interaction.isContextMenuCommand()) {
+		if (interaction.isContextMenuCommand()) {
 			if (!run) return;
 
 			const memberHasPermission = await this.validateGuildPermission(

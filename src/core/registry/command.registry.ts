@@ -16,7 +16,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 				return null;
 			return subcommand;
 		} catch (error: any) {
-			console.error(`Failed to load subcommand at ${filePath}:`, error);
+			console.error(error);
 			return null;
 		}
 	}
