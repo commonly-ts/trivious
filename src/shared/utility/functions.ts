@@ -1,25 +1,63 @@
 import { promises as fs, existsSync } from "fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export const FRAMEWORK_ROOT = dirname(__dirname).endsWith("dist")
-	? dirname(dirname(__dirname))
-	: dirname(__dirname);
+const getPackageRoot = (): string => {
+	let dir = __dirname;
+
+	while (dir !== dirname(dir)) {
+		if (existsSync(join(dir, "package.json")) || existsSync(join(dir, "node_modules"))) {
+			return dir;
+		}
+		dir = dirname(dir);
+	}
+	return __dirname;
+};
+
+export const FRAMEWORK_PACKAGE_ROOT = getPackageRoot();
+
+export function getCorePath(options: { userPath?: string, coreDirectory: string }): string {
+	const { userPath, coreDirectory } = options;
+	if (userPath) {
+		return resolveUserPath(userPath);
+	}
+
+	const builtInCandidates = [
+		join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory),
+		join(FRAMEWORK_PACKAGE_ROOT, "dist", coreDirectory),
+		join(FRAMEWORK_PACKAGE_ROOT, "src", coreDirectory),
+	];
+
+	for (const candidate of builtInCandidates) {
+		if (existsSync(candidate)) {
+			return candidate;
+		}
+	}
+
+	return join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory);
+}
 
 export function resolveUserPath(relativePath: string): string {
 	const candidates = [
 		join(process.cwd(), relativePath),
-		join(process.cwd(), relativePath, 'src'),
-		join(process.cwd(), relativePath.replace('src', 'lib')),
-		join(process.cwd(), relativePath.replace('src', 'dist')),
+
+		join(process.cwd(), "src", relativePath),
+		join(process.cwd(), "lib", relativePath),
+		join(process.cwd(), "dist", relativePath),
+
+		join(FRAMEWORK_PACKAGE_ROOT, relativePath),
+		join(FRAMEWORK_PACKAGE_ROOT, "src", relativePath),
+		join(FRAMEWORK_PACKAGE_ROOT, "lib", relativePath),
+		join(FRAMEWORK_PACKAGE_ROOT, "dist", relativePath),
 	];
 
 	for (const candidate of candidates) {
-		if (existsSync(candidate)) return candidate;
+		const full = resolve(candidate);
+		if (existsSync(full)) return full;
 	}
 
 	return join(process.cwd(), relativePath);

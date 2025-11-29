@@ -40,7 +40,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 
 	async load(directory: string = join(FRAMEWORK_ROOT, "commands")) {
 		console.log(directory);
-		if (!await exists(directory)) {
+		if (!(await exists(directory))) {
 			return this;
 		}
 

@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { exists, FRAMEWORK_ROOT } from "src/shared/utility/functions.js";
+import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Module } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
@@ -21,8 +21,8 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 		}
 	}
 
-	async load(directory: string = join(FRAMEWORK_ROOT, "modules")): Promise<this> {
-		if (!await exists(directory)) {
+	async load(directory: string = getCorePath({ coreDirectory: "module" })): Promise<this> {
+		if (!(await exists(directory))) {
 			return this;
 		}
 
