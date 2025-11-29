@@ -41,6 +41,98 @@ function hasPermission(options: {
 	return false;
 }
 
+
+export class CommandBuilder extends SlashCommandBuilder {
+	private _active = true;
+	private _guildOnly = false;
+	private _ownerOnly = false;
+	private _permission = PermissionLevel.USER;
+	private _subcommands = new Collection<string, Subcommand>();
+	private _ephemeralReply = false;
+
+	public disable(): this {
+		this._active = false;
+		return this;
+	}
+
+	public setGuildOnly(): this {
+		this._guildOnly = true;
+		this._permission = PermissionLevel.USER;
+		this.setContexts(InteractionContextType.Guild);
+		return this;
+	}
+
+	public setOwnerOnly(): this {
+		this._permission = PermissionLevel.BOT_OWNER;
+		return this;
+	}
+
+	public setPermission(permission: PermissionLevel): this {
+		if (!this._guildOnly) return this;
+
+		this._permission = permission;
+		return this;
+	}
+
+	public setEphemeralReply(): this {
+		this._ephemeralReply = true;
+		return this;
+	}
+
+	public build() {
+		return {
+			data: this as CommandBuilder,
+			metadata: {
+				active: this._active,
+				guildOnly: this._guildOnly,
+				ownerOnly: this._ownerOnly,
+				permission: this._permission,
+				subcommands: this._subcommands,
+				ephemeralReply: this._ephemeralReply,
+			} satisfies CommandMetadata,
+		};
+	}
+}
+
+export class ContextMenuBuilder extends ContextMenuCommandBuilder {
+	private _active = true;
+	private _ownerOnly = false;
+	private _permission = PermissionLevel.USER;
+	private _ephemeralReply = false;
+
+	public disable(): this {
+		this._active = false;
+		return this;
+	}
+
+	public setOwnerOnly(): this {
+		this._permission = PermissionLevel.BOT_OWNER;
+		return this;
+	}
+
+	public setPermission(permission: PermissionLevel): this {
+		this._permission = permission;
+		return this;
+	}
+
+	public setEphemeralReply(): this {
+		this._ephemeralReply = true;
+		return this;
+	}
+
+	public build() {
+		return {
+			data: this as ContextMenuBuilder,
+			metadata: {
+				active: this._active,
+				ownerOnly: this._ownerOnly,
+				permission: this._permission,
+				ephemeralReply: this._ephemeralReply,
+			} satisfies ContextMenuMetadata,
+		};
+	}
+}
+
 export default abstract class Command {
 	abstract data: SlashCommandBuilder | ContextMenuCommandBuilder;
 	abstract metadata: CommandMetadata | ContextMenuMetadata;
@@ -151,108 +243,4 @@ export default abstract class Command {
 		await reply(interaction, { content: "Processing command..." });
 		await subcommand.execute(client, interaction);
 	}
-}
-
-export class CommandBuilder extends SlashCommandBuilder {
-	private _active = true;
-	private _guildOnly = false;
-	private _ownerOnly = false;
-	private _permission = PermissionLevel.USER;
-	private _subcommands = new Collection<string, Subcommand>();
-	private _ephemeralReply = false;
-
-	public disable(): this {
-		this._active = false;
-		return this;
-	}
-
-	public setGuildOnly(): this {
-		this._guildOnly = true;
-		this._permission = PermissionLevel.USER;
-		this.setContexts(InteractionContextType.Guild);
-		return this;
-	}
-
-	public setOwnerOnly(): this {
-		this._permission = PermissionLevel.BOT_OWNER;
-		return this;
-	}
-
-	public setPermission(permission: PermissionLevel): this {
-		if (!this._guildOnly) return this;
-
-		this._permission = permission;
-		return this;
-	}
-
-	public setEphemeralReply(): this {
-		this._ephemeralReply = true;
-		return this;
-	}
-
-	public build() {
-		return {
-			data: this as CommandBuilder,
-			metadata: {
-				active: this._active,
-				guildOnly: this._guildOnly,
-				ownerOnly: this._ownerOnly,
-				permission: this._permission,
-				subcommands: this._subcommands,
-				ephemeralReply: this._ephemeralReply,
-			} satisfies CommandMetadata,
-		};
-	}
-}
-
-export class ContextMenuBuilder extends ContextMenuCommandBuilder {
-	private _active = true;
-	private _ownerOnly = false;
-	private _permission = PermissionLevel.USER;
-	private _ephemeralReply = false;
-
-	public disable(): this {
-		this._active = false;
-		return this;
-	}
-
-	public setOwnerOnly(): this {
-		this._permission = PermissionLevel.BOT_OWNER;
-		return this;
-	}
-
-	public setPermission(permission: PermissionLevel): this {
-		this._permission = permission;
-		return this;
-	}
-
-	public setEphemeralReply(): this {
-		this._ephemeralReply = true;
-		return this;
-	}
-
-	public build() {
-		return {
-			data: this as ContextMenuBuilder,
-			metadata: {
-				active: this._active,
-				ownerOnly: this._ownerOnly,
-				permission: this._permission,
-				ephemeralReply: this._ephemeralReply,
-			} satisfies ContextMenuMetadata,
-		};
-	}
-}
-
-const { data, metadata } = new CommandBuilder()
-	.setName("command")
-	.setDescription("my command")
-	.setEphemeralReply()
-	.setGuildOnly()
-	.setOwnerOnly()
-	.build();
-
-export class myCommand extends Command {
-	data = data;
-	metadata = metadata;
 }

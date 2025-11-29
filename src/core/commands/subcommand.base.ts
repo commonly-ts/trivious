@@ -9,36 +9,6 @@ import {
 import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
 import TriviousClient from "../client/trivious.client.js";
 
-export default abstract class Subcommand {
-	abstract data: SlashCommandSubcommandBuilder;
-	abstract metadata: SubcommandMetadata;
-	abstract readonly execute: (
-		client: TriviousClient,
-		interaction: ChatInputCommandInteraction<CacheType>
-	) => Promise<void>;
-
-	public define() {
-		return {
-			data: this.data,
-			metadata: this.metadata,
-		};
-	}
-
-	async reply(
-		interaction: ChatInputCommandInteraction<CacheType>,
-		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
-	) {
-		if (interaction.replied) {
-			await interaction.editReply(options as InteractionEditReplyOptions);
-			return;
-		}
-
-		const newOptions = { ...options } as InteractionReplyOptions;
-		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
-
-		await interaction.reply(newOptions);
-	}
-}
 
 export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	private builder = new SlashCommandSubcommandBuilder();
@@ -77,5 +47,36 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 				ephemeralReply: this._ephemeralReply,
 			} satisfies SubcommandMetadata,
 		};
+	}
+}
+
+export default abstract class Subcommand {
+	abstract data: SlashCommandSubcommandBuilder;
+	abstract metadata: SubcommandMetadata;
+	abstract readonly execute: (
+		client: TriviousClient,
+		interaction: ChatInputCommandInteraction<CacheType>
+	) => Promise<void>;
+
+	public define() {
+		return {
+			data: this.data,
+			metadata: this.metadata,
+		};
+	}
+
+	async reply(
+		interaction: ChatInputCommandInteraction<CacheType>,
+		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
+	) {
+		if (interaction.replied) {
+			await interaction.editReply(options as InteractionEditReplyOptions);
+			return;
+		}
+
+		const newOptions = { ...options } as InteractionReplyOptions;
+		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
+
+		await interaction.reply(newOptions);
 	}
 }

@@ -12,31 +12,6 @@ import {
 } from "src/shared/typings/index.js";
 import TriviousClient from "../client/trivious.client.js";
 
-export default abstract class Component {
-	abstract metadata: ComponentMetadata;
-	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
-
-	public define() {
-		return {
-			metadata: this.metadata,
-		};
-	}
-
-	async reply(
-		interaction: ComponentInteraction,
-		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
-	) {
-		if (interaction.replied) {
-			await interaction.editReply(options as InteractionEditReplyOptions);
-			return;
-		}
-
-		const newOptions = { ...options } as InteractionReplyOptions;
-		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
-
-		await interaction.reply(newOptions);
-	}
-}
 
 export class ComponentBuilder {
 	private _customId = "";
@@ -71,5 +46,31 @@ export class ComponentBuilder {
 				ephemeralReply: this._ephemeralReply,
 			} satisfies ComponentMetadata,
 		};
+	}
+}
+
+export default abstract class Component {
+	abstract metadata: ComponentMetadata;
+	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
+
+	public define() {
+		return {
+			metadata: this.metadata,
+		};
+	}
+
+	async reply(
+		interaction: ComponentInteraction,
+		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
+	) {
+		if (interaction.replied) {
+			await interaction.editReply(options as InteractionEditReplyOptions);
+			return;
+		}
+
+		const newOptions = { ...options } as InteractionReplyOptions;
+		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
+
+		await interaction.reply(newOptions);
 	}
 }

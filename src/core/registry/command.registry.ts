@@ -22,7 +22,6 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 	}
 
 	async load(directory: string = getCorePath({ coreDirectory: "commands" })) {
-		console.log(directory);
 		if (!(await exists(directory))) {
 			return this;
 		}
