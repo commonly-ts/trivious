@@ -21,6 +21,7 @@ export abstract class BaseRegistry<T> {
 			}
 
 			if (typeof imports === "object") {
+				if (Object.keys(imports).length === 0) return null;
 				return imports as T;
 			}
 

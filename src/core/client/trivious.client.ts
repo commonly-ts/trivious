@@ -14,21 +14,13 @@ export default class TriviousClient extends Client {
 	async register() {
 		const { registries } = this;
 		await registries.loadAll(this._options);
-		console.log(
-			`
-			[Trivious]
-			├─ Commands		→ ${registries.commands.get().size}
-			├─ Components	→ ${registries.components.get().size}
-			├─ Events			→ ${registries.events.get().size}
-			└─ Modules		→ ${registries.modules.get().size}
-			`.trim()
-		);
+		console.log(`[Trivious] Loaded all registries (${registries.commands.get().size} commands, ${registries.events.get().size} events, ${registries.components.get().size} components, ${registries.modules.get().size} modules)`);
 	}
 
 	async start() {
 		if (!process.env[this._options.tokenReference]) {
 			if (process.env.NODE_ENV !== "production") return;
-			else throw new Error("Invalid token reference");
+			else throw new Error("[Trivious] Invalid token reference");
 		}
 
 		this.registries.bind(this);
@@ -38,7 +30,7 @@ export default class TriviousClient extends Client {
 	async deploy() {
 		const clientId = process.env[this._options.clientIdReference];
 		const token = process.env[this._options.tokenReference];
-		if (!clientId || !token) throw new Error("Invalid clientId or token reference");
+		if (!clientId || !token) throw new Error("[Trivious] Invalid clientId or token reference");
 
 		const slashCommands = Array.from(this.registries.commands.get().values());
 		const body = [...slashCommands.map(command => command.toJSON())];

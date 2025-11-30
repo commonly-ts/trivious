@@ -31,7 +31,6 @@ export function getCorePath(options: { userPath?: string; coreDirectory: string 
 	const builtInCandidates = [
 		join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory),
 		join(FRAMEWORK_PACKAGE_ROOT, "dist", coreDirectory),
-		// join(FRAMEWORK_PACKAGE_ROOT, "src", coreDirectory),
 	];
 
 	for (const candidate of builtInCandidates) {
@@ -47,12 +46,10 @@ export function resolveUserPath(relativePath: string): string {
 	const candidates = [
 		join(process.cwd(), relativePath),
 
-		// join(process.cwd(), "src", relativePath),
 		join(process.cwd(), "lib", relativePath),
 		join(process.cwd(), "dist", relativePath),
 
 		join(FRAMEWORK_PACKAGE_ROOT, relativePath),
-		// join(FRAMEWORK_PACKAGE_ROOT, "src", relativePath),
 		join(FRAMEWORK_PACKAGE_ROOT, "lib", relativePath),
 		join(FRAMEWORK_PACKAGE_ROOT, "dist", relativePath),
 	];
