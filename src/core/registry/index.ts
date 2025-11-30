@@ -5,6 +5,7 @@ import CommandRegistry from "./command.registry.js";
 import ComponentRegistry from "./component.registry.js";
 import EventRegistry from "./event.registry.js";
 import ModuleRegistry from "./module.registry.js";
+import path from "node:path";
 
 export const registries = () => ({
 	commands: new CommandRegistry(),
@@ -14,17 +15,36 @@ export const registries = () => ({
 
 	async loadAll(options: TriviousClientOptions) {
 		const corePaths = options.corePaths;
+		const corePath = options.corePath;
 
 		await Promise.all([
 			this.commands.load(
-				corePaths?.commandsPath ? resolveUserPath(corePaths.commandsPath) : undefined
+				corePath
+					? resolveUserPath(path.join(corePath, "commands"))
+					: corePaths?.commandsPath
+						? resolveUserPath(corePaths.commandsPath)
+						: undefined
 			),
 			this.components.load(
-				corePaths?.componentsPath ? resolveUserPath(corePaths.componentsPath) : undefined
+				corePath
+					? resolveUserPath(path.join(corePath, "components"))
+					: corePaths?.componentsPath
+						? resolveUserPath(corePaths.componentsPath)
+						: undefined
 			),
-			this.events.load(corePaths?.eventsPath ? resolveUserPath(corePaths.eventsPath) : undefined),
+			this.events.load(
+				corePath
+					? resolveUserPath(path.join(corePath, "events"))
+					: corePaths?.eventsPath
+						? resolveUserPath(corePaths.eventsPath)
+						: undefined
+			),
 			this.modules.load(
-				corePaths?.modulesPath ? resolveUserPath(corePaths.modulesPath) : undefined
+				corePath
+					? resolveUserPath(path.join(corePath, "modules"))
+					: corePaths?.modulesPath
+						? resolveUserPath(corePaths.modulesPath)
+						: undefined
 			),
 		]);
 	},

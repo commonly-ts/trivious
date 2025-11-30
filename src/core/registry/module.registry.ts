@@ -1,29 +1,12 @@
 import { Collection } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Module } from "src/shared/typings/index.js";
-import { pathToFileURL } from "node:url";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
 export default class ModuleRegistry extends BaseRegistry<Module> {
 	protected items = new Collection<string, Module>();
-
-	protected async importFile(filePath: string): Promise<Module | null> {
-		try {
-			this.clearCache(filePath);
-
-			const {
-				default: { default: imports },
-			} = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: Module };
-			};
-			return imports;
-		} catch (error: any) {
-			console.error(error);
-			return null;
-		}
-	}
 
 	async load(directory: string = getCorePath({ coreDirectory: "module" })): Promise<this> {
 		if (!(await exists(directory))) {
@@ -44,7 +27,7 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 			);
 
 			for (const file of moduleFiles) {
-				const moduleEvent = await this.importFile(join(fullPath, file));
+				const moduleEvent = await this.importFile<Module>(join(fullPath, file));
 				if (!moduleEvent) continue;
 
 				this.items.set(moduleEvent.name, moduleEvent);

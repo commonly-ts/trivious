@@ -1,48 +1,13 @@
-import { Collection, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import { Collection, SlashCommandSubcommandBuilder } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
-import { BaseRegistry, CommandMetadata } from "src/shared/typings/index.js";
-import { pathToFileURL } from "node:url";
+import { AnyCommand, BaseRegistry } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 
-import Command from "../commands/command.base.js";
 import Subcommand from "../commands/subcommand.base.js";
 
-export default class CommandRegistry extends BaseRegistry<Command> {
-	protected items = new Collection<string, Command>();
-
-	protected async importFile(filePath: string): Promise<Command | null> {
-		try {
-			this.clearCache(filePath);
-
-			const {
-				default: { default: imports },
-			} = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: new () => Command };
-			};
-			return new imports();
-		} catch (error: any) {
-			console.error(error);
-			return null;
-		}
-	}
-
-	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
-		try {
-			const {
-				default: { default: imports },
-			} = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: new () => Subcommand };
-			};
-			const subcommand = new imports();
-			if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
-				return null;
-			return subcommand;
-		} catch (error: any) {
-			console.error(`Failed to load subcommand at ${filePath}:`, error);
-			return null;
-		}
-	}
+export default class CommandRegistry extends BaseRegistry<AnyCommand> {
+	protected items = new Collection<string, AnyCommand>();
 
 	async load(directory: string = getCorePath({ coreDirectory: "commands" })) {
 		if (!(await exists(directory))) {
@@ -63,11 +28,11 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 			else if (await exists(indexJs)) commandFile = indexJs;
 			else continue;
 
-			const command = await this.importFile(commandFile);
+			const command = await this.importFile<AnyCommand>(commandFile);
 			if (!command) continue;
 			if (!command.metadata.active) continue;
 
-			if (command.data instanceof SlashCommandBuilder) {
+			if (command.isSlashCommand()) {
 				const subcommandFiles = (await fs.readdir(fullPath)).filter(
 					file =>
 						(file.endsWith(".ts") || file.endsWith(".js")) &&
@@ -76,11 +41,13 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 				);
 
 				for (const file of subcommandFiles) {
-					const subcommand = await this.importSubcommand(join(fullPath, file));
+					const subcommand = await this.importFile<Subcommand>(join(fullPath, file));
 					if (!subcommand) continue;
+					if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
+						continue;
 
 					command.data.addSubcommand(subcommand.data);
-					(command.metadata as CommandMetadata).subcommands.set(subcommand.data.name, subcommand);
+					command.metadata.subcommands.set(subcommand.data.name, subcommand);
 				}
 			}
 

@@ -8,6 +8,29 @@ export abstract class BaseRegistry<T> {
 		return this.items;
 	}
 
+	protected async importFile<T>(filePath: string): Promise<T | null> {
+		try {
+			const file = await import(filePath);
+			const imports = file.default ?? file;
+
+			if (!imports) return null;
+
+			if (typeof imports === "function" && imports.prototype) {
+				return new imports();
+			}
+
+			if (typeof imports === "object") {
+				return imports as T;
+			}
+
+			console.error(`Invalid export in ${filePath}: expected class or object`);
+			return null;
+		} catch (error: any) {
+			console.error("Failed to import:", filePath, error);
+			return null;
+		}
+	}
+
 	protected async clearCache(filePath: string) {
 		if (process.env.NODE_ENV === "production") return;
 		try {

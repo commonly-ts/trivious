@@ -1,31 +1,13 @@
 import { ClientEvents, Collection } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Event } from "src/shared/typings/index.js";
-import { pathToFileURL } from "node:url";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
-
 import interactionCreate from "../events/interactionCreate.js";
 
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
-
-	protected async importFile(filePath: string): Promise<Event | null> {
-		try {
-			this.clearCache(filePath);
-
-			const {
-				default: { default: imports },
-			} = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: Event };
-			};
-			return imports;
-		} catch (error: any) {
-			console.error(error);
-			return null;
-		}
-	}
 
 	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
 		if (!(await exists(directory))) return this;
@@ -40,7 +22,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 
 			if (entry.isFile() && entry.name.endsWith(".js")) {
-				const event = await this.importFile(fullPath);
+				const event = await this.importFile<Event>(fullPath);
 				if (!event) continue;
 
 				this.items.set(event.name, event);

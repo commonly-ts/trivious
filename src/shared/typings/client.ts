@@ -11,4 +11,6 @@ export interface TriviousClientOptions extends ClientOptions {
 		eventsPath?: string;
 		modulesPath?: string;
 	};
+
+	corePath?: string;
 }

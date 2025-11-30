@@ -1,29 +1,12 @@
 import { Collection } from "discord.js";
 import { exists, getCorePath } from "src/shared/utility/functions.js";
-import { BaseRegistry } from "src/shared/typings/index.js";
-import { pathToFileURL } from "node:url";
+import { BaseRegistry, deconstructCustomId } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import Component from "../components/component.base.js";
 
 export default class ComponentRegistry extends BaseRegistry<Component> {
 	protected items = new Collection<string, Component>();
-
-	protected async importFile(filePath: string): Promise<Component | null> {
-		try {
-			this.clearCache(filePath);
-
-			const {
-				default: { default: imports },
-			} = (await import(pathToFileURL(filePath).href)) as {
-				default: { default: new () => Component };
-			};
-			return new imports();
-		} catch (error: any) {
-			console.error(error);
-			return null;
-		}
-	}
 
 	async load(directory: string = getCorePath({ coreDirectory: "components" })): Promise<this> {
 		if (!(await exists(directory))) {
@@ -44,10 +27,11 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 			);
 
 			for (const file of componentFiles) {
-				const component = await this.importFile(join(fullPath, file));
+				const component = await this.importFile<Component>(join(fullPath, file));
 				if (!component) continue;
 
-				this.items.set(component.metadata.customId, component);
+				const { data } = deconstructCustomId(component.metadata.customId);
+				this.items.set(data, component);
 			}
 		}
 
