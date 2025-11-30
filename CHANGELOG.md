@@ -1,3 +1,12 @@
+## [1.2.3](https://github.com/commonly-ts/trivious/compare/v1.2.2...v1.2.3) (2025-11-30)
+
+
+### Bug Fixes
+
+* Minor changes ([2a7080e](https://github.com/commonly-ts/trivious/commit/2a7080e9b8fad883bdc5fd6c66f5d39f2ccc7412))
+* Refactored command classes ([ae2bfd0](https://github.com/commonly-ts/trivious/commit/ae2bfd09aafa2280f6165447dd8996b75e407e6c))
+* Refactored registry importFiles ([2f8d989](https://github.com/commonly-ts/trivious/commit/2f8d9895ee8e9776330c9af9c6a00f47653600b0))
+
 ## [1.2.2](https://github.com/commonly-ts/trivious/compare/v1.2.1...v1.2.2) (2025-11-30)
 
 
