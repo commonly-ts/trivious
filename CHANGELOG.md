@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/commonly-ts/trivious/compare/v1.1.28...v1.2.0) (2025-11-30)
+
+
+### Bug Fixes
+
+* updated permission methods ([c3fee86](https://github.com/commonly-ts/trivious/commit/c3fee865145ad191e702d3c93effc7679c92dca2))
+
+
+### Features
+
+* Automatic interactionCreate handling ([a3b0c65](https://github.com/commonly-ts/trivious/commit/a3b0c65a8059db6e9350329d3193b418a6a2f4f9))
+
 ## [1.1.28](https://github.com/commonly-ts/trivious/compare/v1.1.27...v1.1.28) (2025-11-29)
 
 
