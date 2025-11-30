@@ -54,6 +54,9 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      semantic-release:
+        specifier: ^25.0.2
+        version: 25.0.2(typescript@5.9.3)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(postcss@8.5.6)(typescript@5.9.3)
