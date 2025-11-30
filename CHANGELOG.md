@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/commonly-ts/trivious/compare/v1.3.0...v1.3.1) (2025-11-30)
+
+
+### Bug Fixes
+
+* Fixed rolePermissions ([2c240bb](https://github.com/commonly-ts/trivious/commit/2c240bbac0cde64f3bdcf05d8139eb0f21dfd6cc))
+
 # [1.3.0](https://github.com/commonly-ts/trivious/compare/v1.2.6...v1.3.0) (2025-11-30)
 
 
