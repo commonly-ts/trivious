@@ -5,7 +5,7 @@ export interface TriviousClientOptions extends ClientOptions {
 	clientIdReference: string;
 
 	// Core paths
-	corePaths: {
+	corePaths?: {
 		commandsPath?: string;
 		componentsPath?: string;
 		eventsPath?: string;
