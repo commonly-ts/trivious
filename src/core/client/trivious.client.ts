@@ -98,6 +98,6 @@ export default class TriviousClient extends Client {
 	}
 
 	get rolePermissions() {
-		return this._options.rolePermissions;
+		return this._options.rolePermissions ?? {};
 	}
 }

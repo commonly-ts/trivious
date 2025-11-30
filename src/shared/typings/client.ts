@@ -53,5 +53,5 @@ export interface TriviousClientOptions extends ClientOptions {
 	 *
 	 * @type {Record<string, PermissionLevel>}
 	 */
-	rolePermissions: Record<string, PermissionLevel>;
+	rolePermissions?: Record<string, PermissionLevel>;
 }
