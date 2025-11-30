@@ -12,10 +12,15 @@ export default class TriviousClient extends Client {
 	}
 
 	async register() {
-		await this.registries.loadAll(this._options);
-		console.log(
-			`[Trivious] Loaded ${this.registries.commands.get().size} commands\n${this.registries.components.get().size} components\n${this.registries.events.get().size} events\n${this.registries.modules.get().size} modules`
-		);
+		const { registries } = this;
+		await registries.loadAll(this._options);
+		console.log(`
+			[Trivious]
+			├─ Commands		→ ${registries.commands.get().size}
+			├─ Components	→ ${registries.components.get().size}
+			├─ Events			→ ${registries.events.get().size}
+			└─ Modules		→ ${registries.modules.get().size}
+			`.trim());
 	}
 
 	async start() {
