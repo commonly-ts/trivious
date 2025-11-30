@@ -58,7 +58,8 @@ export default abstract class Command {
 		const isContextMenu = interaction.isContextMenuCommand();
 		const isChatInput = interaction.isChatInputCommand();
 
-		const requiresGuildCheck = isContextMenu || (isChatInput && (this.isSlashCommand() ? this.metadata.guildOnly : false));
+		const requiresGuildCheck =
+			isContextMenu || (isChatInput && (this.isSlashCommand() ? this.metadata.guildOnly : false));
 		if (!requiresGuildCheck) return true;
 
 		const member = interaction.member as GuildMember;
@@ -66,7 +67,7 @@ export default abstract class Command {
 
 		if (!memberHasPermission && doReply) {
 			await this.reply(interaction, {
-				content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``
+				content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``,
 			});
 		}
 
@@ -77,7 +78,10 @@ export default abstract class Command {
 export abstract class SlashCommand extends Command {
 	abstract data: SlashCommandBuilder;
 	abstract metadata: CommandMetadata;
-	abstract run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
+	abstract run?: (
+		client: TriviousClient,
+		interaction: ChatInputCommandInteraction
+	) => Promise<void>;
 
 	public async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
 		const { run, reply, metadata } = this;
@@ -118,7 +122,10 @@ export abstract class SlashCommand extends Command {
 export abstract class ContextMenuCommand extends Command {
 	abstract data: ContextMenuCommandBuilder;
 	abstract metadata: ContextMenuMetadata;
-	abstract run: (client: TriviousClient, interaction: ContextMenuCommandInteraction) => Promise<void>;
+	abstract run: (
+		client: TriviousClient,
+		interaction: ContextMenuCommandInteraction
+	) => Promise<void>;
 
 	public async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
 		const { run, metadata } = this;
@@ -223,4 +230,3 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 		};
 	}
 }
-

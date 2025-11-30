@@ -14,13 +14,15 @@ export default class TriviousClient extends Client {
 	async register() {
 		const { registries } = this;
 		await registries.loadAll(this._options);
-		console.log(`
+		console.log(
+			`
 			[Trivious]
 			├─ Commands		→ ${registries.commands.get().size}
 			├─ Components	→ ${registries.components.get().size}
 			├─ Events			→ ${registries.events.get().size}
 			└─ Modules		→ ${registries.modules.get().size}
-			`.trim());
+			`.trim()
+		);
 	}
 
 	async start() {

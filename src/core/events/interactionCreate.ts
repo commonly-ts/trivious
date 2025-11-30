@@ -1,11 +1,11 @@
 import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { ComponentCustomIdTag, ComponentType } from "src/shared/typings/components.js";
+import { ComponentType, deconstructCustomId } from "src/shared/typings/components.js";
 import { Event } from "src/shared/typings/events.js";
 
 export default {
 	name: "interactionCreate",
 	execute: async (client, interaction) => {
-		if (interaction.isChatInputCommand()) {
+		if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
 			const { commandName } = interaction;
 
 			const registeredCommands = client.registries.commands.get();
@@ -23,10 +23,14 @@ export default {
 			if (!hasPermission) return;
 
 			await command.reply(interaction, { content: "Processing command..." });
-			await command.execute(client, interaction);
+
+			if (interaction.isChatInputCommand() && command.isSlashCommand()) {
+				await command.execute(client, interaction);
+			} else if (interaction.isContextMenuCommand() && command.isContextMenuCommand()) {
+				await command.execute(client, interaction);
+			}
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
-			const [componentType, dataTags] = interaction.customId.split(":") as [ComponentType, string];
-			const [_, ...tags] = dataTags.split(".") as [string, ...ComponentCustomIdTag[]];
+			const { componentType, tags, data } = deconstructCustomId(interaction.customId);
 
 			if (componentType === ComponentType.Button && !(interaction instanceof ButtonInteraction))
 				return;
@@ -36,7 +40,7 @@ export default {
 			if (tags.includes("awaited")) return;
 
 			const registeredComponents = client.registries.components.get();
-			const component = registeredComponents.get(interaction.customId);
+			const component = registeredComponents.get(data);
 			if (!component) {
 				await interaction.reply({
 					content: `Command is outdated, inactive or does not have a handler!`,

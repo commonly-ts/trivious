@@ -22,3 +22,14 @@ export interface ComponentMetadata {
 	permission: PermissionLevel;
 	ephemeralReply: boolean;
 }
+
+export const deconstructCustomId = (customId: string) => {
+	const [componentType, dataTags] = customId.split(":") as [ComponentType, string];
+	const [data, ...tags] = dataTags.split(".") as [string, ...ComponentCustomIdTag[]];
+
+	return {
+		componentType,
+		data,
+		tags,
+	};
+};

@@ -1,15 +1,10 @@
-import {
-	CacheType,
-	ChatInputCommandInteraction,
-	Collection,
-	ContextMenuCommandInteraction,
-} from "discord.js";
+import { Collection } from "discord.js";
 import { PermissionLevel } from "./permissions.js";
 import Subcommand from "src/core/commands/subcommand.base.js";
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction } from "src/index.js";
+import { ContextMenuCommand, SlashCommand } from "src/core/commands/command.base.js";
 
-export type CommandInteraction =
-	| ChatInputCommandInteraction<CacheType>
-	| ContextMenuCommandInteraction<CacheType>;
+export type CommandInteraction = ChatInputCommandInteraction | ContextMenuCommandInteraction;
 
 export interface CommandMetadata {
 	active: boolean;
@@ -33,3 +28,5 @@ export interface ContextMenuMetadata {
 	permission: PermissionLevel;
 	ephemeralReply: boolean;
 }
+
+export type AnyCommand = SlashCommand | ContextMenuCommand;
