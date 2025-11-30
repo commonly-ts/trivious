@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/commonly-ts/trivious/compare/v1.2.0...v1.2.1) (2025-11-30)
+
+
+### Bug Fixes
+
+* Implemented default interactionCreate ([a39900b](https://github.com/commonly-ts/trivious/commit/a39900bd315e2a040465ebba26305ab8feff5489))
+* made corePaths optional ([02dd24f](https://github.com/commonly-ts/trivious/commit/02dd24f007f836c826b00b0df47201c2da81482a))
+
 # [1.2.0](https://github.com/commonly-ts/trivious/compare/v1.1.28...v1.2.0) (2025-11-30)
 
 
