@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/commonly-ts/trivious/compare/v1.2.1...v1.2.2) (2025-11-30)
+
+
+### Bug Fixes
+
+* removed extra interaction processing confirmation reply ([07e27da](https://github.com/commonly-ts/trivious/commit/07e27da979d38b68602af509c830db1a1bb957a9))
+
 ## [1.2.1](https://github.com/commonly-ts/trivious/compare/v1.2.0...v1.2.1) (2025-11-30)
 
 
