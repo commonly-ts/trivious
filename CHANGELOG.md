@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/commonly-ts/trivious/compare/v1.3.4...v1.3.5) (2025-11-30)
+
+
+### Bug Fixes
+
+* package.json information ([2bb822d](https://github.com/commonly-ts/trivious/commit/2bb822de028e783d821e2c003aa55c59345e9564))
+
 ## [1.3.4](https://github.com/commonly-ts/trivious/compare/v1.3.3...v1.3.4) (2025-11-30)
 
 
