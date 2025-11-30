@@ -1,3 +1,14 @@
+## [1.2.4](https://github.com/commonly-ts/trivious/compare/v1.2.3...v1.2.4) (2025-11-30)
+
+
+### Bug Fixes
+
+* added @types/node ([1482151](https://github.com/commonly-ts/trivious/commit/1482151b812be2dad3d3274baad34ca2c69f2cd0))
+* change package name ([3be7331](https://github.com/commonly-ts/trivious/commit/3be7331c441e57c0482f36192945c90c813cbba4))
+* Delete pnpm-workspace.yaml ([9eeb585](https://github.com/commonly-ts/trivious/commit/9eeb585367b3bbbb46baf9a918f09f7281090a5f))
+* installed semantic-release ([be9f2b4](https://github.com/commonly-ts/trivious/commit/be9f2b4284dc5924b3500ae6ff0f92510b689f33))
+* Update release.yml ([ec443dc](https://github.com/commonly-ts/trivious/commit/ec443dcafb01dca5f2e23c2b944fc15ccc1888f7))
+
 ## [1.2.3](https://github.com/commonly-ts/trivious/compare/v1.2.2...v1.2.3) (2025-11-30)
 
 
