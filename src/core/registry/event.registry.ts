@@ -6,6 +6,8 @@ import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
+import interactionCreate from "../events/interactionCreate.js";
+
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
 
@@ -13,7 +15,9 @@ export default class EventRegistry extends BaseRegistry<Event> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+			const {
+				default: { default: imports },
+			} = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: Event };
 			};
 			return imports;
@@ -22,7 +26,6 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			return null;
 		}
 	}
-
 
 	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
 		if (!(await exists(directory))) return this;
@@ -44,6 +47,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 		}
 
+		this.items.set(interactionCreate.name, interactionCreate as Event);
 		return this;
 	}
 
