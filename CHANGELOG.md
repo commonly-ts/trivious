@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/commonly-ts/trivious/compare/v1.2.4...v1.2.5) (2025-11-30)
+
+
+### Bug Fixes
+
+* fixes importFile path ([f396868](https://github.com/commonly-ts/trivious/commit/f396868744ab3fb8b9ac83bee8f43f7e78791ace))
+
 ## [1.2.4](https://github.com/commonly-ts/trivious/compare/v1.2.3...v1.2.4) (2025-11-30)
 
 
