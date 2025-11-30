@@ -13,7 +13,9 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+			const {
+				default: { default: imports },
+			} = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: new () => Component };
 			};
 			return new imports();

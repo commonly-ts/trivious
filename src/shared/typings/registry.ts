@@ -13,6 +13,6 @@ export abstract class BaseRegistry<T> {
 		try {
 			const resvoled = require.resolve(filePath);
 			delete require.cache[resvoled];
-		} catch { }
+		} catch {}
 	}
 }

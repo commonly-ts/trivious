@@ -15,7 +15,9 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 		try {
 			this.clearCache(filePath);
 
-			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+			const {
+				default: { default: imports },
+			} = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: new () => Command };
 			};
 			return new imports();
@@ -27,7 +29,9 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 
 	private async importSubcommand(filePath: string): Promise<Subcommand | null> {
 		try {
-			const { default: { default: imports } } = (await import(pathToFileURL(filePath).href)) as {
+			const {
+				default: { default: imports },
+			} = (await import(pathToFileURL(filePath).href)) as {
 				default: { default: new () => Subcommand };
 			};
 			const subcommand = new imports();
