@@ -6,9 +6,24 @@ import { join } from "node:path";
 
 import Subcommand from "../commands/subcommand.base.js";
 
+/**
+ * Registry to load and get all commands.
+ *
+ * @export
+ * @class CommandRegistry
+ * @typedef {CommandRegistry}
+ * @extends {BaseRegistry<AnyCommand>}
+ */
 export default class CommandRegistry extends BaseRegistry<AnyCommand> {
 	protected items = new Collection<string, AnyCommand>();
 
+	/**
+	 * Load all commands and their subcommands
+	 *
+	 * @async
+	 * @param {string} [directory=getCorePath({ coreDirectory: "commands" })]
+	 * @returns {unknown}
+	 */
 	async load(directory: string = getCorePath({ coreDirectory: "commands" })) {
 		if (!(await exists(directory))) {
 			return this;

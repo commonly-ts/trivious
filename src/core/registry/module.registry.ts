@@ -5,9 +5,24 @@ import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
+/**
+ * Registry to load, get and bind modules.
+ *
+ * @export
+ * @class ModuleRegistry
+ * @typedef {ModuleRegistry}
+ * @extends {BaseRegistry<Module>}
+ */
 export default class ModuleRegistry extends BaseRegistry<Module> {
 	protected items = new Collection<string, Module>();
 
+	/**
+	 * Load all modules.
+	 *
+	 * @async
+	 * @param {string} [directory=getCorePath({ coreDirectory: "module" })]
+	 * @returns {Promise<this>}
+	 */
 	async load(directory: string = getCorePath({ coreDirectory: "module" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;
@@ -28,7 +43,7 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 
 			for (const file of moduleFiles) {
 				const moduleEvent = await this.importFile<Module>(join(fullPath, file));
-				if (!moduleEvent) continue;
+				if (!moduleEvent || !moduleEvent.events) continue;
 
 				this.items.set(moduleEvent.name, moduleEvent);
 			}
@@ -37,9 +52,14 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 		return this;
 	}
 
+	/**
+	 * Bind all loaded modules to their client event respectively.
+	 *
+	 * @param {TriviousClient} client
+	 */
 	bind(client: TriviousClient) {
 		for (const mod of this.items.values()) {
-			for (const [eventName, handler] of Object.entries(mod.events)) {
+			for (const [eventName, handler] of Object.entries(mod.events!)) {
 				if (typeof handler !== "function") continue;
 
 				const listener = (...args: unknown[]) => {

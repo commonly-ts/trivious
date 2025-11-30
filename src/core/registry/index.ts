@@ -7,6 +7,11 @@ import EventRegistry from "./event.registry.js";
 import ModuleRegistry from "./module.registry.js";
 import path from "node:path";
 
+/**
+ * Create new registries.
+ *
+ * @returns {{ commands: CommandRegistry; components: ComponentRegistry; events: EventRegistry; modules: any; loadAll(options: TriviousClientOptions): any; bind(client: TriviousClient): void; }}
+ */
 export const registries = () => ({
 	commands: new CommandRegistry(),
 	components: new ComponentRegistry(),

@@ -14,11 +14,29 @@ import {
 import { hasPermission } from "src/shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 
+/**
+ * Base ComponentBuilder.
+ *
+ * @export
+ * @class ComponentBuilder
+ * @typedef {ComponentBuilder}
+ */
 export class ComponentBuilder {
 	private _customId = "";
 	private _permission = PermissionLevel.USER;
 	private _ephemeralReply = false;
 
+	/**
+	 * Set the customId for the component.
+	 *
+	 * @public
+	 * @param {{
+	 * 		type: ComponentType;
+	 * 		data: string;
+	 * 		tags?: ComponentCustomIdTag[];
+	 * 	}} options
+	 * @returns {this}
+	 */
 	public setCustomId(options: {
 		type: ComponentType;
 		data: string;
@@ -29,16 +47,35 @@ export class ComponentBuilder {
 		return this;
 	}
 
+	/**
+	 * Set the permission required to use the component.
+	 *
+	 * @public
+	 * @param {PermissionLevel} permission
+	 * @returns {this}
+	 */
 	public setPermission(permission: PermissionLevel): this {
 		this._permission = permission;
 		return this;
 	}
 
+	/**
+	 * Set the interaction as ephemeral.
+	 *
+	 * @public
+	 * @returns {this}
+	 */
 	public setEphemeralReply(): this {
 		this._ephemeralReply = true;
 		return this;
 	}
 
+	/**
+	 * Builder the builder.
+	 *
+	 * @public
+	 * @returns {{ metadata: ComponentMetadata; }}
+	 */
 	public build() {
 		return {
 			metadata: {
@@ -50,10 +87,33 @@ export class ComponentBuilder {
 	}
 }
 
+/**
+ * Base Component.
+ *
+ * @export
+ * @abstract
+ * @class Component
+ * @typedef {Component}
+ */
 export default abstract class Component {
 	abstract metadata: ComponentMetadata;
+	/**
+	 * Execute the component.
+	 *
+	 * @abstract
+	 * @type {(client: TriviousClient, interaction: ComponentInteraction) => Promise<void>}
+	 */
 	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
 
+	/**
+	 * Validate permissions for a user/member in a guild.
+	 *
+	 * @async
+	 * @param {ComponentInteraction} interaction
+	 * @param {PermissionLevel} permission
+	 * @param {boolean} [doReply=true] Defaults to `true`
+	 * @returns {unknown}
+	 */
 	async validateGuildPermission(
 		interaction: ComponentInteraction,
 		permission: PermissionLevel,
@@ -75,6 +135,14 @@ export default abstract class Component {
 		return true;
 	}
 
+	/**
+	 * Reply to the interaction respecting command metadata and if the interaction has already been replied to.
+	 *
+	 * @async
+	 * @param {ComponentInteraction} interaction
+	 * @param {(MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions)} options
+	 * @returns {*}
+	 */
 	async reply(
 		interaction: ComponentInteraction,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions

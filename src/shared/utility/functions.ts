@@ -8,6 +8,11 @@ import { GuildMember, User } from "discord.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+/**
+ * Get the package root.
+ *
+ * @returns {string}
+ */
 const getPackageRoot = (): string => {
 	let dir = __dirname;
 
@@ -20,8 +25,20 @@ const getPackageRoot = (): string => {
 	return __dirname;
 };
 
+/**
+ * Framework package root.
+ *
+ * @type {string}
+ */
 export const FRAMEWORK_PACKAGE_ROOT = getPackageRoot();
 
+/**
+ * Get the core path.
+ *
+ * @export
+ * @param {{ userPath?: string; coreDirectory: string }} options
+ * @returns {string}
+ */
 export function getCorePath(options: { userPath?: string; coreDirectory: string }): string {
 	const { userPath, coreDirectory } = options;
 	if (userPath) {
@@ -42,6 +59,13 @@ export function getCorePath(options: { userPath?: string; coreDirectory: string 
 	return join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory);
 }
 
+/**
+ * Resolve a user given core path.
+ *
+ * @export
+ * @param {string} relativePath
+ * @returns {string}
+ */
 export function resolveUserPath(relativePath: string): string {
 	const candidates = [
 		join(process.cwd(), relativePath),
@@ -62,6 +86,14 @@ export function resolveUserPath(relativePath: string): string {
 	return join(process.cwd(), relativePath);
 }
 
+/**
+ * Whether a directory or file  exists.
+ *
+ * @export
+ * @async
+ * @param {string} path
+ * @returns {unknown}
+ */
 export async function exists(path: string) {
 	try {
 		await fs.access(path);
@@ -71,6 +103,17 @@ export async function exists(path: string) {
 	}
 }
 
+/**
+ * Whether a user/member has permission.
+ *
+ * @export
+ * @param {{
+ * 	permission: PermissionLevel;
+ * 	user?: User;
+ * 	member?: GuildMember;
+ * }} options
+ * @returns {boolean}
+ */
 export function hasPermission(options: {
 	permission: PermissionLevel;
 	user?: User;

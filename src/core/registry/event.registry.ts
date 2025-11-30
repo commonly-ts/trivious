@@ -6,9 +6,24 @@ import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 import interactionCreate from "../events/interactionCreate.js";
 
+/**
+ * Registry to load, get and bind events.
+ *
+ * @export
+ * @class EventRegistry
+ * @typedef {EventRegistry}
+ * @extends {BaseRegistry<Event>}
+ */
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
 
+	/**
+	 * Load all events.
+	 *
+	 * @async
+	 * @param {string} [directory=getCorePath({ coreDirectory: "events" })]
+	 * @returns {Promise<this>}
+	 */
 	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
 		if (!(await exists(directory))) return this;
 
@@ -33,6 +48,11 @@ export default class EventRegistry extends BaseRegistry<Event> {
 		return this;
 	}
 
+	/**
+	 * Bind loaded events to their client events respectively.
+	 *
+	 * @param {TriviousClient} client
+	 */
 	bind(client: TriviousClient) {
 		for (const event of this.items.values()) {
 			const handler = (...args: ClientEvents[typeof event.name]) =>

@@ -5,9 +5,24 @@ import { promises as fs } from "fs";
 import { join } from "node:path";
 import Component from "../components/component.base.js";
 
+/**
+ * Registry to load and get all components.
+ *
+ * @export
+ * @class ComponentRegistry
+ * @typedef {ComponentRegistry}
+ * @extends {BaseRegistry<Component>}
+ */
 export default class ComponentRegistry extends BaseRegistry<Component> {
 	protected items = new Collection<string, Component>();
 
+	/**
+	 * Load all components.
+	 *
+	 * @async
+	 * @param {string} [directory=getCorePath({ coreDirectory: "components" })]
+	 * @returns {Promise<this>}
+	 */
 	async load(directory: string = getCorePath({ coreDirectory: "components" })): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;
