@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/commonly-ts/trivious/compare/v1.2.6...v1.3.0) (2025-11-30)
+
+
+### Features
+
+* Documentation ([eb6172c](https://github.com/commonly-ts/trivious/commit/eb6172c0d0ac826dd8f7b4678494bf0bcbebb34e))
+
 ## [1.2.6](https://github.com/commonly-ts/trivious/compare/v1.2.5...v1.2.6) (2025-11-30)
 
 
