@@ -10,7 +10,7 @@ export abstract class BaseRegistry<T> {
 
 	protected async importFile<T>(filePath: string): Promise<T | null> {
 		try {
-			const file = await import(filePath);
+			const { default: file } = await import(filePath);
 			const imports = file.default ?? file;
 
 			if (!imports) return null;
