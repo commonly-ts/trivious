@@ -1,4 +1,5 @@
 import { Collection } from "discord.js";
+import { pathToFileURL } from "url";
 
 export abstract class BaseRegistry<T> {
 	protected abstract items: Collection<string, T>;
@@ -10,7 +11,7 @@ export abstract class BaseRegistry<T> {
 
 	protected async importFile<T>(filePath: string): Promise<T | null> {
 		try {
-			const { default: file } = await import(filePath);
+			const { default: file } = await import(pathToFileURL(filePath).href);
 			const imports = file.default ?? file;
 
 			if (!imports) return null;
@@ -36,6 +37,6 @@ export abstract class BaseRegistry<T> {
 		try {
 			const resvoled = require.resolve(filePath);
 			delete require.cache[resvoled];
-		} catch {}
+		} catch { }
 	}
 }
