@@ -14,9 +14,123 @@ import {
 	ContextMenuMetadata,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction } from "src/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 import Subcommand from "./subcommand.base.js";
+
+export default abstract class Command {
+	abstract data: SlashCommandBuilder | ContextMenuCommandBuilder;
+	abstract metadata: CommandMetadata | ContextMenuMetadata;
+
+	public isSlashCommand(this: Command): this is SlashCommand {
+		return this.data instanceof SlashCommandBuilder;
+	}
+
+	public isContextMenuCommand(this: Command): this is ContextMenuCommand {
+		return this.data instanceof ContextMenuCommandBuilder;
+	}
+
+	public toJSON() {
+		return this.data.toJSON();
+	}
+
+	public async reply(
+		interaction: CommandInteraction,
+		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
+	) {
+		if (interaction.replied) {
+			await interaction.editReply(options as InteractionEditReplyOptions);
+			return;
+		}
+
+		const newOptions = { ...options } as InteractionReplyOptions;
+		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
+
+		await interaction.reply(newOptions);
+	}
+
+	async validateGuildPermission(
+		interaction: CommandInteraction,
+		permission: PermissionLevel,
+		doReply: boolean = true
+	) {
+		const isContextMenu = interaction.isContextMenuCommand();
+		const isChatInput = interaction.isChatInputCommand();
+
+		const requiresGuildCheck = isContextMenu || (isChatInput && (this.isSlashCommand() ? this.metadata.guildOnly : false));
+		if (!requiresGuildCheck) return true;
+
+		const member = interaction.member as GuildMember;
+		const memberHasPermission = hasPermission({ permission, member });
+
+		if (!memberHasPermission && doReply) {
+			await this.reply(interaction, {
+				content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``
+			});
+		}
+
+		return memberHasPermission;
+	}
+}
+
+export abstract class SlashCommand extends Command {
+	abstract data: SlashCommandBuilder;
+	abstract metadata: CommandMetadata;
+	abstract run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
+
+	public async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
+		const { run, reply, metadata } = this;
+		const { options } = interaction;
+
+		if (run) {
+			const memberHasPermission = await this.validateGuildPermission(
+				interaction,
+				metadata.permission,
+				false
+			);
+			if (memberHasPermission) await run(client, interaction);
+		}
+
+		const subcommands = metadata.subcommands;
+		if (subcommands.size <= 0) return;
+
+		const subcommand = metadata.subcommands.find(
+			subcmd => subcmd.data.name === options.getSubcommand()
+		);
+		if (!subcommand) {
+			await reply(interaction, {
+				content: "Ran subcommand is outdated or does not have a handler!",
+			});
+			return;
+		}
+
+		const memberHasPermission = await this.validateGuildPermission(
+			interaction,
+			subcommand.metadata.permission
+		);
+		if (!memberHasPermission) return;
+
+		await subcommand.execute(client, interaction);
+	}
+}
+
+export abstract class ContextMenuCommand extends Command {
+	abstract data: ContextMenuCommandBuilder;
+	abstract metadata: ContextMenuMetadata;
+	abstract run: (client: TriviousClient, interaction: ContextMenuCommandInteraction) => Promise<void>;
+
+	public async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
+		const { run, metadata } = this;
+
+		const memberHasPermission = await this.validateGuildPermission(
+			interaction,
+			metadata.permission,
+			false
+		);
+		if (memberHasPermission) await run(client, interaction);
+	}
+}
 
 export class CommandBuilder extends SlashCommandBuilder {
 	private _active = true;
@@ -110,106 +224,3 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	}
 }
 
-export default abstract class Command {
-	abstract data: SlashCommandBuilder | ContextMenuCommandBuilder;
-	abstract metadata: CommandMetadata | ContextMenuMetadata;
-	public readonly run?: (client: TriviousClient, interaction: CommandInteraction) => Promise<void>;
-
-	public toJSON() {
-		return this.data.toJSON();
-	}
-
-	public async reply(
-		interaction: CommandInteraction,
-		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
-	) {
-		if (interaction.replied) {
-			await interaction.editReply(options as InteractionEditReplyOptions);
-			return;
-		}
-
-		const newOptions = { ...options } as InteractionReplyOptions;
-		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
-
-		await interaction.reply(newOptions);
-	}
-
-	async validateGuildPermission(
-		interaction: CommandInteraction,
-		permission: PermissionLevel,
-		doReply: boolean = true
-	) {
-		if (interaction.isContextMenuCommand() || (this.metadata as CommandMetadata).guildOnly) {
-			const member = interaction.member as GuildMember;
-			const memberHasPermission = hasPermission({ permission, member });
-
-			if (!memberHasPermission) {
-				if (doReply)
-					await this.reply(interaction, {
-						content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``,
-					});
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public async execute(client: TriviousClient, interaction: CommandInteraction) {
-		const { run, reply } = this;
-
-		if (interaction.isContextMenuCommand()) {
-			if (!run) return;
-
-			const memberHasPermission = await this.validateGuildPermission(
-				interaction,
-				this.metadata.permission,
-				false
-			);
-			if (memberHasPermission) await run(client, interaction);
-			return;
-		}
-
-		const metadata = this.metadata as CommandMetadata;
-		if (run) {
-			const memberHasPermission = await this.validateGuildPermission(
-				interaction,
-				metadata.permission,
-				false
-			);
-			if (memberHasPermission) await run(client, interaction);
-		}
-
-		if (run) {
-			const memberHasPermission = await this.validateGuildPermission(
-				interaction,
-				metadata.permission,
-				false
-			);
-			if (memberHasPermission) await run(client, interaction);
-		}
-
-		const subcommands = metadata.subcommands;
-		if (subcommands.size <= 0) return;
-
-		const { options } = interaction;
-
-		const subcommand = metadata.subcommands.find(
-			subcmd => subcmd.data.name === options.getSubcommand()
-		);
-		if (!subcommand) {
-			await reply(interaction, {
-				content: "Ran subcommand is outdated or does not have a handler!",
-			});
-			return;
-		}
-
-		const memberHasPermission = await this.validateGuildPermission(
-			interaction,
-			subcommand.metadata.permission
-		);
-		if (!memberHasPermission) return;
-
-		await subcommand.execute(client, interaction);
-	}
-}
