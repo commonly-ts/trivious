@@ -19,6 +19,13 @@
 		"dist",
 		"package.json"
 	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/commonly-ts/trivious.git"
+	},
+	"bugs": {
+		"url": "https://github.com/commonly-ts/trivious/issues"
+	},
 	"scripts": {
 		"build": "tsup",
 		"lint": "eslint --fix src",
