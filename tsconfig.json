@@ -16,8 +16,7 @@
 		"paths": {
 			"src/*": ["src/*"]
 		},
-		"typeRoots": ["node_modules/@types", "src/shared/typings/index"],
-		"types": ["node"]
+		"typeRoots": ["node_modules/@types", "src/shared/typings/index"]
 	},
 	"include": ["src", "vitest.config.ts", "tsup.config.ts", "eslint.config.js"],
 	"exclude": ["node_modules", "dist"]
