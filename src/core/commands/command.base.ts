@@ -98,6 +98,7 @@ export default abstract class Command {
 	 * @returns {unknown}
 	 */
 	async validateGuildPermission(
+		client: TriviousClient,
 		interaction: CommandInteraction,
 		permission: PermissionLevel,
 		doReply: boolean = true
@@ -110,7 +111,7 @@ export default abstract class Command {
 		if (!requiresGuildCheck) return true;
 
 		const member = interaction.member as GuildMember;
-		const memberHasPermission = hasPermission({ permission, member });
+		const memberHasPermission = hasPermission(client, { permission, member });
 
 		if (!memberHasPermission && doReply) {
 			await this.reply(interaction, {
@@ -163,6 +164,7 @@ export abstract class SlashCommand extends Command {
 
 		if (run) {
 			const memberHasPermission = await this.validateGuildPermission(
+				client,
 				interaction,
 				metadata.permission,
 				false
@@ -184,6 +186,7 @@ export abstract class SlashCommand extends Command {
 		}
 
 		const memberHasPermission = await this.validateGuildPermission(
+			client,
 			interaction,
 			subcommand.metadata.permission
 		);

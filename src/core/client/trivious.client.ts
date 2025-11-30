@@ -1,7 +1,7 @@
 import { Client, REST, Routes } from "discord.js";
 import { TriviousClientOptions } from "src/shared/typings/client.js";
 import { registries } from "../registry/index.js";
-
+import { PermissionLevel } from "src/shared/typings/permissions.js";
 
 /**
  * Trivious base client.
@@ -48,7 +48,9 @@ export default class TriviousClient extends Client {
 	async register() {
 		const { registries } = this;
 		await registries.loadAll(this._options);
-		console.log(`[Trivious] Loaded all registries (${registries.commands.get().size} commands, ${registries.events.get().size} events, ${registries.components.get().size} components, ${registries.modules.get().size} modules)`);
+		console.log(
+			`[Trivious] Loaded all registries (${registries.commands.get().size} commands, ${registries.events.get().size} events, ${registries.components.get().size} components, ${registries.modules.get().size} modules)`
+		);
 	}
 
 	/**
@@ -84,5 +86,18 @@ export default class TriviousClient extends Client {
 		const rest = new REST({ version: "10" }).setToken(token);
 		await rest.put(Routes.applicationCommands(clientId), { body });
 		console.log(`[Trivious] Deployed ${body.length} commands`);
+	}
+
+	/**
+	 * Set the roles tied to a permission level.
+	 *
+	 * @param {Record<string, PermissionLevel>} roles
+	 */
+	setRolePermissions(roles: Record<string, PermissionLevel>) {
+		this._options.rolePermissions = roles;
+	}
+
+	get rolePermissions() {
+		return this._options.rolePermissions;
 	}
 }

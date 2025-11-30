@@ -43,6 +43,7 @@ export default abstract class ContextMenuCommand extends Command {
 		const { run, metadata } = this;
 
 		const memberHasPermission = await this.validateGuildPermission(
+			client,
 			interaction,
 			metadata.permission,
 			false

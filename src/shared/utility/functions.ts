@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { getPermissionLevel, PermissionLevel } from "../typings/permissions.js";
 import { GuildMember, User } from "discord.js";
+import TriviousClient from "src/core/client/trivious.client.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -114,11 +115,14 @@ export async function exists(path: string) {
  * }} options
  * @returns {boolean}
  */
-export function hasPermission(options: {
-	permission: PermissionLevel;
-	user?: User;
-	member?: GuildMember;
-}) {
+export function hasPermission(
+	client: TriviousClient,
+	options: {
+		permission: PermissionLevel;
+		user?: User;
+		member?: GuildMember;
+	}
+) {
 	const { permission, user, member } = options;
 
 	if (user) {
@@ -129,7 +133,7 @@ export function hasPermission(options: {
 	}
 
 	if (member) {
-		const memberPermission = getPermissionLevel(member);
+		const memberPermission = getPermissionLevel(client, member);
 		return permission > memberPermission;
 	}
 

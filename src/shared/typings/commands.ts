@@ -1,7 +1,11 @@
 import { Collection } from "discord.js";
 import { PermissionLevel } from "./permissions.js";
 import Subcommand from "src/core/commands/subcommand.base.js";
-import { ChatInputCommandInteraction, ContextMenuCommand, ContextMenuCommandInteraction } from "src/index.js";
+import {
+	ChatInputCommandInteraction,
+	ContextMenuCommand,
+	ContextMenuCommandInteraction,
+} from "src/index.js";
 import { SlashCommand } from "src/core/commands/command.base.js";
 
 /**

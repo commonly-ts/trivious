@@ -19,7 +19,11 @@ export default {
 			}
 
 			const requiredPermission = command.metadata.permission;
-			const hasPermission = await command.validateGuildPermission(interaction, requiredPermission);
+			const hasPermission = await command.validateGuildPermission(
+				client,
+				interaction,
+				requiredPermission
+			);
 			if (!hasPermission) return;
 
 			await command.reply(interaction, { content: "Processing command..." });
@@ -51,6 +55,7 @@ export default {
 
 			const requiredPermission = component.metadata.permission;
 			const hasPermission = await component.validateGuildPermission(
+				client,
 				interaction,
 				requiredPermission
 			);

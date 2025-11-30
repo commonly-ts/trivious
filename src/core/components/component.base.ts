@@ -115,13 +115,14 @@ export default abstract class Component {
 	 * @returns {unknown}
 	 */
 	async validateGuildPermission(
+		client: TriviousClient,
 		interaction: ComponentInteraction,
 		permission: PermissionLevel,
 		doReply: boolean = true
 	) {
 		if (interaction.guild) {
 			const member = interaction.member as GuildMember;
-			const memberHasPermission = hasPermission({ permission, member });
+			const memberHasPermission = hasPermission(client, { permission, member });
 
 			if (!memberHasPermission) {
 				if (doReply)

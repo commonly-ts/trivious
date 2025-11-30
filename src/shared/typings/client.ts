@@ -1,4 +1,5 @@
 import { ClientOptions } from "discord.js";
+import { PermissionLevel } from "./permissions.js";
 
 /**
  * Client options for the TriviousClient
@@ -46,4 +47,11 @@ export interface TriviousClientOptions extends ClientOptions {
 	 * @type {?string}
 	 */
 	corePath?: string;
+
+	/**
+	 * Roles tied to a PermissionLevel.
+	 *
+	 * @type {Record<string, PermissionLevel>}
+	 */
+	rolePermissions: Record<string, PermissionLevel>;
 }
