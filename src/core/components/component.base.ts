@@ -1,5 +1,6 @@
 import {
 	ComponentType,
+	GuildMember,
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
 	MessagePayload,
@@ -10,6 +11,7 @@ import {
 	ComponentMetadata,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
+import { hasPermission } from "src/shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 
 export class ComponentBuilder {
@@ -51,6 +53,27 @@ export class ComponentBuilder {
 export default abstract class Component {
 	abstract metadata: ComponentMetadata;
 	abstract execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
+
+	async validateGuildPermission(
+		interaction: ComponentInteraction,
+		permission: PermissionLevel,
+		doReply: boolean = true
+	) {
+		if (interaction.guild) {
+			const member = interaction.member as GuildMember;
+			const memberHasPermission = hasPermission({ permission, member });
+
+			if (!memberHasPermission) {
+				if (doReply)
+					await this.reply(interaction, {
+						content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``,
+					});
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	async reply(
 		interaction: ComponentInteraction,

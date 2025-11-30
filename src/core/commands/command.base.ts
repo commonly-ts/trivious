@@ -7,39 +7,16 @@ import {
 	InteractionReplyOptions,
 	MessagePayload,
 	SlashCommandBuilder,
-	User,
 } from "discord.js";
 import {
 	CommandInteraction,
 	CommandMetadata,
 	ContextMenuMetadata,
-	getPermissionLevel,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
+import { hasPermission } from "src/shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 import Subcommand from "./subcommand.base.js";
-
-function hasPermission(options: {
-	permission: PermissionLevel;
-	user?: User;
-	member?: GuildMember;
-}) {
-	const { permission, user, member } = options;
-
-	if (user) {
-		if (permission === PermissionLevel.BOT_OWNER) {
-			return !(user.id === "424764032667484171");
-		}
-		return true;
-	}
-
-	if (member) {
-		const memberPermission = getPermissionLevel(member);
-		return permission > memberPermission;
-	}
-
-	return false;
-}
 
 export class CommandBuilder extends SlashCommandBuilder {
 	private _active = true;

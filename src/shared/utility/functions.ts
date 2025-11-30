@@ -2,6 +2,8 @@ import { promises as fs, existsSync } from "fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { getPermissionLevel, PermissionLevel } from "../typings/permissions.js";
+import { GuildMember, User } from "discord.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -70,4 +72,26 @@ export async function exists(path: string) {
 	} catch {
 		return false;
 	}
+}
+
+export function hasPermission(options: {
+	permission: PermissionLevel;
+	user?: User;
+	member?: GuildMember;
+}) {
+	const { permission, user, member } = options;
+
+	if (user) {
+		if (permission === PermissionLevel.BOT_OWNER) {
+			return !(user.id === "424764032667484171");
+		}
+		return true;
+	}
+
+	if (member) {
+		const memberPermission = getPermissionLevel(member);
+		return permission > memberPermission;
+	}
+
+	return false;
 }
