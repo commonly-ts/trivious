@@ -210,7 +210,6 @@ export default abstract class Command {
 		);
 		if (!memberHasPermission) return;
 
-		await reply(interaction, { content: "Processing command..." });
 		await subcommand.execute(client, interaction);
 	}
 }
