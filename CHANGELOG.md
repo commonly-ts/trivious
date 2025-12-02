@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/commonly-ts/trivious/compare/v1.3.5...v1.3.6) (2025-12-02)
+
+
+### Bug Fixes
+
+* add keywords and define license ([1314310](https://github.com/commonly-ts/trivious/commit/13143107082efc7a0bd6424dae4e758196264723))
+
 ## [1.3.5](https://github.com/commonly-ts/trivious/compare/v1.3.4...v1.3.5) (2025-11-30)
 
 
