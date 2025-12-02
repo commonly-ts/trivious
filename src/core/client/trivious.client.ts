@@ -26,7 +26,7 @@ export default class TriviousClient extends Client {
 	 * @private
 	 * @type {TriviousClientOptions}
 	 */
-	private _options: TriviousClientOptions;
+	public readonly _options: TriviousClientOptions;
 
 	/**
 	 * Creates an instance of TriviousClient.

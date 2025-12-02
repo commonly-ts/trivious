@@ -231,7 +231,6 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 */
 	public setGuildOnly(): this {
 		this._guildOnly = true;
-		this._permission = PermissionLevel.USER;
 		this.setContexts(InteractionContextType.Guild);
 		return this;
 	}
@@ -244,6 +243,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 */
 	public setOwnerOnly(): this {
 		this._permission = PermissionLevel.BOT_OWNER;
+		this._ownerOnly = true;
 		return this;
 	}
 
