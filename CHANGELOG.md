@@ -1,3 +1,10 @@
+## [1.3.8](https://github.com/commonly-ts/trivious/compare/v1.3.7...v1.3.8) (2025-12-08)
+
+
+### Bug Fixes
+
+* hasPermission function guild context logic ([2b68eb7](https://github.com/commonly-ts/trivious/commit/2b68eb7af39b162e67a3d27a625ccdf1ae6c1a9c))
+
 ## [1.3.7](https://github.com/commonly-ts/trivious/compare/v1.3.6...v1.3.7) (2025-12-08)
 
 
