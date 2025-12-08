@@ -44,7 +44,9 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 		}
 
-		this.items.set(interactionCreate.name, interactionCreate as Event);
+		if (!this.items.get(interactionCreate.name))
+			this.items.set(interactionCreate.name, interactionCreate as Event);
+
 		return this;
 	}
 
