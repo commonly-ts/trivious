@@ -126,15 +126,13 @@ export function hasPermission(
 	const { permission, user, member } = options;
 
 	if (user) {
-		if (permission === PermissionLevel.BOT_OWNER) {
-			return !(user.id === "424764032667484171");
-		}
+		if (permission === PermissionLevel.BOT_OWNER) return user.id === "424764032667484171";
 		return true;
 	}
 
 	if (member) {
 		const memberPermission = getPermissionLevel(client, member);
-		return permission > memberPermission;
+		return memberPermission >= permission;
 	}
 
 	return false;
