@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/commonly-ts/trivious/compare/v1.3.8...v1.3.9) (2025-12-08)
+
+
+### Bug Fixes
+
+* added SlashCommand to barrel file ([bcfa21b](https://github.com/commonly-ts/trivious/commit/bcfa21b3465cd5d740860259205b220ebfe51f41))
+
 ## [1.3.8](https://github.com/commonly-ts/trivious/compare/v1.3.7...v1.3.8) (2025-12-08)
 
 
