@@ -1,3 +1,10 @@
+## [1.3.14](https://github.com/commonly-ts/trivious/compare/v1.3.13...v1.3.14) (2025-12-08)
+
+
+### Bug Fixes
+
+* cjs supported path fetching ([94a6f6a](https://github.com/commonly-ts/trivious/commit/94a6f6a7e75c98904ddea0c520073a6f6138857a))
+
 ## [1.3.13](https://github.com/commonly-ts/trivious/compare/v1.3.12...v1.3.13) (2025-12-08)
 
 
