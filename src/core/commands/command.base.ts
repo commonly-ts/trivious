@@ -40,7 +40,7 @@ export default abstract class Command {
 	 * @returns {this is SlashCommand}
 	 */
 	public isSlashCommand(this: Command): this is SlashCommand {
-		return this.data instanceof SlashCommandBuilder;
+		return (this.data instanceof SlashCommandBuilder && this instanceof SlashCommand);
 	}
 
 	/**
@@ -51,7 +51,7 @@ export default abstract class Command {
 	 * @returns {this is ContextMenuCommand}
 	 */
 	public isContextMenuCommand(this: Command): this is ContextMenuCommand {
-		return this.data instanceof ContextMenuCommandBuilder;
+		return (this.data instanceof ContextMenuCommandBuilder && this instanceof ContextMenuCommand);
 	}
 
 	/**
