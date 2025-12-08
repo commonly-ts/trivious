@@ -1,3 +1,10 @@
+## [1.3.11](https://github.com/commonly-ts/trivious/compare/v1.3.10...v1.3.11) (2025-12-08)
+
+
+### Bug Fixes
+
+* fixes tsup incorrectly attributing code ([3c9f84c](https://github.com/commonly-ts/trivious/commit/3c9f84ce8d0e4a2de1384670a91366755b96c66b))
+
 ## [1.3.10](https://github.com/commonly-ts/trivious/compare/v1.3.9...v1.3.10) (2025-12-08)
 
 
