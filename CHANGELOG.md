@@ -1,3 +1,10 @@
+## [1.3.13](https://github.com/commonly-ts/trivious/compare/v1.3.12...v1.3.13) (2025-12-08)
+
+
+### Bug Fixes
+
+* revert tsup changes ([f107f93](https://github.com/commonly-ts/trivious/commit/f107f939a0337834c766b7cda3ce1826e136a1ac))
+
 ## [1.3.12](https://github.com/commonly-ts/trivious/compare/v1.3.11...v1.3.12) (2025-12-08)
 
 
