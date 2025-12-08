@@ -1,3 +1,10 @@
+## [1.3.12](https://github.com/commonly-ts/trivious/compare/v1.3.11...v1.3.12) (2025-12-08)
+
+
+### Bug Fixes
+
+* esm/cjs exports ([a21c4a7](https://github.com/commonly-ts/trivious/commit/a21c4a7ba0e350ee077a02810765a07b31688038))
+
 ## [1.3.11](https://github.com/commonly-ts/trivious/compare/v1.3.10...v1.3.11) (2025-12-08)
 
 
