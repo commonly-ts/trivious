@@ -1,13 +1,10 @@
 import { promises as fs, existsSync } from "fs";
 import { join, resolve } from "node:path";
-import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { getPermissionLevel, PermissionLevel } from "../typings/permissions.js";
 import { GuildMember, User } from "discord.js";
 import TriviousClient from "src/core/client/trivious.client.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { __dirname } from "./paths.js";
 
 /**
  * Get the package root.
