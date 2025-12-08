@@ -18,7 +18,7 @@ export { default as Command } from "./core/commands/command.base.js";
 export { default as Subcommand } from "./core/commands/subcommand.base.js";
 export { default as ContextMenuCommand } from "./core/commands/contextcommand.base.js";
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
-export { CommandBuilder } from "./core/commands/command.base.js";
+export { CommandBuilder, SlashCommand } from "./core/commands/command.base.js";
 export { SubcommandBuilder } from "./core/commands/subcommand.base.js";
 export { ContextMenuBuilder } from "./core/commands/contextcommand.base.js";
 
