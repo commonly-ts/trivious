@@ -1,3 +1,11 @@
+## [1.3.9](https://github.com/commonly-ts/trivious/compare/v1.3.8...v1.3.9) (2025-12-08)
+
+
+### Bug Fixes
+
+* added SlashCommand class to framework exports ([19ddaf6](https://github.com/commonly-ts/trivious/commit/19ddaf671c9f54d6997afd58e1375226cfcb30f6))
+* improved logic of isSlashCommand and isContextMenuCommand ([186d1e8](https://github.com/commonly-ts/trivious/commit/186d1e892f7ff9d9e7c35180f2041c802f20161a))
+
 ## [1.3.8](https://github.com/commonly-ts/trivious/compare/v1.3.7...v1.3.8) (2025-12-08)
 
 
