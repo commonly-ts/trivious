@@ -1,31 +1,16 @@
 # Trivious
 
-Easy to use, modular and extensible Discord.js v14 framework.
-
----
-
-### Features
-- **Registry-based loading** - Auto-loads commands, events, components and modules from folders
-- **Declarative command builders** with metadata (permissions, ephemeral, guild-only, etc)
-- **Built-in permission system** with customisable role-based levels
-- **Subcommand support** with independent permissions
-- **Context menu commands** with the same permission & metadata system'
-- **Component handlers** with custom id tagging and permission checks
-- **Smart reply handling** - Automatically respects `ephemeralReply` and `interaction.replied`
-- **One-command deploy** - `client.deploy()` pushes all commands globally
-- **Zero boilerplate** - Less repetitive code, more focus on logic
+Discord.js framework
 
 ---
 
 ### Installation
 ```bash
 npm install trivious
-# or
 yarn add trivious
-# or
 pnpm add trivious
 ```
-> Requires discord.js v14+ and Node.js 18+
+> Requires Node.js 18+
 
 ---
 
