@@ -1,3 +1,10 @@
+## [1.3.7](https://github.com/commonly-ts/trivious/compare/v1.3.6...v1.3.7) (2025-12-08)
+
+
+### Bug Fixes
+
+* Update README.md ([4a63c75](https://github.com/commonly-ts/trivious/commit/4a63c75477f30438fab68e684bfabcc687c146f7))
+
 ## [1.3.6](https://github.com/commonly-ts/trivious/compare/v1.3.5...v1.3.6) (2025-12-02)
 
 
