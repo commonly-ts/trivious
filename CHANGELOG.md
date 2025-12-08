@@ -1,3 +1,11 @@
+## [1.3.10](https://github.com/commonly-ts/trivious/compare/v1.3.9...v1.3.10) (2025-12-08)
+
+
+### Bug Fixes
+
+* fixed Command import path ([318799a](https://github.com/commonly-ts/trivious/commit/318799a0fce5dee5158d1bd96d4c3c5eb1db2eea))
+* interactionCreate default event checks ([3c06007](https://github.com/commonly-ts/trivious/commit/3c060079e01938fd1432a4ca56f31a4f074ef1e2))
+
 ## [1.3.9](https://github.com/commonly-ts/trivious/compare/v1.3.8...v1.3.9) (2025-12-08)
 
 
