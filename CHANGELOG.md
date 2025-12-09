@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/commonly-ts/trivious/compare/v1.4.2...v1.4.3) (2025-12-09)
+
+
+### Bug Fixes
+
+* fixed missing directory error ([3cb3023](https://github.com/commonly-ts/trivious/commit/3cb302331c312d35e74f3ce314e730f03168e5cc))
+
 ## [1.4.2](https://github.com/commonly-ts/trivious/compare/v1.4.1...v1.4.2) (2025-12-09)
 
 
