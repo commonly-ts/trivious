@@ -13,11 +13,11 @@ import {
 	CommandMetadata,
 	ContextMenuMetadata,
 	PermissionLevel,
-} from "../../shared/typings/index.js";
+} from "src/shared/typings/index.js";
 import ContextMenuCommand from "./contextcommand.base.js";
 import TriviousClient from "../client/trivious.client.js";
-import { hasPermission } from "../../shared/utility/functions.js";
-import { ChatInputCommandInteraction, Subcommand } from "../../index.js";
+import { hasPermission } from "src/shared/utility/functions.js";
+import { ChatInputCommandInteraction, Subcommand } from "src/index.js";
 
 /**
  * Base class for a Command.

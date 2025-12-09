@@ -1,6 +1,6 @@
 import { ClientEvents, Collection } from "discord.js";
-import { exists, getCorePath } from "../../shared/utility/functions.js";
-import { BaseRegistry, Event } from "../../shared/typings/index.js";
+import { exists, getCorePath } from "src/shared/utility/functions.js";
+import { BaseRegistry, Event } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";

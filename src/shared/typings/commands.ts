@@ -2,11 +2,11 @@ import {
 	ChatInputCommandInteraction,
 	ContextMenuCommand,
 	ContextMenuCommandInteraction,
-} from "../../index.js";
+} from "src/index.js";
 import { Collection } from "discord.js";
 import { PermissionLevel } from "./permissions.js";
-import { SlashCommand } from "../../core/commands/command.base.js";
-import Subcommand from "../../core/commands/subcommand.base.js";
+import { SlashCommand } from "src/core/commands/command.base.js";
+import Subcommand from "src/core/commands/subcommand.base.js";
 
 /**
  * Literal type for possible CommandInteractions.

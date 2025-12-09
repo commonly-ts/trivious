@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import TriviousClient from "../../core/client/trivious.client.js";
+import TriviousClient from "src/core/client/trivious.client.js";
 
 /**
  * User permission level enums

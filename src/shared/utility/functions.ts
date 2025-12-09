@@ -1,4 +1,4 @@
-import TriviousClient from "../../core/client/trivious.client.js";
+import TriviousClient from "src/core/client/trivious.client.js";
 import { promises as fs, existsSync } from "fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "url";

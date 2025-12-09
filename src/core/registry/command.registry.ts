@@ -1,6 +1,6 @@
 import { Collection, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseRegistry, AnyCommand } from "../../shared/typings/index.js";
-import { exists, getCorePath } from "../../shared/utility/functions.js";
+import { BaseRegistry, AnyCommand } from "src/shared/typings/index.js";
+import { exists, getCorePath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import Subcommand from "../commands/subcommand.base.js";
