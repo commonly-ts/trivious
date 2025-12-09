@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/commonly-ts/trivious/compare/v1.3.26...v1.4.0) (2025-12-09)
+
+
+### Features
+
+* automatic command deployment option ([2b852fc](https://github.com/commonly-ts/trivious/commit/2b852fc3e65554f75a099a2a89adb645686827de))
+
 ## [1.3.26](https://github.com/commonly-ts/trivious/compare/v1.3.25...v1.3.26) (2025-12-09)
 
 
