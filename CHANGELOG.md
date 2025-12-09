@@ -1,3 +1,10 @@
+## [1.3.24](https://github.com/commonly-ts/trivious/compare/v1.3.23...v1.3.24) (2025-12-09)
+
+
+### Bug Fixes
+
+* added preloadEvents protected method ([0c14ddf](https://github.com/commonly-ts/trivious/commit/0c14ddfe627b42ad7f1ac00ff77e4f9af82a84eb))
+
 ## [1.3.23](https://github.com/commonly-ts/trivious/compare/v1.3.22...v1.3.23) (2025-12-09)
 
 
