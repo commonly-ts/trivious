@@ -1,3 +1,10 @@
+## [1.3.19](https://github.com/commonly-ts/trivious/compare/v1.3.18...v1.3.19) (2025-12-09)
+
+
+### Bug Fixes
+
+* removed import paths and baseUrl ([128b4a1](https://github.com/commonly-ts/trivious/commit/128b4a1d9fc49bff7546c041de075480caaca823))
+
 ## [1.3.18](https://github.com/commonly-ts/trivious/compare/v1.3.17...v1.3.18) (2025-12-09)
 
 
