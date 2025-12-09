@@ -1,3 +1,10 @@
+## [1.3.18](https://github.com/commonly-ts/trivious/compare/v1.3.17...v1.3.18) (2025-12-09)
+
+
+### Bug Fixes
+
+* fixed tsup build config ([298d7f4](https://github.com/commonly-ts/trivious/commit/298d7f470f8d34c547ebb703b52ea708792ae323))
+
 ## [1.3.17](https://github.com/commonly-ts/trivious/compare/v1.3.16...v1.3.17) (2025-12-09)
 
 
