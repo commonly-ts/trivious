@@ -125,11 +125,13 @@ export function hasPermission(
 ) {
 	const { permission, user, member } = options;
 
-	if (user) {
-		if (permission === PermissionLevel.BOT_OWNER) return user.id === "424764032667484171";
-		return true;
-	}
+	// Bot owner check
+	if (permission === PermissionLevel.BOT_OWNER && client._options.botOwnerIds) return user ? client._options.botOwnerIds.includes(user.id) : member ? client._options.botOwnerIds.includes(member.id) : false;
 
+	// Outside of a guild
+	if (user) return true;
+
+	// Inside a guild
 	if (member) {
 		const memberPermission = getPermissionLevel(client, member);
 		return memberPermission >= permission;

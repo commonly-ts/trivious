@@ -54,4 +54,11 @@ export interface TriviousClientOptions extends ClientOptions {
 	 * @type {Record<string, PermissionLevel>}
 	 */
 	rolePermissions?: Record<string, PermissionLevel>;
+
+	/**
+	 * Discord user Ids of the bot owner(s)
+	 *
+	 * @type {string[]}
+	 */
+	botOwnerIds?: string[];
 }
