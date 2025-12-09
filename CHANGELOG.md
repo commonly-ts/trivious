@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/commonly-ts/trivious/compare/v1.4.0...v1.4.1) (2025-12-09)
+
+
+### Bug Fixes
+
+* made commandHashConfig optional ([09e82bc](https://github.com/commonly-ts/trivious/commit/09e82bcfb3c36d61b53e946794eaf650f348e87d))
+
 # [1.4.0](https://github.com/commonly-ts/trivious/compare/v1.3.26...v1.4.0) (2025-12-09)
 
 
