@@ -1,3 +1,10 @@
+## [1.3.16](https://github.com/commonly-ts/trivious/compare/v1.3.15...v1.3.16) (2025-12-09)
+
+
+### Bug Fixes
+
+* fixed SlashCommand run method ([78586e9](https://github.com/commonly-ts/trivious/commit/78586e935bce3f0a021ce680c1b18971418b6c20))
+
 ## [1.3.9](https://github.com/commonly-ts/trivious/compare/v1.3.8...v1.3.9) (2025-12-08)
 
 
