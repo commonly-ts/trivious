@@ -1,3 +1,10 @@
+## [1.3.23](https://github.com/commonly-ts/trivious/compare/v1.3.22...v1.3.23) (2025-12-09)
+
+
+### Bug Fixes
+
+* added botOwnerId input and checks ([d861047](https://github.com/commonly-ts/trivious/commit/d861047bc933bb40cfa77b131988b75767734884))
+
 ## [1.3.22](https://github.com/commonly-ts/trivious/compare/v1.3.21...v1.3.22) (2025-12-09)
 
 
