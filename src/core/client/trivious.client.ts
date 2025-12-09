@@ -3,7 +3,7 @@ import { registries } from "../registry/index.js";
 import { TriviousClientOptions, PermissionLevel } from "src/shared/typings/index.js";
 import { exists, hashCommands } from "src/shared/utility/functions.js";
 import path from "node:path";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 /**
  * Trivious base client.
@@ -93,9 +93,12 @@ export default class TriviousClient extends Client {
 
 			if (await exists(hashFile)) oldHash = readFileSync(hashFile, "utf-8");
 			if (newHash === oldHash) {
-				console.debug(`[Trivious] No changes in commands found, skipping deployment`)
+				console.debug(`[Trivious] No changes in commands found, skipping deployment`);
 				return;
 			}
+
+			writeFileSync(hashFile, newHash, { encoding: "utf-8" });
+			console.debug(`[Trivious] Created new command hash: ${hashFile}`);
 		}
 
 		const rest = new REST({ version: "10" }).setToken(token);
