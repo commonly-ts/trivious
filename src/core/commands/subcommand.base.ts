@@ -7,7 +7,8 @@ import {
 	SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
-import TriviousClient from "../client/trivious.client.js";
+import { TriviousClient } from "src/index.js";
+
 
 /**
  * Base SubcommandBuilder.

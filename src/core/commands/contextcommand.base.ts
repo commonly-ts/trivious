@@ -1,8 +1,6 @@
 import { ContextMenuCommandBuilder } from "discord.js";
 import { ContextMenuMetadata } from "src/shared/typings/commands.js";
-import { ContextMenuCommandInteraction, PermissionLevel } from "src/index.js";
-import TriviousClient from "../client/trivious.client.js";
-import Command from "./command.base.js";
+import { Command, ContextMenuCommandInteraction, PermissionLevel, TriviousClient } from "src/index.js";
 
 /**
  * Base ContextMenuCommand.
