@@ -1,3 +1,10 @@
+## [1.3.26](https://github.com/commonly-ts/trivious/compare/v1.3.25...v1.3.26) (2025-12-09)
+
+
+### Bug Fixes
+
+* fixed default core paths ([a852484](https://github.com/commonly-ts/trivious/commit/a852484c895bcbaaa7b58698f38a79e767dd9986))
+
 ## [1.3.25](https://github.com/commonly-ts/trivious/compare/v1.3.24...v1.3.25) (2025-12-09)
 
 
