@@ -86,7 +86,7 @@ export default class TriviousClient extends Client {
 		const commands = Array.from(this.registries.commands.get().values());
 		const body = [...commands.map(command => command.toJSON())];
 
-		if (commandHashConfig.enabled) {
+		if (commandHashConfig && commandHashConfig.enabled) {
 			const hashFile = path.join(commandHashConfig.filePath || "data", "commands.hash");
 			const newHash = await hashCommands(body);
 			let oldHash = "";

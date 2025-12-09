@@ -71,7 +71,7 @@ export interface TriviousClientOptions extends ClientOptions {
 	 * 		filePath: string;
 	 * 	}}
 	 */
-	commandHashConfig: {
+	commandHashConfig?: {
 		enabled: boolean;
 		filePath: string;
 	};
