@@ -1,3 +1,10 @@
+## [1.3.20](https://github.com/commonly-ts/trivious/compare/v1.3.19...v1.3.20) (2025-12-09)
+
+
+### Bug Fixes
+
+* removed discord.js imports from barrel file ([0a51ed6](https://github.com/commonly-ts/trivious/commit/0a51ed67fd67ff4cf1c6ab47bc7663e6a4f468c8))
+
 ## [1.3.19](https://github.com/commonly-ts/trivious/compare/v1.3.18...v1.3.19) (2025-12-09)
 
 
