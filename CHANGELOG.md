@@ -1,3 +1,10 @@
+## [1.3.17](https://github.com/commonly-ts/trivious/compare/v1.3.16...v1.3.17) (2025-12-09)
+
+
+### Bug Fixes
+
+* improved command type checks ([e52fe4d](https://github.com/commonly-ts/trivious/commit/e52fe4dc0e2313135e9f7cd037c9b01336fe9da6))
+
 ## [1.3.16](https://github.com/commonly-ts/trivious/compare/v1.3.15...v1.3.16) (2025-12-09)
 
 
