@@ -4,7 +4,6 @@ import { BaseRegistry, Event } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
-import interactionCreate from "../events/interactionCreate.js";
 
 /**
  * Registry to load, get and bind events.
@@ -16,6 +15,30 @@ import interactionCreate from "../events/interactionCreate.js";
  */
 export default class EventRegistry extends BaseRegistry<Event> {
 	protected items = new Collection<string, Event>();
+
+	/**
+	 * Load all preset events, can be overridden by user-provided events.
+	 *
+	 * @async
+	 * @protected
+	 * @returns {Promise<this>}
+	 */
+	protected async loadPresetEvents() {
+		const directory = join(__dirname, "../events");
+		const entries = await fs.readdir(directory, { withFileTypes: true });
+		for (const entry of entries) {
+			const fullPath = join(directory, entry.name);
+			if (!entry.isFile() || !entry.name.endsWith(".js")) continue;
+
+			const event = await this.importFile<Event>(fullPath);
+			if (!event) continue;
+
+			if (this.items.has(event.name)) continue;
+			this.items.set(event.name, event);
+		}
+
+		return this;
+	}
 
 	/**
 	 * Load all events.
@@ -44,7 +67,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 			}
 		}
 
-		this.items.set(interactionCreate.name, interactionCreate as Event);
+		await this.loadPresetEvents();
 		return this;
 	}
 
