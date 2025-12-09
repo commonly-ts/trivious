@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/commonly-ts/trivious/compare/v1.4.1...v1.4.2) (2025-12-09)
+
+
+### Bug Fixes
+
+* fixed command hashing ([3a16f7f](https://github.com/commonly-ts/trivious/commit/3a16f7ffc0e8055743afe5f4850d85ee3644651a))
+
 ## [1.4.1](https://github.com/commonly-ts/trivious/compare/v1.4.0...v1.4.1) (2025-12-09)
 
 
