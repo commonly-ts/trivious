@@ -1,5 +1,5 @@
-import { TriviousClientOptions } from "src/shared/typings/client.js";
-import { resolveUserPath } from "src/shared/utility/functions.js";
+import { TriviousClientOptions } from "../../shared/typings/client.js";
+import { resolveUserPath } from "../../shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 import CommandRegistry from "./command.registry.js";
 import ComponentRegistry from "./component.registry.js";

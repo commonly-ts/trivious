@@ -6,8 +6,8 @@ import {
 	MessagePayload,
 	SlashCommandSubcommandBuilder,
 } from "discord.js";
-import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
-import { TriviousClient } from "src/index.js";
+import { PermissionLevel, SubcommandMetadata } from "../../shared/typings/index.js";
+import { TriviousClient } from "../../index.js";
 
 
 /**

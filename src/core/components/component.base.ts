@@ -10,8 +10,8 @@ import {
 	ComponentInteraction,
 	ComponentMetadata,
 	PermissionLevel,
-} from "src/shared/typings/index.js";
-import { hasPermission } from "src/shared/utility/functions.js";
+} from "../../shared/typings/index.js";
+import { hasPermission } from "../../shared/utility/functions.js";
 import TriviousClient from "../client/trivious.client.js";
 
 /**

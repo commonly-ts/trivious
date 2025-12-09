@@ -1,7 +1,7 @@
 import { Client, REST, Routes } from "discord.js";
-import { TriviousClientOptions } from "src/shared/typings/client.js";
 import { registries } from "../registry/index.js";
-import { PermissionLevel } from "src/shared/typings/permissions.js";
+import { TriviousClientOptions } from "../../shared/typings/client.js";
+import { PermissionLevel } from "../../shared/typings/permissions.js";
 
 /**
  * Trivious base client.

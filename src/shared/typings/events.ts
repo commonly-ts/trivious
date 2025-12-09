@@ -1,5 +1,5 @@
 import { ClientEvents } from "discord.js";
-import TriviousClient from "src/core/client/trivious.client.js";
+import TriviousClient from "../../core/client/trivious.client.js";
 
 /**
  * Base Event.

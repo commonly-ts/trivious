@@ -1,6 +1,5 @@
 import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { ComponentType, deconstructCustomId } from "src/shared/typings/components.js";
-import { Event } from "src/shared/typings/events.js";
+import { ComponentType, deconstructCustomId, Event } from "../../shared/typings/index.js";
 import Command from "../commands/command.base.js";
 
 export default {

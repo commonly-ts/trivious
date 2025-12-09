@@ -1,6 +1,6 @@
 import { Collection } from "discord.js";
-import { exists, getCorePath } from "src/shared/utility/functions.js";
-import { BaseRegistry, deconstructCustomId } from "src/shared/typings/index.js";
+import { BaseRegistry, deconstructCustomId } from "../../shared/typings/index.js";
+import { exists, getCorePath } from "../../shared/utility/functions.js";
 import { promises as fs } from "fs";
 import { join } from "node:path";
 import Component from "../components/component.base.js";
