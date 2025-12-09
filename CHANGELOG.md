@@ -1,3 +1,10 @@
+## [1.3.25](https://github.com/commonly-ts/trivious/compare/v1.3.24...v1.3.25) (2025-12-09)
+
+
+### Bug Fixes
+
+* tsup changes ([089439c](https://github.com/commonly-ts/trivious/commit/089439c96ab7bb9f8a3e29780bf361bd079ce2ec))
+
 ## [1.3.24](https://github.com/commonly-ts/trivious/compare/v1.3.23...v1.3.24) (2025-12-09)
 
 
