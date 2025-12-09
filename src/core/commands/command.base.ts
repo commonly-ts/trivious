@@ -16,7 +16,11 @@ import {
 } from "src/shared/typings/index.js";
 import TriviousClient from "../client/trivious.client.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Subcommand } from "src/index.js";
+import {
+	ChatInputCommandInteraction,
+	ContextMenuCommandInteraction,
+	Subcommand,
+} from "src/index.js";
 
 /**
  * Base class for a Command.
@@ -142,10 +146,7 @@ export abstract class SlashCommand extends Command {
 	 * 		interaction: ChatInputCommandInteraction
 	 * 	) => Promise<void>}
 	 */
-	run?: (
-		client: TriviousClient,
-		interaction: ChatInputCommandInteraction
-	) => Promise<void>;
+	run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
 
 	/**
 	 * General handler for the command and its subcommand, if applicable.

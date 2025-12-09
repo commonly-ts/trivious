@@ -9,7 +9,6 @@ import {
 import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
 import { TriviousClient } from "src/index.js";
 
-
 /**
  * Base SubcommandBuilder.
  *

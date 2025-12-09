@@ -27,7 +27,10 @@ export default {
 			if (!hasPermission) return;
 
 			if (!("execute" in command)) {
-				await (command as Command).reply(interaction, { content: "Command does not have a way to execute! Ensure the command is a SlashCommand or ContextMenuCommand!" });
+				await (command as Command).reply(interaction, {
+					content:
+						"Command does not have a way to execute! Ensure the command is a SlashCommand or ContextMenuCommand!",
+				});
 				return;
 			}
 
