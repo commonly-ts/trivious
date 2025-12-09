@@ -16,11 +16,9 @@ export { default as TriviousClient } from "./core/client/trivious.client.js";
 // Commands
 export { default as Command } from "./core/commands/command.base.js";
 export { default as Subcommand } from "./core/commands/subcommand.base.js";
-export { default as ContextMenuCommand } from "./core/commands/contextcommand.base.js";
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
-export { CommandBuilder, SlashCommand } from "./core/commands/command.base.js";
+export { CommandBuilder, SlashCommand, ContextMenuBuilder, ContextMenuCommand } from "./core/commands/command.base.js";
 export { SubcommandBuilder } from "./core/commands/subcommand.base.js";
-export { ContextMenuBuilder } from "./core/commands/contextcommand.base.js";
 
 // Components
 export { default as Component } from "./core/components/component.base.js";
