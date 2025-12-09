@@ -61,4 +61,18 @@ export interface TriviousClientOptions extends ClientOptions {
 	 * @type {string[]}
 	 */
 	botOwnerIds?: string[];
+
+	/**
+	 * Configuration for auto-command deployment based on hashes
+	 * i.e. commands are only deployed if changes to the builders are detected.
+	 *
+	 * @type {{
+	 * 		enabled: boolean;
+	 * 		filePath: string;
+	 * 	}}
+	 */
+	commandHashConfig: {
+		enabled: boolean;
+		filePath: string;
+	};
 }

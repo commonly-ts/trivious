@@ -1,6 +1,9 @@
 import { Client, REST, Routes } from "discord.js";
 import { registries } from "../registry/index.js";
 import { TriviousClientOptions, PermissionLevel } from "src/shared/typings/index.js";
+import { exists, hashCommands } from "src/shared/utility/functions.js";
+import path from "node:path";
+import { readFileSync } from "node:fs";
 
 /**
  * Trivious base client.
@@ -75,12 +78,25 @@ export default class TriviousClient extends Client {
 	 * @returns {*}
 	 */
 	async deploy() {
+		const { commandHashConfig } = this._options;
 		const clientId = process.env[this._options.clientIdReference];
 		const token = process.env[this._options.tokenReference];
 		if (!clientId || !token) throw new Error("[Trivious] Invalid clientId or token reference");
 
-		const slashCommands = Array.from(this.registries.commands.get().values());
-		const body = [...slashCommands.map(command => command.toJSON())];
+		const commands = Array.from(this.registries.commands.get().values());
+		const body = [...commands.map(command => command.toJSON())];
+
+		if (commandHashConfig.enabled) {
+			const hashFile = path.join(commandHashConfig.filePath || "data", "commands.hash");
+			const newHash = await hashCommands(body);
+			let oldHash = "";
+
+			if (await exists(hashFile)) oldHash = readFileSync(hashFile, "utf-8");
+			if (newHash === oldHash) {
+				console.debug(`[Trivious] No changes in commands found, skipping deployment`)
+				return;
+			}
+		}
 
 		const rest = new REST({ version: "10" }).setToken(token);
 		await rest.put(Routes.applicationCommands(clientId), { body });

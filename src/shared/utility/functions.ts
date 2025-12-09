@@ -4,7 +4,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { getPermissionLevel, PermissionLevel } from "../typings/permissions.js";
-import { GuildMember, User } from "discord.js";
+import { GuildMember, RESTPostAPIApplicationCommandsJSONBody, User } from "discord.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -146,4 +146,14 @@ export function hasPermission(
 	}
 
 	return false;
+}
+
+export async function hashCommands(commands: RESTPostAPIApplicationCommandsJSONBody[]) {
+	const json = JSON.stringify(commands.sort((a, b) => a.name.localeCompare(b.name)));
+
+	const encoder = new TextEncoder();
+	const data = encoder.encode(json);
+	const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+	return Buffer.from(hashBuffer).toString("hex");
 }
