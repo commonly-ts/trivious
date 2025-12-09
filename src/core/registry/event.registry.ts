@@ -24,7 +24,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 	 * @returns {Promise<this>}
 	 */
 	protected async loadPresetEvents() {
-		const directory = join(__dirname, "../events");
+		const directory = getCorePath({ coreDirectory: "events" });
 		const entries = await fs.readdir(directory, { withFileTypes: true });
 		for (const entry of entries) {
 			const fullPath = join(directory, entry.name);
