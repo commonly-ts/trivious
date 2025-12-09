@@ -144,7 +144,7 @@ export abstract class SlashCommand extends Command {
 	 * 		interaction: ChatInputCommandInteraction
 	 * 	) => Promise<void>}
 	 */
-	abstract run?: (
+	run?: (
 		client: TriviousClient,
 		interaction: ChatInputCommandInteraction
 	) => Promise<void>;
