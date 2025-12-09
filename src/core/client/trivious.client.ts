@@ -3,7 +3,7 @@ import { registries } from "../registry/index.js";
 import { TriviousClientOptions, PermissionLevel } from "src/shared/typings/index.js";
 import { exists, hashCommands } from "src/shared/utility/functions.js";
 import path from "node:path";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 /**
  * Trivious base client.
@@ -97,7 +97,12 @@ export default class TriviousClient extends Client {
 				return;
 			}
 
-			writeFileSync(hashFile, newHash, { encoding: "utf-8" });
+			const hashDirectory = path.dirname(hashFile);
+			if (!existsSync(hashDirectory)) {
+				mkdirSync(hashDirectory, { recursive: true });
+			}
+
+			writeFileSync(hashFile, newHash, { encoding: "utf-8", });
 			console.debug(`[Trivious] Created new command hash: ${hashFile}`);
 		}
 
