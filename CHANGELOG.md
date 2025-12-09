@@ -1,3 +1,10 @@
+## [1.3.22](https://github.com/commonly-ts/trivious/compare/v1.3.21...v1.3.22) (2025-12-09)
+
+
+### Bug Fixes
+
+* removed circular dependency with Command class ([81da404](https://github.com/commonly-ts/trivious/commit/81da4045554fbdcb04675bd501d5a6764d1e5b83))
+
 ## [1.3.21](https://github.com/commonly-ts/trivious/compare/v1.3.20...v1.3.21) (2025-12-09)
 
 
