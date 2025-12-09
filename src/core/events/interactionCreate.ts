@@ -1,6 +1,7 @@
 import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 import { ComponentType, deconstructCustomId } from "src/shared/typings/components.js";
 import { Event } from "src/shared/typings/events.js";
+import Command from "../commands/command.base.js";
 
 export default {
 	name: "interactionCreate",
@@ -25,6 +26,11 @@ export default {
 				requiredPermission
 			);
 			if (!hasPermission) return;
+
+			if (!("execute" in command)) {
+				await (command as Command).reply(interaction, { content: "Command does not have a way to execute! Ensure the command is a SlashCommand or ContextMenuCommand!" });
+				return;
+			}
 
 			await command.reply(interaction, { content: "Processing command..." });
 
