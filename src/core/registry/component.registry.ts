@@ -1,8 +1,8 @@
 import { Collection } from "discord.js";
 import { BaseRegistry, deconstructCustomId } from "src/shared/typings/index.js";
-import { exists, getCorePath } from "src/shared/utility/functions.js";
+import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
-import { join } from "node:path";
+import path, { join } from "node:path";
 import Component from "../components/component.base.js";
 
 /**
@@ -23,7 +23,7 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 	 * @param {string} [directory=getCorePath({ coreDirectory: "components" })]
 	 * @returns {Promise<this>}
 	 */
-	async load(directory: string = getCorePath({ coreDirectory: "components" })): Promise<this> {
+	async load(directory: string = resolveUserPath(path.join("src", "components"))): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;
 		}

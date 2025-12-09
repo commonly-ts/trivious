@@ -1,8 +1,8 @@
 import { Collection, SlashCommandSubcommandBuilder } from "discord.js";
 import { BaseRegistry, AnyCommand } from "src/shared/typings/index.js";
-import { exists, getCorePath } from "src/shared/utility/functions.js";
+import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
-import { join } from "node:path";
+import path, { join } from "node:path";
 import Subcommand from "../commands/subcommand.base.js";
 
 /**
@@ -23,7 +23,7 @@ export default class CommandRegistry extends BaseRegistry<AnyCommand> {
 	 * @param {string} [directory=getCorePath({ coreDirectory: "commands" })]
 	 * @returns {unknown}
 	 */
-	async load(directory: string = getCorePath({ coreDirectory: "commands" })) {
+	async load(directory: string = resolveUserPath(path.join("src", "commands"))) {
 		if (!(await exists(directory))) {
 			return this;
 		}

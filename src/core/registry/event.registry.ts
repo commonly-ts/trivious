@@ -1,8 +1,8 @@
 import { ClientEvents, Collection } from "discord.js";
-import { exists, getCorePath } from "src/shared/utility/functions.js";
+import { exists, getCorePath, resolveUserPath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Event } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
-import { join } from "node:path";
+import path, { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
 /**
@@ -24,7 +24,9 @@ export default class EventRegistry extends BaseRegistry<Event> {
 	 * @returns {Promise<this>}
 	 */
 	protected async loadPresetEvents() {
-		const directory = getCorePath({ coreDirectory: "events" });
+		const directory = getCorePath({ coreDirectory: "core/events" });
+		if (!directory) return;
+
 		const entries = await fs.readdir(directory, { withFileTypes: true });
 		for (const entry of entries) {
 			const fullPath = join(directory, entry.name);
@@ -47,7 +49,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 	 * @param {string} [directory=getCorePath({ coreDirectory: "events" })]
 	 * @returns {Promise<this>}
 	 */
-	async load(directory: string = getCorePath({ coreDirectory: "events" })): Promise<this> {
+	async load(directory: string = resolveUserPath(path.join("src", "events"))): Promise<this> {
 		if (!(await exists(directory))) return this;
 
 		const entries = await fs.readdir(directory, { withFileTypes: true });

@@ -40,24 +40,27 @@ export const FRAMEWORK_PACKAGE_ROOT = getPackageRoot();
  * @param {{ userPath?: string; coreDirectory: string }} options
  * @returns {string}
  */
-export function getCorePath(options: { userPath?: string; coreDirectory: string }): string {
+export function getCorePath(options: {
+	userPath?: string;
+	coreDirectory: string;
+}): string | undefined {
 	const { userPath, coreDirectory } = options;
 	if (userPath) {
 		return resolveUserPath(userPath);
 	}
 
-	const builtInCandidates = [
-		join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory),
+	const candidates = [
 		join(FRAMEWORK_PACKAGE_ROOT, "dist", coreDirectory),
+		join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory),
 	];
 
-	for (const candidate of builtInCandidates) {
+	for (const candidate of candidates) {
 		if (existsSync(candidate)) {
 			return candidate;
 		}
 	}
 
-	return join(FRAMEWORK_PACKAGE_ROOT, "lib", coreDirectory);
+	return undefined;
 }
 
 /**

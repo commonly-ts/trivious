@@ -1,8 +1,8 @@
 import { Collection } from "discord.js";
-import { exists, getCorePath } from "src/shared/utility/functions.js";
+import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { BaseRegistry, Module } from "src/shared/typings/index.js";
 import { promises as fs } from "fs";
-import { join } from "node:path";
+import path, { join } from "node:path";
 import TriviousClient from "../client/trivious.client.js";
 
 /**
@@ -23,7 +23,7 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 	 * @param {string} [directory=getCorePath({ coreDirectory: "module" })]
 	 * @returns {Promise<this>}
 	 */
-	async load(directory: string = getCorePath({ coreDirectory: "module" })): Promise<this> {
+	async load(directory: string = resolveUserPath(path.join("src", "modules"))): Promise<this> {
 		if (!(await exists(directory))) {
 			return this;
 		}
