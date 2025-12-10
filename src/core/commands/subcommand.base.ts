@@ -97,8 +97,15 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
  * @typedef {Subcommand}
  */
 export default abstract class Subcommand {
-	abstract data: SlashCommandSubcommandBuilder;
-	abstract metadata: SubcommandMetadata;
+	public readonly data: SlashCommandSubcommandBuilder;
+	public readonly metadata: SubcommandMetadata;
+
+	protected constructor(builder: SubcommandBuilder) {
+		const { data, metadata } = builder.build();
+		this.data = data;
+		this.metadata = metadata;
+	}
+
 	/**
 	 * Function to execute the subcommand.
 	 *
@@ -126,7 +133,7 @@ export default abstract class Subcommand {
 		interaction: ChatInputCommandInteraction<CacheType>,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
 	) {
-		if (interaction.replied) {
+		if (interaction.replied || interaction.deferred) {
 			await interaction.editReply(options as InteractionEditReplyOptions);
 			return;
 		}
