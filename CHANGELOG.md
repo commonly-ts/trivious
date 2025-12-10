@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/commonly-ts/trivious/compare/v1.5.0...v1.5.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* updated subcommand class ([0c2581f](https://github.com/commonly-ts/trivious/commit/0c2581fa741b5fb2937134310a663f2776f6ccfc))
+
 # [1.5.0](https://github.com/commonly-ts/trivious/compare/v1.4.3...v1.5.0) (2025-12-10)
 
 
