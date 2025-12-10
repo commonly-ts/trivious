@@ -102,7 +102,7 @@ export default class TriviousClient extends Client {
 				mkdirSync(hashDirectory, { recursive: true });
 			}
 
-			writeFileSync(hashFile, newHash, { encoding: "utf-8", });
+			writeFileSync(hashFile, newHash, { encoding: "utf-8" });
 			console.debug(`[Trivious] Created new command hash: ${hashFile}`);
 		}
 
