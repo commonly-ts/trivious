@@ -5,7 +5,11 @@ import {
 } from "src/index.js";
 import { Collection } from "discord.js";
 import { PermissionLevel } from "./permissions.js";
-import { SlashCommand } from "src/core/commands/command.base.js";
+import {
+	CommandBuilder,
+	ContextMenuBuilder,
+	SlashCommand,
+} from "src/core/commands/command.base.js";
 import Subcommand from "src/core/commands/subcommand.base.js";
 
 /**
@@ -137,3 +141,5 @@ export interface ContextMenuMetadata {
  * @typedef {AnyCommand}
  */
 export type AnyCommand = SlashCommand | ContextMenuCommand;
+export type AnyCommandBuilder = CommandBuilder | ContextMenuBuilder;
+export type AnyCommandMetadata = CommandMetadata | ContextMenuMetadata;
