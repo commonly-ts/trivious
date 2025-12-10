@@ -9,18 +9,20 @@ import {
 	SlashCommandBuilder,
 } from "discord.js";
 import {
+	AnyCommandBuilder,
+	AnyCommandMetadata,
 	CommandInteraction,
 	CommandMetadata,
 	ContextMenuMetadata,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
-import TriviousClient from "../client/trivious.client.js";
-import { hasPermission } from "src/shared/utility/functions.js";
 import {
 	ChatInputCommandInteraction,
 	ContextMenuCommandInteraction,
 	Subcommand,
 } from "src/index.js";
+import TriviousClient from "../client/trivious.client.js";
+import { hasPermission } from "src/shared/utility/functions.js";
 
 /**
  * Base class for a Command.
@@ -31,8 +33,14 @@ import {
  * @typedef {Command}
  */
 export default abstract class Command {
-	abstract data: SlashCommandBuilder | ContextMenuCommandBuilder;
-	abstract metadata: CommandMetadata | ContextMenuMetadata;
+	public readonly data: SlashCommandBuilder | ContextMenuCommandBuilder;
+	public readonly metadata: AnyCommandMetadata;
+
+	protected constructor(builder: AnyCommandBuilder) {
+		const { data, metadata } = builder.build();
+		this.data = data;
+		this.metadata = metadata;
+	}
 
 	/**
 	 * Returns whether the command is a SlashCommand.
@@ -42,7 +50,7 @@ export default abstract class Command {
 	 * @returns {this is SlashCommand}
 	 */
 	public isSlashCommand(this: Command): this is SlashCommand {
-		return this.data instanceof SlashCommandBuilder && this instanceof SlashCommand;
+		return this instanceof SlashCommand;
 	}
 
 	/**
@@ -53,7 +61,7 @@ export default abstract class Command {
 	 * @returns {this is ContextMenuCommand}
 	 */
 	public isContextMenuCommand(this: Command): this is ContextMenuCommand {
-		return this.data instanceof ContextMenuCommandBuilder && this instanceof ContextMenuCommand;
+		return this instanceof ContextMenuCommand;
 	}
 
 	/**
@@ -79,7 +87,7 @@ export default abstract class Command {
 		interaction: CommandInteraction,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
 	) {
-		if (interaction.replied) {
+		if (interaction.replied || interaction.deferred) {
 			await interaction.editReply(options as InteractionEditReplyOptions);
 			return;
 		}
@@ -105,12 +113,7 @@ export default abstract class Command {
 		permission: PermissionLevel,
 		doReply: boolean = true
 	) {
-		const isContextMenu = interaction.isContextMenuCommand();
-		const isChatInput = interaction.isChatInputCommand();
-
-		const requiresGuildCheck =
-			isContextMenu || (isChatInput && (this.isSlashCommand() ? this.metadata.guildOnly : false));
-		if (!requiresGuildCheck) return true;
+		if (!interaction.inGuild()) return true;
 
 		const member = interaction.member as GuildMember;
 		const memberHasPermission = hasPermission(client, { permission, member });
@@ -135,16 +138,17 @@ export default abstract class Command {
  * @extends {Command}
  */
 export abstract class SlashCommand extends Command {
-	abstract data: SlashCommandBuilder;
-	abstract metadata: CommandMetadata;
+	declare public readonly data: SlashCommandBuilder;
+	declare public readonly metadata: CommandMetadata;
+
+	protected constructor(builder: CommandBuilder) {
+		super(builder);
+	}
+
 	/**
 	 * Optional function to run if the SlashCommand has no subcommands or for extra fuctionality.
 	 *
 	 * @abstract
-	 * @type {?(
-	 * 		client: TriviousClient,
-	 * 		interaction: ChatInputCommandInteraction
-	 * 	) => Promise<void>}
 	 */
 	run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
 
@@ -158,38 +162,38 @@ export abstract class SlashCommand extends Command {
 	 * @returns {*}
 	 */
 	public async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
-		const { run, reply, metadata } = this;
+		const { metadata } = this;
 		const { options } = interaction;
 
-		if (run) {
-			const memberHasPermission = await this.validateGuildPermission(
-				client,
-				interaction,
-				metadata.permission,
-				false
-			);
-			if (memberHasPermission) await run(client, interaction);
+		if (!options.getSubcommand(false)) {
+			if (this.run) {
+				const hasPerm = await this.validateGuildPermission(
+					client,
+					interaction,
+					metadata.permission,
+					false
+				);
+				if (hasPerm) await this.run(client, interaction);
+			}
+			return;
 		}
 
-		const subcommands = metadata.subcommands;
-		if (subcommands.size <= 0) return;
+		const subcommandName = options.getSubcommand();
+		const subcommand = metadata.subcommands.get(subcommandName);
 
-		const subcommand = metadata.subcommands.find(
-			subcmd => subcmd.data.name === options.getSubcommand()
-		);
 		if (!subcommand) {
-			await reply(interaction, {
-				content: "Ran subcommand is outdated or does not have a handler!",
+			await this.reply(interaction, {
+				content: "This subcommand no longer exists or is not registered.",
 			});
 			return;
 		}
 
-		const memberHasPermission = await this.validateGuildPermission(
+		const hasPerm = await this.validateGuildPermission(
 			client,
 			interaction,
 			subcommand.metadata.permission
 		);
-		if (!memberHasPermission) return;
+		if (!hasPerm) return;
 
 		await subcommand.execute(client, interaction);
 	}
@@ -242,6 +246,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @returns {this}
 	 */
 	public setOwnerOnly(): this {
+		this._ownerOnly = true;
 		this._permission = PermissionLevel.BOT_OWNER;
 		return this;
 	}
@@ -255,8 +260,8 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 */
 	public setPermission(permission: PermissionLevel): this {
 		if (!this._guildOnly) return this;
-
 		this._permission = permission;
+
 		return this;
 	}
 
@@ -302,16 +307,17 @@ export class CommandBuilder extends SlashCommandBuilder {
  * @extends {Command}
  */
 export abstract class ContextMenuCommand extends Command {
-	abstract data: ContextMenuCommandBuilder;
-	abstract metadata: ContextMenuMetadata;
+	declare public readonly data: ContextMenuCommandBuilder;
+	declare public readonly metadata: ContextMenuMetadata;
+
+	protected constructor(builder: ContextMenuBuilder) {
+		super(builder);
+	}
+
 	/**
 	 * Function to run when the command is used.
 	 *
 	 * @abstract
-	 * @type {(
-	 * 		client: TriviousClient,
-	 * 		interaction: ContextMenuCommandInteraction
-	 * 	) => Promise<void>}
 	 */
 	abstract run: (
 		client: TriviousClient,
@@ -328,15 +334,12 @@ export abstract class ContextMenuCommand extends Command {
 	 * @returns {*}
 	 */
 	public async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
-		const { run, metadata } = this;
-
-		const memberHasPermission = await this.validateGuildPermission(
+		const hasPerm = await this.validateGuildPermission(
 			client,
 			interaction,
-			metadata.permission,
-			false
+			this.metadata.permission
 		);
-		if (memberHasPermission) await run(client, interaction);
+		if (hasPerm) await this.run(client, interaction);
 	}
 }
 
