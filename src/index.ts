@@ -30,6 +30,9 @@ export { default as Component } from "./core/components/component.base.js";
 export { default as ComponentRegistry } from "./core/registry/component.registry.js";
 export { ComponentBuilder } from "./core/components/component.base.js";
 
+// Utility builders
+export { createActionRow, createEmbed } from "./core/builders/util.builders.js";
+
 // Typings
 export * from "./shared/typings/index.js";
 
