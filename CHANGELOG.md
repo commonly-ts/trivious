@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/commonly-ts/trivious/compare/v1.5.1...v1.5.2) (2025-12-10)
+
+
+### Bug Fixes
+
+* added utility builder functions ([6d9c2e3](https://github.com/commonly-ts/trivious/commit/6d9c2e3619b58a37ac6e18669c1e63da03af8726))
+
 ## [1.5.1](https://github.com/commonly-ts/trivious/compare/v1.5.0...v1.5.1) (2025-12-10)
 
 
