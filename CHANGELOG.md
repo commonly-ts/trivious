@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/commonly-ts/trivious/compare/v1.4.3...v1.5.0) (2025-12-10)
+
+
+### Bug Fixes
+
+* added helper types for commands ([a09483e](https://github.com/commonly-ts/trivious/commit/a09483e4606be7e4b63193e31d781981eeeee829))
+
+
+### Features
+
+* refactored Commands ([c3c1b54](https://github.com/commonly-ts/trivious/commit/c3c1b5432c9a9d65bbe010591ca39306d2791771))
+
 ## [1.4.3](https://github.com/commonly-ts/trivious/compare/v1.4.2...v1.4.3) (2025-12-09)
 
 
