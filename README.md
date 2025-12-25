@@ -47,27 +47,46 @@ const client = new TriviousClient({
 ### Creating a Slash Command
 ```ts
 // src/core/commands/debug/index.ts
-import { CommandBuilder, Command, PermissionLevel } from "trivious";
+import { CommandBuilder, SlashCommand } from "trivious"
 
-const { data, metadata } = new CommandBuilder()
-  .setName("debug")
-  .setDescription("Debugging tools")
-  .setGuildOnly()
-  .setPermission(PermissionLevel.GUILD_ADMINISTRATOR)
-  .setEphemeralReply()
-  .build();
-
-export default class DebugCommand extends Command {
-  data = data;
-  metadata = metadata;
-
-  // Optional: run when no subcommand is used
-  async run?(client, interaction) {
-    await this.reply(interaction, { content: "Use a subcommand!" });
-  }
-}
+export default class DebugCommand extends SlashCommand {
+	constructor() {
+		super(new CommandBuilder()
+			.setName("debug")
+			.setDescription("Debug tools")
+			.setGuildOnly()
+			.setEphemeralReply())
+	}
+};
 ```
 > Subcommands go in the same directory as the command file and are auto-detected.
+
+### Creating a Subcommand
+```ts
+// src/core/commands/debug/ping.ts
+import { ChatInputCommandInteraction, Subcommand, SubcommandBuilder, TriviousClient } from "trivious";
+
+export default class DebugPingSubcommand extends Subcommand {
+	constructor() {
+		super(new SubcommandBuilder()
+			.setName("ping")
+			.setDescription("Ping pong!")
+			.setOwnerOnly())
+	}
+
+	execute = async (client: TriviousClient, interaction: ChatInputCommandInteraction) => {
+		try {
+			const sent = await interaction.fetchReply();
+			const latency = sent.createdTimestamp - interaction.createdTimestamp;
+			const apiLatency = Math.round(interaction.client.ws.ping);
+
+			await this.reply(interaction, { content: `Pong!\nLatency ${latency}ms API Latency: ${apiLatency}ms` });
+		} catch (error: any) {
+			console.error(error);
+		}
+	};
+};
+```
 
 ---
 
