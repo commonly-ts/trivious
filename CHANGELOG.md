@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/commonly-ts/trivious/compare/v1.5.3...v1.5.4) (2026-01-03)
+
+
+### Bug Fixes
+
+* added constructCustomId function ([7e1f06d](https://github.com/commonly-ts/trivious/commit/7e1f06d96a43c690e9fb82a9dc4a93157b852713))
+
 ## [1.5.3](https://github.com/commonly-ts/trivious/compare/v1.5.2...v1.5.3) (2025-12-25)
 
 
