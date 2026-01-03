@@ -79,3 +79,14 @@ export const deconstructCustomId = (customId: string) => {
 		tags,
 	};
 };
+
+export type CustomIdConstructOptions = {
+	type: ComponentType,
+	data: string,
+	tags?: ComponentCustomIdTag[]
+}
+
+export const constructCustomId = (options: CustomIdConstructOptions) => {
+	const { data, type, tags } = options;
+	return `${type}:${data}${tags ? `.${tags.join(".")}` : ""}`;
+}

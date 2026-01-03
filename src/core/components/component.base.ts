@@ -1,14 +1,14 @@
 import {
-	ComponentType,
 	GuildMember,
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
 	MessagePayload,
 } from "discord.js";
 import {
-	ComponentCustomIdTag,
 	ComponentInteraction,
 	ComponentMetadata,
+	constructCustomId,
+	CustomIdConstructOptions,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
@@ -37,13 +37,8 @@ export class ComponentBuilder {
 	 * 	}} options
 	 * @returns {this}
 	 */
-	public setCustomId(options: {
-		type: ComponentType;
-		data: string;
-		tags?: ComponentCustomIdTag[];
-	}): this {
-		const { data, type, tags } = options;
-		this._customId = `${type}:${data}${tags ? `.${tags.join(".")}` : ""}`;
+	public setCustomId(options: CustomIdConstructOptions): this {
+		this._customId = constructCustomId(options);
 		return this;
 	}
 
