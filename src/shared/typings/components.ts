@@ -80,12 +80,24 @@ export const deconstructCustomId = (customId: string) => {
 	};
 };
 
+/**
+ * Component customId construct options.
+ *
+ * @export
+ * @typedef {CustomIdConstructOptions}
+ */
 export type CustomIdConstructOptions = {
 	type: ComponentType,
 	data: string,
 	tags?: ComponentCustomIdTag[]
 }
 
+/**
+ * Construct a component customId.
+ *
+ * @param {CustomIdConstructOptions} options
+ * @returns {string}
+ */
 export const constructCustomId = (options: CustomIdConstructOptions) => {
 	const { data, type, tags } = options;
 	return `${type}:${data}${tags ? `.${tags.join(".")}` : ""}`;
