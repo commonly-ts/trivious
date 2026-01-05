@@ -21,14 +21,14 @@ export default class TriviousClient extends Client {
 	 * @readonly
 	 * @type {*}
 	 */
-	public readonly registries = registries();
+	readonly registries = registries();
 	/**
 	 * Client copy of the constructor options.
 	 *
 	 * @private
 	 * @type {TriviousClientOptions}
 	 */
-	public readonly _options: TriviousClientOptions;
+	readonly _options: TriviousClientOptions;
 
 	/**
 	 * Creates an instance of TriviousClient.

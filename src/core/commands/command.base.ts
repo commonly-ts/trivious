@@ -6,7 +6,16 @@ import {
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
 	MessagePayload,
+	SlashCommandAttachmentOption,
+	SlashCommandBooleanOption,
 	SlashCommandBuilder,
+	SlashCommandChannelOption,
+	SlashCommandIntegerOption,
+	SlashCommandMentionableOption,
+	SlashCommandNumberOption,
+	SlashCommandRoleOption,
+	SlashCommandStringOption,
+	SlashCommandUserOption,
 } from "discord.js";
 import {
 	AnyCommandBuilder,
@@ -33,8 +42,8 @@ import { hasPermission } from "src/shared/utility/functions.js";
  * @typedef {Command}
  */
 export default abstract class Command {
-	public readonly data: SlashCommandBuilder | ContextMenuCommandBuilder;
-	public readonly metadata: AnyCommandMetadata;
+	readonly data: SlashCommandBuilder | ContextMenuCommandBuilder;
+	readonly metadata: AnyCommandMetadata;
 
 	protected constructor(builder: AnyCommandBuilder) {
 		const { data, metadata } = builder.build();
@@ -49,7 +58,7 @@ export default abstract class Command {
 	 * @param {Command} this
 	 * @returns {this is SlashCommand}
 	 */
-	public isSlashCommand(this: Command): this is SlashCommand {
+	isSlashCommand(this: Command): this is SlashCommand {
 		return this instanceof SlashCommand;
 	}
 
@@ -60,7 +69,7 @@ export default abstract class Command {
 	 * @param {Command} this
 	 * @returns {this is ContextMenuCommand}
 	 */
-	public isContextMenuCommand(this: Command): this is ContextMenuCommand {
+	isContextMenuCommand(this: Command): this is ContextMenuCommand {
 		return this instanceof ContextMenuCommand;
 	}
 
@@ -70,7 +79,7 @@ export default abstract class Command {
 	 * @public
 	 * @returns {*}
 	 */
-	public toJSON() {
+	toJSON() {
 		return this.data.toJSON();
 	}
 
@@ -83,7 +92,7 @@ export default abstract class Command {
 	 * @param {(MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions)} options
 	 * @returns {*}
 	 */
-	public async reply(
+	async reply(
 		interaction: CommandInteraction,
 		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
 	) {
@@ -138,8 +147,8 @@ export default abstract class Command {
  * @extends {Command}
  */
 export abstract class SlashCommand extends Command {
-	declare public readonly data: SlashCommandBuilder;
-	declare public readonly metadata: CommandMetadata;
+	declare readonly data: SlashCommandBuilder;
+	declare readonly metadata: CommandMetadata;
 
 	protected constructor(builder: CommandBuilder) {
 		super(builder);
@@ -161,7 +170,7 @@ export abstract class SlashCommand extends Command {
 	 * @param {ChatInputCommandInteraction} interaction
 	 * @returns {*}
 	 */
-	public async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
+	async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
 		const { metadata } = this;
 		const { options } = interaction;
 
@@ -215,7 +224,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	private _ephemeralReply = false;
 	private _doProcessReply = false;
 
-	public doProcessReply(doReply: boolean): this {
+	doProcessReply(doReply: boolean): this {
 		this._doProcessReply = doReply;
 		return this;
 	}
@@ -226,7 +235,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public disable(): this {
+	disable(): this {
 		this._active = false;
 		return this;
 	}
@@ -237,7 +246,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setGuildOnly(): this {
+	setGuildOnly(): this {
 		this._guildOnly = true;
 		this._permission = PermissionLevel.USER;
 		this.setContexts(InteractionContextType.Guild);
@@ -245,12 +254,12 @@ export class CommandBuilder extends SlashCommandBuilder {
 	}
 
 	/**
-	 * Set the command as public only.
+	 * Set the command as only.
 	 *
 	 * @public
 	 * @returns {this}
 	 */
-	public setOwnerOnly(): this {
+	setOwnerOnly(): this {
 		this._ownerOnly = true;
 		this._permission = PermissionLevel.BOT_OWNER;
 		return this;
@@ -263,7 +272,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @param {PermissionLevel} permission
 	 * @returns {this}
 	 */
-	public setPermission(permission: PermissionLevel): this {
+	setPermission(permission: PermissionLevel): this {
 		if (!this._guildOnly) return this;
 		this._permission = permission;
 
@@ -276,7 +285,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setEphemeralReply(): this {
+	setEphemeralReply(): this {
 		this._ephemeralReply = true;
 		return this;
 	}
@@ -287,7 +296,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 	 * @public
 	 * @returns {{ data: CommandBuilder; metadata: CommandMetadata; }}
 	 */
-	public build() {
+	build() {
 		return {
 			data: this as CommandBuilder,
 			metadata: {
@@ -301,6 +310,83 @@ export class CommandBuilder extends SlashCommandBuilder {
 			} satisfies CommandMetadata,
 		};
 	}
+
+	addAttachmentOption(
+		input:
+			| SlashCommandAttachmentOption
+			| ((builder: SlashCommandAttachmentOption) => SlashCommandAttachmentOption)
+	): this {
+		super.addAttachmentOption(input);
+		return this;
+	}
+
+	addBooleanOption(
+		input:
+			| SlashCommandBooleanOption
+			| ((builder: SlashCommandBooleanOption) => SlashCommandBooleanOption)
+	): this {
+		super.addBooleanOption(input);
+		return this;
+	}
+
+	addChannelOption(
+		input:
+			| SlashCommandChannelOption
+			| ((builder: SlashCommandChannelOption) => SlashCommandChannelOption)
+	): this {
+		super.addChannelOption(input);
+		return this;
+	}
+
+	addMentionableOption(
+		input:
+			| SlashCommandMentionableOption
+			| ((builder: SlashCommandMentionableOption) => SlashCommandMentionableOption)
+	): this {
+		super.addMentionableOption(input);
+		return this;
+	}
+
+	addIntegerOption(
+		input:
+			| SlashCommandIntegerOption
+			| ((builder: SlashCommandIntegerOption) => SlashCommandIntegerOption)
+	): this {
+		super.addIntegerOption(input);
+		return this;
+	}
+
+	addNumberOption(
+		input:
+			| SlashCommandNumberOption
+			| ((builder: SlashCommandNumberOption) => SlashCommandNumberOption)
+	): this {
+		super.addNumberOption(input);
+		return this;
+	}
+
+	addRoleOption(
+		input: SlashCommandRoleOption | ((builder: SlashCommandRoleOption) => SlashCommandRoleOption)
+	): this {
+		super.addRoleOption(input);
+		return this;
+	}
+
+	addStringOption(
+		input:
+			| SlashCommandStringOption
+			| ((builder: SlashCommandStringOption) => SlashCommandStringOption)
+	): this {
+		super.addStringOption(input);
+		return this;
+	}
+
+	addUserOption(
+		input: SlashCommandUserOption | ((builder: SlashCommandUserOption) => SlashCommandUserOption)
+	): this {
+		super.addUserOption(input);
+		return this;
+	}
 }
 
 /**
@@ -313,8 +399,8 @@ export class CommandBuilder extends SlashCommandBuilder {
  * @extends {Command}
  */
 export abstract class ContextMenuCommand extends Command {
-	declare public readonly data: ContextMenuCommandBuilder;
-	declare public readonly metadata: ContextMenuMetadata;
+	declare readonly data: ContextMenuCommandBuilder;
+	declare readonly metadata: ContextMenuMetadata;
 
 	protected constructor(builder: ContextMenuBuilder) {
 		super(builder);
@@ -339,7 +425,7 @@ export abstract class ContextMenuCommand extends Command {
 	 * @param {ContextMenuCommandInteraction} interaction
 	 * @returns {*}
 	 */
-	public async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
+	async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
 		const hasPerm = await this.validateGuildPermission(
 			client,
 			interaction,
@@ -369,7 +455,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public disable(): this {
+	disable(): this {
 		this._active = false;
 		return this;
 	}
@@ -380,7 +466,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setOwnerOnly(): this {
+	setOwnerOnly(): this {
 		this._permission = PermissionLevel.BOT_OWNER;
 		this._ownerOnly = true;
 		return this;
@@ -393,7 +479,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	 * @param {PermissionLevel} permission
 	 * @returns {this}
 	 */
-	public setPermission(permission: PermissionLevel): this {
+	setPermission(permission: PermissionLevel): this {
 		this._permission = permission;
 		return this;
 	}
@@ -404,7 +490,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setEphemeralReply(): this {
+	setEphemeralReply(): this {
 		this._ephemeralReply = true;
 		return this;
 	}
@@ -415,7 +501,7 @@ export class ContextMenuBuilder extends ContextMenuCommandBuilder {
 	 * @public
 	 * @returns {{ data: ContextMenuBuilder; metadata: ContextMenuMetadata; }}
 	 */
-	public build() {
+	build() {
 		return {
 			data: this as ContextMenuBuilder,
 			metadata: {

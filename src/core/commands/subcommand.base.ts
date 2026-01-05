@@ -4,7 +4,16 @@ import {
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
 	MessagePayload,
+	SlashCommandAttachmentOption,
+	SlashCommandBooleanOption,
+	SlashCommandChannelOption,
+	SlashCommandIntegerOption,
+	SlashCommandMentionableOption,
+	SlashCommandNumberOption,
+	SlashCommandRoleOption,
+	SlashCommandStringOption,
 	SlashCommandSubcommandBuilder,
+	SlashCommandUserOption,
 } from "discord.js";
 import { PermissionLevel, SubcommandMetadata } from "src/shared/typings/index.js";
 import { TriviousClient } from "src/index.js";
@@ -29,7 +38,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public disable(): this {
+	disable(): this {
 		this._active = false;
 		return this;
 	}
@@ -40,7 +49,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setOwnerOnly(): this {
+	setOwnerOnly(): this {
 		this._permission = PermissionLevel.BOT_OWNER;
 		this._ownerOnly = true;
 		return this;
@@ -53,7 +62,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * @param {PermissionLevel} permission
 	 * @returns {this}
 	 */
-	public setPermission(permission: PermissionLevel): this {
+	setPermission(permission: PermissionLevel): this {
 		this._permission = permission;
 		return this;
 	}
@@ -64,7 +73,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * @public
 	 * @returns {this}
 	 */
-	public setEphemeralReply(): this {
+	setEphemeralReply(): this {
 		this._ephemeralReply = true;
 		return this;
 	}
@@ -75,7 +84,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * @public
 	 * @returns {{ data: SubcommandBuilder; metadata: SubcommandMetadata; }}
 	 */
-	public build() {
+	build() {
 		return {
 			data: this as SubcommandBuilder,
 			metadata: {
@@ -85,6 +94,83 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 				ephemeralReply: this._ephemeralReply,
 			} satisfies SubcommandMetadata,
 		};
+	}
+
+	addAttachmentOption(
+		input:
+			| SlashCommandAttachmentOption
+			| ((builder: SlashCommandAttachmentOption) => SlashCommandAttachmentOption)
+	): this {
+		super.addAttachmentOption(input);
+		return this;
+	}
+
+	addBooleanOption(
+		input:
+			| SlashCommandBooleanOption
+			| ((builder: SlashCommandBooleanOption) => SlashCommandBooleanOption)
+	): this {
+		super.addBooleanOption(input);
+		return this;
+	}
+
+	addChannelOption(
+		input:
+			| SlashCommandChannelOption
+			| ((builder: SlashCommandChannelOption) => SlashCommandChannelOption)
+	): this {
+		super.addChannelOption(input);
+		return this;
+	}
+
+	addIntegerOption(
+		input:
+			| SlashCommandIntegerOption
+			| ((builder: SlashCommandIntegerOption) => SlashCommandIntegerOption)
+	): this {
+		super.addIntegerOption(input);
+		return this;
+	}
+
+	addMentionableOption(
+		input:
+			| SlashCommandMentionableOption
+			| ((builder: SlashCommandMentionableOption) => SlashCommandMentionableOption)
+	): this {
+		super.addMentionableOption(input);
+		return this;
+	}
+
+	addNumberOption(
+		input:
+			| SlashCommandNumberOption
+			| ((builder: SlashCommandNumberOption) => SlashCommandNumberOption)
+	): this {
+		super.addNumberOption(input);
+		return this;
+	}
+
+	addRoleOption(
+		input: SlashCommandRoleOption | ((builder: SlashCommandRoleOption) => SlashCommandRoleOption)
+	): this {
+		super.addRoleOption(input);
+		return this;
+	}
+
+	addStringOption(
+		input:
+			| SlashCommandStringOption
+			| ((builder: SlashCommandStringOption) => SlashCommandStringOption)
+	): this {
+		super.addStringOption(input);
+		return this;
+	}
+
+	addUserOption(
+		input: SlashCommandUserOption | ((builder: SlashCommandUserOption) => SlashCommandUserOption)
+	): this {
+		super.addUserOption(input);
+		return this;
 	}
 }
 
@@ -97,8 +183,8 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
  * @typedef {Subcommand}
  */
 export default abstract class Subcommand {
-	public readonly data: SubcommandBuilder;
-	public readonly metadata: SubcommandMetadata;
+	readonly data: SubcommandBuilder;
+	readonly metadata: SubcommandMetadata;
 
 	protected constructor(builder: SubcommandBuilder) {
 		const { data, metadata } = builder.build();

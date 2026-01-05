@@ -56,7 +56,10 @@ export default {
 				return;
 			}
 
-			if ((command.isSlashCommand() && command.metadata.doProcessReply) || command.isContextMenuCommand()) {
+			if (
+				(command.isSlashCommand() && command.metadata.doProcessReply) ||
+				command.isContextMenuCommand()
+			) {
 				await command.reply(interaction, { content: "Processing command..." });
 			}
 
