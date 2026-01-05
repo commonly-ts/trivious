@@ -1,3 +1,10 @@
+## [1.5.8](https://github.com/commonly-ts/trivious/compare/v1.5.7...v1.5.8) (2026-01-05)
+
+
+### Bug Fixes
+
+* fixed component checks ([7aa2403](https://github.com/commonly-ts/trivious/commit/7aa24031b6cc8de8837458649b030e1a74172cd4))
+
 ## [1.5.7](https://github.com/commonly-ts/trivious/compare/v1.5.6...v1.5.7) (2026-01-05)
 
 
