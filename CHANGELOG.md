@@ -1,3 +1,10 @@
+## [1.5.12](https://github.com/commonly-ts/trivious/compare/v1.5.11...v1.5.12) (2026-01-05)
+
+
+### Bug Fixes
+
+* added delegated command and subcommand methods ([189b5e9](https://github.com/commonly-ts/trivious/commit/189b5e9d12be05ca5d66f984ebbe8e17b2022463))
+
 ## [1.5.11](https://github.com/commonly-ts/trivious/compare/v1.5.10...v1.5.11) (2026-01-05)
 
 
