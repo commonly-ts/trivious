@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/commonly-ts/trivious/compare/v1.5.10...v1.5.11) (2026-01-05)
+
+
+### Bug Fixes
+
+* fixed subcommand data type ([6589d2c](https://github.com/commonly-ts/trivious/commit/6589d2c0bd943229047f3f5f3d54211f0af63004))
+
 ## [1.5.10](https://github.com/commonly-ts/trivious/compare/v1.5.9...v1.5.10) (2026-01-05)
 
 
