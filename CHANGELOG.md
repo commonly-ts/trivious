@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/commonly-ts/trivious/compare/v1.5.8...v1.5.9) (2026-01-05)
+
+
+### Bug Fixes
+
+* added option to not auto reply to SlashCommands ([88dc5a6](https://github.com/commonly-ts/trivious/commit/88dc5a6893764644064b5228bf9c50bffca87528))
+
 ## [1.5.8](https://github.com/commonly-ts/trivious/compare/v1.5.7...v1.5.8) (2026-01-05)
 
 
