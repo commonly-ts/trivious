@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/commonly-ts/trivious/compare/v1.5.5...v1.5.6) (2026-01-05)
+
+
+### Bug Fixes
+
+* updated component creation and handling ([8395d85](https://github.com/commonly-ts/trivious/commit/8395d8504bf5636e143ecc213cb2d9d2f04cbe3a))
+
 ## [1.5.5](https://github.com/commonly-ts/trivious/compare/v1.5.4...v1.5.5) (2026-01-03)
 
 
