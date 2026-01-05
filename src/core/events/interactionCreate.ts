@@ -56,7 +56,9 @@ export default {
 				return;
 			}
 
-			await command.reply(interaction, { content: "Processing command..." });
+			if ((command.isSlashCommand() && command.metadata.doProcessReply) || command.isContextMenuCommand()) {
+				await command.reply(interaction, { content: "Processing command..." });
+			}
 
 			if (interaction.isChatInputCommand() && command.isSlashCommand()) {
 				await command.execute(client, interaction);

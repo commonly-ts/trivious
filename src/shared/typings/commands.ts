@@ -64,6 +64,12 @@ export interface CommandMetadata {
 	 * @type {boolean}
 	 */
 	ephemeralReply: boolean;
+	/**
+ * Whether the interaction is automatically replied to with "Processing command."
+ *
+ * @type {boolean}
+ */
+	doProcessReply: boolean;
 }
 
 /**

@@ -214,6 +214,12 @@ export class CommandBuilder extends SlashCommandBuilder {
 	private _permission = PermissionLevel.USER;
 	private _subcommands = new Collection<string, Subcommand>();
 	private _ephemeralReply = false;
+	private _doProcessReply = false;
+
+	public doProcessReply(doReply: boolean): this {
+		this._doProcessReply = doReply;
+		return this;
+	}
 
 	/**
 	 * Set the command as disabled.
@@ -292,6 +298,7 @@ export class CommandBuilder extends SlashCommandBuilder {
 				permission: this._permission,
 				subcommands: this._subcommands,
 				ephemeralReply: this._ephemeralReply,
+				doProcessReply: this._doProcessReply,
 			} satisfies CommandMetadata,
 		};
 	}
