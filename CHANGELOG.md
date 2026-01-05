@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/commonly-ts/trivious/compare/v1.5.6...v1.5.7) (2026-01-05)
+
+
+### Bug Fixes
+
+* added jsdocs for Component interface ([b67d3e3](https://github.com/commonly-ts/trivious/commit/b67d3e38d2a68b0a7f4343be6e21fe737e5a34be))
+
 ## [1.5.6](https://github.com/commonly-ts/trivious/compare/v1.5.5...v1.5.6) (2026-01-05)
 
 
