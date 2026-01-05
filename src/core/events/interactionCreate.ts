@@ -1,6 +1,28 @@
-import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { ComponentType, deconstructCustomId, Event } from "src/shared/typings/index.js";
+import { ButtonInteraction, GuildMember, ModalSubmitInteraction } from "discord.js";
+import {
+	ComponentInteraction,
+	ComponentType,
+	deconstructCustomId,
+	Event,
+	PermissionLevel,
+} from "src/shared/typings/index.js";
+import { hasPermission } from "src/shared/utility/functions.js";
 import Command from "../commands/command.base.js";
+import TriviousClient from "../client/trivious.client.js";
+
+async function validateComponentGuildPermission(
+	client: TriviousClient,
+	interaction: ComponentInteraction,
+	permission: PermissionLevel
+) {
+	if (interaction.guild) {
+		const member = interaction.member as GuildMember;
+		const memberHasPermission = hasPermission(client, { permission, member });
+		return memberHasPermission;
+	}
+
+	return false;
+}
 
 export default {
 	name: "interactionCreate",
@@ -42,14 +64,13 @@ export default {
 				await command.execute(client, interaction);
 			}
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
-			const { componentType, tags, data } = deconstructCustomId(interaction.customId);
+			const { compType, tags, data } = deconstructCustomId(interaction.customId);
 
-			if (componentType === ComponentType.Button && !(interaction instanceof ButtonInteraction))
-				return;
-			if (componentType === ComponentType.Modal && !(interaction instanceof ModalSubmitInteraction))
+			if (compType === ComponentType.Button && !(interaction instanceof ButtonInteraction)) return;
+			if (compType === ComponentType.Modal && !(interaction instanceof ModalSubmitInteraction))
 				return;
 
-			if (tags.includes("awaited")) return;
+			if (tags && tags.includes("awaited")) return;
 
 			const registeredComponents = client.registries.components.get();
 			const component = registeredComponents.get(data);
@@ -61,8 +82,8 @@ export default {
 				return;
 			}
 
-			const requiredPermission = component.metadata.permission;
-			const hasPermission = await component.validateGuildPermission(
+			const requiredPermission = component.permission;
+			const hasPermission = await validateComponentGuildPermission(
 				client,
 				interaction,
 				requiredPermission

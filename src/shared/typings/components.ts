@@ -5,6 +5,7 @@ import {
 	ModalSubmitInteraction,
 } from "discord.js";
 import { PermissionLevel } from "./permissions.js";
+import TriviousClient from "src/core/client/trivious.client.js";
 
 /**
  * Tags for component customIds.
@@ -35,49 +36,30 @@ export enum ComponentType {
 	Modal = "modal",
 }
 
-/**
- * Metadata for Components.
- *
- * @export
- * @interface ComponentMetadata
- * @typedef {ComponentMetadata}
- */
-export interface ComponentMetadata {
-	/**
-	 * The customId of the component.
-	 *
-	 * @type {string}
-	 */
-	customId: string;
-	/**
-	 * The permission level required to use the component.
-	 *
-	 * @type {PermissionLevel}
-	 */
+export interface Component {
+	component: ComponentType;
+	customId?: string;
+	customIdData?: string;
 	permission: PermissionLevel;
-	/**
-	 * Whether the interaction reply is ephemeral.
-	 *
-	 * @type {boolean}
-	 */
-	ephemeralReply: boolean;
+	ephemeralReply?: boolean;
+	execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void> | void;
 }
 
 /**
  * Deconstruct a component customId into its parts.
  *
  * @param {string} customId
- * @returns {{ componentType: ComponentType; data: string; tags: {}; }}
+ * @returns {CustomIdConstructOptions}
  */
 export const deconstructCustomId = (customId: string) => {
 	const [componentType, dataTags] = customId.split(":") as [ComponentType, string];
 	const [data, ...tags] = dataTags.split(".") as [string, ...ComponentCustomIdTag[]];
 
 	return {
-		componentType,
+		compType: componentType,
 		data,
 		tags,
-	};
+	} as CustomIdConstructOptions;
 };
 
 /**
@@ -87,10 +69,10 @@ export const deconstructCustomId = (customId: string) => {
  * @typedef {CustomIdConstructOptions}
  */
 export type CustomIdConstructOptions = {
-	type: ComponentType,
-	data: string,
-	tags?: ComponentCustomIdTag[]
-}
+	compType: ComponentType;
+	data: string;
+	tags?: ComponentCustomIdTag[];
+};
 
 /**
  * Construct a component customId.
@@ -99,6 +81,6 @@ export type CustomIdConstructOptions = {
  * @returns {string}
  */
 export const constructCustomId = (options: CustomIdConstructOptions) => {
-	const { data, type, tags } = options;
-	return `${type}:${data}${tags ? `.${tags.join(".")}` : ""}`;
-}
+	const { data, compType, tags } = options;
+	return `${compType}:${data}${tags ? `.${tags.join(".")}` : ""}`;
+};
