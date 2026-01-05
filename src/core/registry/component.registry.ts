@@ -38,12 +38,12 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 				const event = await this.importFile<Component>(fullPath);
 				if (!event) continue;
 
-				if (!event.customId || !event.customIdData) {
+				if (!(event.customId || event.customIdData)) {
 					console.error(`Component from ${entry.name} does not return customId nor customIdData!`);
 					continue;
 				}
 
-				this.items.set(event.customId || event.customIdData, event);
+				this.items.set((event.customId || event.customIdData) as string, event);
 			}
 		}
 
