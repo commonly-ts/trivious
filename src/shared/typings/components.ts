@@ -36,9 +36,26 @@ export enum ComponentType {
 	Modal = "modal",
 }
 
+/**
+ * Base component interface.
+ *
+ * @export
+ * @interface Component
+ * @typedef {Component}
+ */
 export interface Component {
 	component: ComponentType;
+	/**
+	 * The full constructed customId.
+	 *
+	 * @type {?string}
+	 */
 	customId?: string;
+	/**
+	 * The 'data' part of a constructed customId.
+	 *
+	 * @type {?string}
+	 */
 	customIdData?: string;
 	permission: PermissionLevel;
 	ephemeralReply?: boolean;
