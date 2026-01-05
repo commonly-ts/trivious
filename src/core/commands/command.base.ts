@@ -165,18 +165,17 @@ export abstract class SlashCommand extends Command {
 		const { metadata } = this;
 		const { options } = interaction;
 
-		if (!options.getSubcommand(false)) {
-			if (this.run) {
-				const hasPerm = await this.validateGuildPermission(
-					client,
-					interaction,
-					metadata.permission,
-					false
-				);
-				if (hasPerm) await this.run(client, interaction);
-			}
-			return;
+		if (this.run) {
+			const hasPerm = await this.validateGuildPermission(
+				client,
+				interaction,
+				metadata.permission,
+				true
+			);
+			if (hasPerm) await this.run(client, interaction);
 		}
+
+		if (!options.getSubcommand(false)) return;
 
 		const subcommandName = options.getSubcommand();
 		const subcommand = metadata.subcommands.get(subcommandName);
