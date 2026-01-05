@@ -73,11 +73,11 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
 	 * Build the builder.
 	 *
 	 * @public
-	 * @returns {{ data: SlashCommandSubcommandBuilder; metadata: SubcommandMetadata; }}
+	 * @returns {{ data: SubcommandBuilder; metadata: SubcommandMetadata; }}
 	 */
 	public build() {
 		return {
-			data: this as SlashCommandSubcommandBuilder,
+			data: this as SubcommandBuilder,
 			metadata: {
 				active: this._active,
 				ownerOnly: this._ownerOnly,
@@ -97,7 +97,7 @@ export class SubcommandBuilder extends SlashCommandSubcommandBuilder {
  * @typedef {Subcommand}
  */
 export default abstract class Subcommand {
-	public readonly data: SlashCommandSubcommandBuilder;
+	public readonly data: SubcommandBuilder;
 	public readonly metadata: SubcommandMetadata;
 
 	protected constructor(builder: SubcommandBuilder) {
