@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/commonly-ts/trivious/compare/v1.5.12...v1.6.0) (2026-01-19)
+
+
+### Bug Fixes
+
+* formatting and type fixes ([032000c](https://github.com/commonly-ts/trivious/commit/032000ceecdc092c4f4d4e677fce3cecadef5828))
+
+
+### Features
+
+* reworked commands and interactions ([cfc8f9f](https://github.com/commonly-ts/trivious/commit/cfc8f9f9dbbb9e2d164347f239754dae8fa48bb3))
+
 ## [1.5.12](https://github.com/commonly-ts/trivious/compare/v1.5.11...v1.5.12) (2026-01-05)
 
 
