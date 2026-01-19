@@ -63,14 +63,6 @@ export default {
 			);
 			if (!hasPermission) return;
 
-			if (!("execute" in command)) {
-				await commandReply(command, interaction, {
-					content:
-						"Command does not have a way to execute! Ensure the command is a SlashCommand or ContextMenuCommand!",
-				});
-				return;
-			}
-
 			if (command.flags?.includes("DeferReply")) {
 				await commandReply(command, interaction, { content: "Processing command..." });
 			}
