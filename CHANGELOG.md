@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/commonly-ts/trivious/compare/v1.6.2...v1.6.3) (2026-01-19)
+
+
+### Bug Fixes
+
+* fixed SlashCommand check ([64362a1](https://github.com/commonly-ts/trivious/commit/64362a1dd4bb44fd807f6ebbb1699ed187b8e45b))
+
 ## [1.6.2](https://github.com/commonly-ts/trivious/compare/v1.6.1...v1.6.2) (2026-01-19)
 
 
