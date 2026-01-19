@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/commonly-ts/trivious/compare/v1.6.4...v1.6.5) (2026-01-19)
+
+
+### Bug Fixes
+
+* export command methods ([966979e](https://github.com/commonly-ts/trivious/commit/966979e1e5658a4cc449a458504f4baf704fa888))
+
 ## [1.6.4](https://github.com/commonly-ts/trivious/compare/v1.6.3...v1.6.4) (2026-01-19)
 
 
