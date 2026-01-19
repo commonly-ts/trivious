@@ -6,12 +6,14 @@ import {
 } from "discord.js";
 import {
 	ChatInputCommandInteraction,
+	Command,
 	ContextMenuCommandInteraction,
 	PermissionLevel,
+	SlashCommand,
+	SlashSubcommand,
 	TriviousClient,
 } from "src/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import { Command, SlashCommand, SlashSubcommand } from "./command.base.js";
 
 /**
  * Reply to a command, respecting whether it has been deferred or already replied to.

@@ -14,12 +14,6 @@ import type {
 export { default as TriviousClient } from "./core/client/trivious.client.js";
 
 // Commands
-export {
-	Command,
-	ContextMenuCommand,
-	SlashCommand,
-	SlashSubcommand,
-} from "./core/commands/command.base.js";
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
 
 // Components

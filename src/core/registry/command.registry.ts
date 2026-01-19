@@ -1,12 +1,12 @@
 import { Collection, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseRegistry } from "src/shared/typings/index.js";
-import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import {
+	BaseRegistry,
 	Command,
 	ContextMenuCommand,
 	SlashCommand,
 	SlashSubcommand,
-} from "../commands/command.base.js";
+} from "src/shared/typings/index.js";
+import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
 import path, { join } from "node:path";
 
@@ -49,7 +49,6 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 
 			const command = (await this.importFile<Command>(commandFile)) as
 				| SlashCommand
-				| SlashSubcommand
 				| ContextMenuCommand
 				| null;
 			if (!command || !command.active || !("data" in command)) continue;

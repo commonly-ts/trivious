@@ -1,10 +1,14 @@
 import { Client, REST, Routes } from "discord.js";
 import { registries } from "../registry/index.js";
-import { TriviousClientOptions, PermissionLevel } from "src/shared/typings/index.js";
+import {
+	TriviousClientOptions,
+	PermissionLevel,
+	SlashCommand,
+	ContextMenuCommand,
+} from "src/shared/typings/index.js";
 import { exists } from "src/shared/utility/functions.js";
 import path from "node:path";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { ContextMenuCommand, SlashCommand } from "../commands/command.base.js";
 import { createHash } from "node:crypto";
 
 /**

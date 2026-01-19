@@ -9,8 +9,10 @@ import {
 import {
 	ComponentInteraction,
 	ComponentType,
+	ContextMenuCommand,
 	Event,
 	PermissionLevel,
+	SlashCommand,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
 import {
@@ -18,7 +20,6 @@ import {
 	handleSlashCommand,
 	verifyGuildPermission,
 } from "../commands/methods.command.js";
-import { ContextMenuCommand, SlashCommand } from "../commands/command.base.js";
 import { ChatInputCommandInteraction } from "src/index.js";
 import { deconstructCustomId } from "src/shared/utility/components.utility.js";
 import TriviousClient from "../client/trivious.client.js";
