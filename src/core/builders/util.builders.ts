@@ -1,4 +1,10 @@
-import { ActionRowBuilder, APIEmbed, EmbedBuilder, EmbedData, MessageActionRowComponentBuilder } from "discord.js";
+import {
+	ActionRowBuilder,
+	APIEmbed,
+	EmbedBuilder,
+	EmbedData,
+	MessageActionRowComponentBuilder,
+} from "discord.js";
 
 /**
  * Utility action row builder

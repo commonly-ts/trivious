@@ -1,9 +1,9 @@
 import { Collection, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseRegistry, AnyCommand } from "src/shared/typings/index.js";
+import { BaseRegistry } from "src/shared/typings/index.js";
 import { exists, resolveUserPath } from "src/shared/utility/functions.js";
+import { Command, ContextMenuCommand, SlashCommand, SlashSubcommand } from "../commands/command.base.js";
 import { promises as fs } from "fs";
 import path, { join } from "node:path";
-import Subcommand from "../commands/subcommand.base.js";
 
 /**
  * Registry to load and get all commands.
@@ -13,8 +13,8 @@ import Subcommand from "../commands/subcommand.base.js";
  * @typedef {CommandRegistry}
  * @extends {BaseRegistry<AnyCommand>}
  */
-export default class CommandRegistry extends BaseRegistry<AnyCommand> {
-	protected items = new Collection<string, AnyCommand>();
+export default class CommandRegistry extends BaseRegistry<Command> {
+	protected items = new Collection<string, Command>();
 
 	/**
 	 * Load all commands and their subcommands
@@ -42,11 +42,10 @@ export default class CommandRegistry extends BaseRegistry<AnyCommand> {
 			else if (await exists(indexJs)) commandFile = indexJs;
 			else continue;
 
-			const command = await this.importFile<AnyCommand>(commandFile);
-			if (!command) continue;
-			if (!command.metadata.active) continue;
+			const command = await this.importFile<Command>(commandFile) as SlashCommand | SlashSubcommand | ContextMenuCommand | null;
+			if (!command || !command.active || !("data" in command)) continue;
 
-			if (command.isSlashCommand()) {
+			if ("subcommands" in command) {
 				const subcommandFiles = (await fs.readdir(fullPath)).filter(
 					file =>
 						(file.endsWith(".ts") || file.endsWith(".js")) &&
@@ -55,13 +54,14 @@ export default class CommandRegistry extends BaseRegistry<AnyCommand> {
 				);
 
 				for (const file of subcommandFiles) {
-					const subcommand = await this.importFile<Subcommand>(join(fullPath, file));
+					const subcommand = await this.importFile<SlashSubcommand>(join(fullPath, file));
 					if (!subcommand) continue;
 					if (!subcommand.data.name || !(subcommand.data instanceof SlashCommandSubcommandBuilder))
 						continue;
 
+					if (!command.subcommands) command.subcommands = new Collection<string, SlashSubcommand>();
+					command.subcommands.set(subcommand.data.name, subcommand);
 					command.data.addSubcommand(subcommand.data);
-					command.metadata.subcommands.set(subcommand.data.name, subcommand);
 				}
 			}
 

@@ -3,8 +3,9 @@ import { promises as fs, existsSync } from "fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { getPermissionLevel, PermissionLevel } from "../typings/permissions.js";
+import { PermissionLevel } from "../typings/index.js";
 import { GuildMember, RESTPostAPIApplicationCommandsJSONBody, User } from "discord.js";
+import { getPermissionLevel } from "./permissions.utility.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

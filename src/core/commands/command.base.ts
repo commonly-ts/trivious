@@ -1,515 +1,65 @@
 import {
-	Collection,
-	ContextMenuCommandBuilder,
-	GuildMember,
-	InteractionContextType,
-	InteractionEditReplyOptions,
-	InteractionReplyOptions,
-	MessagePayload,
-	SlashCommandAttachmentOption,
-	SlashCommandBooleanOption,
-	SlashCommandBuilder,
-	SlashCommandChannelOption,
-	SlashCommandIntegerOption,
-	SlashCommandMentionableOption,
-	SlashCommandNumberOption,
-	SlashCommandRoleOption,
-	SlashCommandStringOption,
-	SlashCommandUserOption,
-} from "discord.js";
-import {
-	AnyCommandBuilder,
-	AnyCommandMetadata,
-	CommandInteraction,
-	CommandMetadata,
-	ContextMenuMetadata,
+	CommandContext,
+	CommandFlags,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
-import {
-	ChatInputCommandInteraction,
-	ContextMenuCommandInteraction,
-	Subcommand,
-} from "src/index.js";
+import { CacheType, Collection, ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "src/index.js";
 import TriviousClient from "../client/trivious.client.js";
-import { hasPermission } from "src/shared/utility/functions.js";
 
 /**
- * Base class for a Command.
+ * Base command interface.
  *
  * @export
- * @abstract
- * @class Command
+ * @interface Command
  * @typedef {Command}
  */
-export default abstract class Command {
-	readonly data: SlashCommandBuilder | ContextMenuCommandBuilder;
-	readonly metadata: AnyCommandMetadata;
-
-	protected constructor(builder: AnyCommandBuilder) {
-		const { data, metadata } = builder.build();
-		this.data = data;
-		this.metadata = metadata;
-	}
-
-	/**
-	 * Returns whether the command is a SlashCommand.
-	 *
-	 * @public
-	 * @param {Command} this
-	 * @returns {this is SlashCommand}
-	 */
-	isSlashCommand(this: Command): this is SlashCommand {
-		return this instanceof SlashCommand;
-	}
-
-	/**
-	 * Returns whether the command is a ContextMenuCommand.
-	 *
-	 * @public
-	 * @param {Command} this
-	 * @returns {this is ContextMenuCommand}
-	 */
-	isContextMenuCommand(this: Command): this is ContextMenuCommand {
-		return this instanceof ContextMenuCommand;
-	}
-
-	/**
-	 * Returns JSON of the command builder.
-	 *
-	 * @public
-	 * @returns {*}
-	 */
-	toJSON() {
-		return this.data.toJSON();
-	}
-
-	/**
-	 * Reply to the interaction respecting command metadata and if the interaction has already been replied to.
-	 *
-	 * @public
-	 * @async
-	 * @param {CommandInteraction} interaction
-	 * @param {(MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions)} options
-	 * @returns {*}
-	 */
-	async reply(
-		interaction: CommandInteraction,
-		options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
-	) {
-		if (interaction.replied || interaction.deferred) {
-			await interaction.editReply(options as InteractionEditReplyOptions);
-			return;
-		}
-
-		const newOptions = { ...options } as InteractionReplyOptions;
-		if (this.metadata.ephemeralReply) newOptions.flags = ["Ephemeral"];
-
-		await interaction.reply(newOptions);
-	}
-
-	/**
-	 * Validate permissions for a user/member in a guild.
-	 *
-	 * @async
-	 * @param {CommandInteraction} interaction
-	 * @param {PermissionLevel} permission
-	 * @param {boolean} [doReply=true]
-	 * @returns {unknown}
-	 */
-	async validateGuildPermission(
-		client: TriviousClient,
-		interaction: CommandInteraction,
-		permission: PermissionLevel,
-		doReply: boolean = true
-	) {
-		if (!interaction.inGuild()) return true;
-
-		const member = interaction.member as GuildMember;
-		const memberHasPermission = hasPermission(client, { permission, member });
-
-		if (!memberHasPermission && doReply) {
-			await this.reply(interaction, {
-				content: `You do not have permission to run this command, required permission: \`${PermissionLevel[permission]}\``,
-			});
-		}
-
-		return memberHasPermission;
-	}
-}
+export interface Command {
+	readonly context: CommandContext;
+	readonly active: boolean;
+	readonly flags?: CommandFlags[];
+	readonly permission?: PermissionLevel;
+};
 
 /**
- * Base SlashCommand.
+ * Slash command interface.
  *
  * @export
- * @abstract
- * @class SlashCommand
+ * @interface SlashCommand
  * @typedef {SlashCommand}
  * @extends {Command}
  */
-export abstract class SlashCommand extends Command {
-	declare readonly data: SlashCommandBuilder;
-	declare readonly metadata: CommandMetadata;
-
-	protected constructor(builder: CommandBuilder) {
-		super(builder);
-	}
-
-	/**
-	 * Optional function to run if the SlashCommand has no subcommands or for extra fuctionality.
-	 *
-	 * @abstract
-	 */
-	run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
-
-	/**
-	 * General handler for the command and its subcommand, if applicable.
-	 *
-	 * @public
-	 * @async
-	 * @param {TriviousClient} client
-	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {*}
-	 */
-	async execute(client: TriviousClient, interaction: ChatInputCommandInteraction) {
-		const { metadata } = this;
-		const { options } = interaction;
-
-		if (this.run) {
-			const hasPerm = await this.validateGuildPermission(
-				client,
-				interaction,
-				metadata.permission,
-				true
-			);
-			if (hasPerm) await this.run(client, interaction);
-		}
-
-		if (!options.getSubcommand(false)) return;
-
-		const subcommandName = options.getSubcommand();
-		const subcommand = metadata.subcommands.get(subcommandName);
-
-		if (!subcommand) {
-			await this.reply(interaction, {
-				content: "This subcommand no longer exists or is not registered.",
-			});
-			return;
-		}
-
-		const hasPerm = await this.validateGuildPermission(
-			client,
-			interaction,
-			subcommand.metadata.permission
-		);
-		if (!hasPerm) return;
-
-		await subcommand.execute(client, interaction);
-	}
+export interface SlashCommand extends Command {
+	readonly context: "SlashCommand";
+	readonly data: SlashCommandBuilder;
+	subcommands?: Collection<string, Command>;
+	readonly run?: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
 /**
- * Base CommandBuilder.
+ * Slash command subcommand interface.
  *
  * @export
- * @class CommandBuilder
- * @typedef {CommandBuilder}
- * @extends {SlashCommandBuilder}
+ * @interface SlashSubcommand
+ * @typedef {SlashSubcommand}
+ * @extends {Command}
  */
-export class CommandBuilder extends SlashCommandBuilder {
-	private _active = true;
-	private _guildOnly = false;
-	private _ownerOnly = false;
-	private _permission = PermissionLevel.USER;
-	private _subcommands = new Collection<string, Subcommand>();
-	private _ephemeralReply = false;
-	private _doProcessReply = false;
-
-	doProcessReply(doReply: boolean): this {
-		this._doProcessReply = doReply;
-		return this;
-	}
-
-	/**
-	 * Set the command as disabled.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	disable(): this {
-		this._active = false;
-		return this;
-	}
-
-	/**
-	 * Set the command as guild only.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	setGuildOnly(): this {
-		this._guildOnly = true;
-		this._permission = PermissionLevel.USER;
-		this.setContexts(InteractionContextType.Guild);
-		return this;
-	}
-
-	/**
-	 * Set the command as only.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	setOwnerOnly(): this {
-		this._ownerOnly = true;
-		this._permission = PermissionLevel.BOT_OWNER;
-		return this;
-	}
-
-	/**
-	 * Set the permission level required to run the command.
-	 *
-	 * @public
-	 * @param {PermissionLevel} permission
-	 * @returns {this}
-	 */
-	setPermission(permission: PermissionLevel): this {
-		if (!this._guildOnly) return this;
-		this._permission = permission;
-
-		return this;
-	}
-
-	/**
-	 * Set the interaction as ephemeral.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	setEphemeralReply(): this {
-		this._ephemeralReply = true;
-		return this;
-	}
-
-	/**
-	 * Build the builder.
-	 *
-	 * @public
-	 * @returns {{ data: CommandBuilder; metadata: CommandMetadata; }}
-	 */
-	build() {
-		return {
-			data: this as CommandBuilder,
-			metadata: {
-				active: this._active,
-				guildOnly: this._guildOnly,
-				ownerOnly: this._ownerOnly,
-				permission: this._permission,
-				subcommands: this._subcommands,
-				ephemeralReply: this._ephemeralReply,
-				doProcessReply: this._doProcessReply,
-			} satisfies CommandMetadata,
-		};
-	}
-
-	addAttachmentOption(
-		input:
-			| SlashCommandAttachmentOption
-			| ((builder: SlashCommandAttachmentOption) => SlashCommandAttachmentOption)
-	): this {
-		super.addAttachmentOption(input);
-		return this;
-	}
-
-	addBooleanOption(
-		input:
-			| SlashCommandBooleanOption
-			| ((builder: SlashCommandBooleanOption) => SlashCommandBooleanOption)
-	): this {
-		super.addBooleanOption(input);
-		return this;
-	}
-
-	addChannelOption(
-		input:
-			| SlashCommandChannelOption
-			| ((builder: SlashCommandChannelOption) => SlashCommandChannelOption)
-	): this {
-		super.addChannelOption(input);
-		return this;
-	}
-
-	addMentionableOption(
-		input:
-			| SlashCommandMentionableOption
-			| ((builder: SlashCommandMentionableOption) => SlashCommandMentionableOption)
-	): this {
-		super.addMentionableOption(input);
-		return this;
-	}
-
-	addIntegerOption(
-		input:
-			| SlashCommandIntegerOption
-			| ((builder: SlashCommandIntegerOption) => SlashCommandIntegerOption)
-	): this {
-		super.addIntegerOption(input);
-		return this;
-	}
-
-	addNumberOption(
-		input:
-			| SlashCommandNumberOption
-			| ((builder: SlashCommandNumberOption) => SlashCommandNumberOption)
-	): this {
-		super.addNumberOption(input);
-		return this;
-	}
-
-	addRoleOption(
-		input: SlashCommandRoleOption | ((builder: SlashCommandRoleOption) => SlashCommandRoleOption)
-	): this {
-		super.addRoleOption(input);
-		return this;
-	}
-
-	addStringOption(
-		input:
-			| SlashCommandStringOption
-			| ((builder: SlashCommandStringOption) => SlashCommandStringOption)
-	): this {
-		super.addStringOption(input);
-		return this;
-	}
-
-	addUserOption(
-		input: SlashCommandUserOption | ((builder: SlashCommandUserOption) => SlashCommandUserOption)
-	): this {
-		super.addUserOption(input);
-		return this;
-	}
+export interface SlashSubcommand extends Command {
+	readonly context: "SlashSubcommand";
+	readonly data: SlashCommandSubcommandBuilder;
+	readonly execute: (client: TriviousClient, interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
 /**
- * Base ContextMenuCommand.
+ * Context menu command interface.
  *
  * @export
- * @abstract
- * @class ContextMenuCommand
+ * @interface ContextMenuCommand
  * @typedef {ContextMenuCommand}
  * @extends {Command}
  */
-export abstract class ContextMenuCommand extends Command {
-	declare readonly data: ContextMenuCommandBuilder;
-	declare readonly metadata: ContextMenuMetadata;
-
-	protected constructor(builder: ContextMenuBuilder) {
-		super(builder);
-	}
-
-	/**
-	 * Function to run when the command is used.
-	 *
-	 * @abstract
-	 */
-	abstract run: (
-		client: TriviousClient,
-		interaction: ContextMenuCommandInteraction
-	) => Promise<void>;
-
-	/**
-	 * Base command handler.
-	 *
-	 * @public
-	 * @async
-	 * @param {TriviousClient} client
-	 * @param {ContextMenuCommandInteraction} interaction
-	 * @returns {*}
-	 */
-	async execute(client: TriviousClient, interaction: ContextMenuCommandInteraction) {
-		const hasPerm = await this.validateGuildPermission(
-			client,
-			interaction,
-			this.metadata.permission
-		);
-		if (hasPerm) await this.run(client, interaction);
-	}
-}
-
-/**
- * Base ContextMenuBuilder.
- *
- * @export
- * @class ContextMenuBuilder
- * @typedef {ContextMenuBuilder}
- * @extends {ContextMenuCommandBuilder}
- */
-export class ContextMenuBuilder extends ContextMenuCommandBuilder {
-	private _active = true;
-	private _ownerOnly = false;
-	private _permission = PermissionLevel.USER;
-	private _ephemeralReply = false;
-
-	/**
-	 * Set the command as disabled.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	disable(): this {
-		this._active = false;
-		return this;
-	}
-
-	/**
-	 * Set the command as owner only.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	setOwnerOnly(): this {
-		this._permission = PermissionLevel.BOT_OWNER;
-		this._ownerOnly = true;
-		return this;
-	}
-
-	/**
-	 * Set the permission level required to run the command.
-	 *
-	 * @public
-	 * @param {PermissionLevel} permission
-	 * @returns {this}
-	 */
-	setPermission(permission: PermissionLevel): this {
-		this._permission = permission;
-		return this;
-	}
-
-	/**
-	 * Set the interaction as ephemeral.
-	 *
-	 * @public
-	 * @returns {this}
-	 */
-	setEphemeralReply(): this {
-		this._ephemeralReply = true;
-		return this;
-	}
-
-	/**
-	 * Build the builder
-	 *
-	 * @public
-	 * @returns {{ data: ContextMenuBuilder; metadata: ContextMenuMetadata; }}
-	 */
-	build() {
-		return {
-			data: this as ContextMenuBuilder,
-			metadata: {
-				active: this._active,
-				ownerOnly: this._ownerOnly,
-				permission: this._permission,
-				ephemeralReply: this._ephemeralReply,
-			} satisfies ContextMenuMetadata,
-		};
-	}
+export interface ContextMenuCommand extends Command {
+	readonly context: "ContextMenu";
+	readonly data: ContextMenuCommandBuilder;
+	readonly execute: (client: TriviousClient, interaction: MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction<CacheType>) => Promise<void>;
 }

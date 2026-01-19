@@ -1,16 +1,7 @@
 import {
 	ChatInputCommandInteraction,
-	ContextMenuCommand,
 	ContextMenuCommandInteraction,
 } from "src/index.js";
-import { Collection } from "discord.js";
-import { PermissionLevel } from "./permissions.js";
-import {
-	CommandBuilder,
-	ContextMenuBuilder,
-	SlashCommand,
-} from "src/core/commands/command.base.js";
-import Subcommand from "src/core/commands/subcommand.base.js";
 
 /**
  * Literal type for possible CommandInteractions.
@@ -21,131 +12,17 @@ import Subcommand from "src/core/commands/subcommand.base.js";
 export type CommandInteraction = ChatInputCommandInteraction | ContextMenuCommandInteraction;
 
 /**
- * Metadata for Commands.
+ * Flags attached to a command.
  *
  * @export
- * @interface CommandMetadata
- * @typedef {CommandMetadata}
+ * @typedef {CommandFlags}
  */
-export interface CommandMetadata {
-	/**
-	 * Whether the command is active, if `false`, the command is skipped during loading and deployment.
-	 *
-	 * @type {boolean}
-	 */
-	active: boolean;
-	/**
-	 * Whether the command is guild-only.
-	 *
-	 * @type {boolean}
-	 */
-	guildOnly: boolean;
-	/**
-	 * Whether the command is owner-only.
-	 *
-	 * @type {boolean}
-	 */
-	ownerOnly: boolean;
-	/**
-	 * The permission level required to use the command.
-	 *
-	 * @type {PermissionLevel}
-	 */
-	permission: PermissionLevel;
-	/**
-	 * Collection of subcommands.
-	 *
-	 * @type {Collection<string, Subcommand>}
-	 */
-	subcommands: Collection<string, Subcommand>;
-	/**
-	 * Whether the interaction is ephemeral.
-	 *
-	 * @type {boolean}
-	 */
-	ephemeralReply: boolean;
-	/**
-	 * Whether the interaction is automatically replied to with "Processing command."
-	 *
-	 * @type {boolean}
-	 */
-	doProcessReply: boolean;
-}
+export type CommandFlags = "GuildOnly" | "OwnerOnly" | "EphemeralReply" | "DeferReply";
 
 /**
- * Metadata for Subcommands.
+ * What type of command.
  *
  * @export
- * @interface SubcommandMetadata
- * @typedef {SubcommandMetadata}
+ * @typedef {CommandContext}
  */
-export interface SubcommandMetadata {
-	/**
-	 * Whether the subcommand is active, if `false`, the command is skipped during loading.
-	 *
-	 * @type {boolean}
-	 */
-	active: boolean;
-	/**
-	 * Whether the subcommand is owner-only.
-	 *
-	 * @type {boolean}
-	 */
-	ownerOnly: boolean;
-	/**
-	 * The permission level required to use the subcommand.
-	 *
-	 * @type {PermissionLevel}
-	 */
-	permission: PermissionLevel;
-	/**
-	 * Whether the interaction is ephemeral.
-	 *
-	 * @type {boolean}
-	 */
-	ephemeralReply: boolean;
-}
-
-/**
- * Metadata for ContextMenuCommands.
- *
- * @export
- * @interface ContextMenuMetadata
- * @typedef {ContextMenuMetadata}
- */
-export interface ContextMenuMetadata {
-	/**
-	 * Whether the command is active, if `false`, the command is skipped during loading and deployment.
-	 *
-	 * @type {boolean}
-	 */
-	active: boolean;
-	/**
-	 * Whether the command is owner-only.
-	 *
-	 * @type {boolean}
-	 */
-	ownerOnly: boolean;
-	/**
-	 * The permission level required to use the command.
-	 *
-	 * @type {PermissionLevel}
-	 */
-	permission: PermissionLevel;
-	/**
-	 * Whether the interaction is ephemeral.
-	 *
-	 * @type {boolean}
-	 */
-	ephemeralReply: boolean;
-}
-
-/**
- * Literal type for generic Command use.
- *
- * @export
- * @typedef {AnyCommand}
- */
-export type AnyCommand = SlashCommand | ContextMenuCommand;
-export type AnyCommandBuilder = CommandBuilder | ContextMenuBuilder;
-export type AnyCommandMetadata = CommandMetadata | ContextMenuMetadata;
+export type CommandContext = "SlashCommand" | "SlashSubcommand" | "ContextMenu";

@@ -1,13 +1,15 @@
-import { ButtonInteraction, GuildMember, ModalSubmitInteraction } from "discord.js";
+import { ButtonInteraction, CacheType, GuildMember, MessageContextMenuCommandInteraction, ModalSubmitInteraction, UserContextMenuCommandInteraction } from "discord.js";
 import {
 	ComponentInteraction,
 	ComponentType,
-	deconstructCustomId,
 	Event,
 	PermissionLevel,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import Command from "../commands/command.base.js";
+import { commandReply, handleSlashCommand, verifyGuildPermission } from "../commands/methods.command.js";
+import { ContextMenuCommand, SlashCommand } from "../commands/command.base.js";
+import { ChatInputCommandInteraction } from "src/index.js";
+import { deconstructCustomId } from "src/shared/utility/components.utility.js";
 import TriviousClient from "../client/trivious.client.js";
 
 async function validateComponentGuildPermission(
@@ -40,34 +42,33 @@ export default {
 				return;
 			}
 
-			const requiredPermission = command.metadata.permission;
-			const hasPermission = await command.validateGuildPermission(
+			const requiredPermission = command.permission;
+			const hasPermission = await verifyGuildPermission(
 				client,
 				interaction,
-				requiredPermission
+				command,
+				requiredPermission || PermissionLevel.USER
 			);
 			if (!hasPermission) return;
 
 			if (!("execute" in command)) {
-				await (command as Command).reply(interaction, {
+				await commandReply(command, interaction, {
 					content:
 						"Command does not have a way to execute! Ensure the command is a SlashCommand or ContextMenuCommand!",
 				});
 				return;
 			}
 
-			if (
-				(command.isSlashCommand() && command.metadata.doProcessReply) ||
-				command.isContextMenuCommand()
-			) {
-				await command.reply(interaction, { content: "Processing command..." });
+			if (command.flags?.includes("DeferReply")) {
+				await commandReply(command, interaction, { content: "Processing command..." });
 			}
 
-			if (interaction.isChatInputCommand() && command.isSlashCommand()) {
-				await command.execute(client, interaction);
-			} else if (interaction.isContextMenuCommand() && command.isContextMenuCommand()) {
-				await command.execute(client, interaction);
+			if (command.context === "SlashCommand" && "data" in command) {
+				await handleSlashCommand(client, (command as SlashCommand), (interaction as ChatInputCommandInteraction));
+			} else if (command.context === "ContextMenu") {
+				await (command as ContextMenuCommand).execute(client, (interaction as UserContextMenuCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType>));
 			}
+
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
 			const { compType, tags, data } = deconstructCustomId(interaction.customId);
 

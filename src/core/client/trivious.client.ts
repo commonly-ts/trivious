@@ -1,9 +1,11 @@
 import { Client, REST, Routes } from "discord.js";
 import { registries } from "../registry/index.js";
 import { TriviousClientOptions, PermissionLevel } from "src/shared/typings/index.js";
-import { exists, hashCommands } from "src/shared/utility/functions.js";
+import { exists } from "src/shared/utility/functions.js";
 import path from "node:path";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { ContextMenuCommand, SlashCommand } from "../commands/command.base.js";
+import { createHash } from "node:crypto";
 
 /**
  * Trivious base client.
@@ -84,11 +86,14 @@ export default class TriviousClient extends Client {
 		if (!clientId || !token) throw new Error("[Trivious] Invalid clientId or token reference");
 
 		const commands = Array.from(this.registries.commands.get().values());
-		const body = [...commands.map(command => command.toJSON())];
+		const body = [...commands.map(command => "data" in command ? (command as SlashCommand | ContextMenuCommand).data.toJSON() : null)].filter((c) => c !== null);
 
 		if (commandHashConfig && commandHashConfig.enabled) {
 			const hashFile = path.join(commandHashConfig.filePath || "data", "commands.hash");
-			const newHash = await hashCommands(body);
+			const newHash = createHash("sha256")
+				.update(JSON.stringify(body.sort((a, b) => a.name.localeCompare(b.name))).toString())
+				.digest("hex");
+
 			let oldHash = "";
 
 			if (await exists(hashFile)) oldHash = readFileSync(hashFile, "utf-8");
