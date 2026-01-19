@@ -1,8 +1,9 @@
 import { Collection } from "discord.js";
-import { BaseRegistry, Component } from "src/shared/typings/index.js";
+import { BaseRegistry } from "src/shared/typings/index.js";
 import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
 import path, { join } from "node:path";
+import { Component } from "../components/component.base.js";
 
 /**
  * Registry to load and get all components.

@@ -1,7 +1,4 @@
-import {
-	ChatInputCommandInteraction,
-	ContextMenuCommandInteraction,
-} from "src/index.js";
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction } from "src/index.js";
 
 /**
  * Literal type for possible CommandInteractions.

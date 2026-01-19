@@ -1,4 +1,8 @@
-import { ComponentCustomIdTag, ComponentType, CustomIdConstructOptions } from "../typings/components.js";
+import {
+	ComponentCustomIdTag,
+	ComponentType,
+	CustomIdConstructOptions,
+} from "../typings/components.js";
 
 /**
  * Deconstruct a component customId into its parts.
@@ -27,4 +31,3 @@ export const constructCustomId = (options: CustomIdConstructOptions) => {
 	const { data, compType, tags } = options;
 	return `${compType}:${data}${tags ? `.${tags.join(".")}` : ""}`;
 };
-

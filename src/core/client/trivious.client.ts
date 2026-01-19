@@ -86,7 +86,11 @@ export default class TriviousClient extends Client {
 		if (!clientId || !token) throw new Error("[Trivious] Invalid clientId or token reference");
 
 		const commands = Array.from(this.registries.commands.get().values());
-		const body = [...commands.map(command => "data" in command ? (command as SlashCommand | ContextMenuCommand).data.toJSON() : null)].filter((c) => c !== null);
+		const body = [
+			...commands.map(command =>
+				"data" in command ? (command as SlashCommand | ContextMenuCommand).data.toJSON() : null
+			),
+		].filter(c => c !== null);
 
 		if (commandHashConfig && commandHashConfig.enabled) {
 			const hashFile = path.join(commandHashConfig.filePath || "data", "commands.hash");

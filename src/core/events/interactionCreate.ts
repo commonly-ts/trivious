@@ -1,4 +1,11 @@
-import { ButtonInteraction, CacheType, GuildMember, MessageContextMenuCommandInteraction, ModalSubmitInteraction, UserContextMenuCommandInteraction } from "discord.js";
+import {
+	ButtonInteraction,
+	CacheType,
+	GuildMember,
+	MessageContextMenuCommandInteraction,
+	ModalSubmitInteraction,
+	UserContextMenuCommandInteraction,
+} from "discord.js";
 import {
 	ComponentInteraction,
 	ComponentType,
@@ -6,7 +13,11 @@ import {
 	PermissionLevel,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import { commandReply, handleSlashCommand, verifyGuildPermission } from "../commands/methods.command.js";
+import {
+	commandReply,
+	handleSlashCommand,
+	verifyGuildPermission,
+} from "../commands/methods.command.js";
 import { ContextMenuCommand, SlashCommand } from "../commands/command.base.js";
 import { ChatInputCommandInteraction } from "src/index.js";
 import { deconstructCustomId } from "src/shared/utility/components.utility.js";
@@ -64,11 +75,19 @@ export default {
 			}
 
 			if (command.context === "SlashCommand" && "data" in command) {
-				await handleSlashCommand(client, (command as SlashCommand), (interaction as ChatInputCommandInteraction));
+				await handleSlashCommand(
+					client,
+					command as SlashCommand,
+					interaction as ChatInputCommandInteraction
+				);
 			} else if (command.context === "ContextMenu") {
-				await (command as ContextMenuCommand).execute(client, (interaction as UserContextMenuCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType>));
+				await (command as ContextMenuCommand).execute(
+					client,
+					interaction as
+						| UserContextMenuCommandInteraction<CacheType>
+						| MessageContextMenuCommandInteraction<CacheType>
+				);
 			}
-
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
 			const { compType, tags, data } = deconstructCustomId(interaction.customId);
 

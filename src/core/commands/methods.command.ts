@@ -1,5 +1,15 @@
-import { GuildMember, InteractionEditReplyOptions, InteractionReplyOptions, MessagePayload } from "discord.js";
-import { ChatInputCommandInteraction, ContextMenuCommandInteraction, PermissionLevel, TriviousClient } from "src/index.js";
+import {
+	GuildMember,
+	InteractionEditReplyOptions,
+	InteractionReplyOptions,
+	MessagePayload,
+} from "discord.js";
+import {
+	ChatInputCommandInteraction,
+	ContextMenuCommandInteraction,
+	PermissionLevel,
+	TriviousClient,
+} from "src/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
 import { Command, SlashCommand, SlashSubcommand } from "./command.base.js";
 
@@ -13,7 +23,11 @@ import { Command, SlashCommand, SlashSubcommand } from "./command.base.js";
  * @param {(MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions)} options
  * @returns {*}
  */
-export async function commandReply(command: Command, interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction, options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions) {
+export async function commandReply(
+	command: Command,
+	interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
+	options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
+) {
 	if (interaction.replied || interaction.deferred) {
 		await interaction.editReply(options as InteractionEditReplyOptions);
 		return;
@@ -52,7 +66,7 @@ export async function verifyGuildPermission(
 	if (!memberHasPermission && doReply) {
 		await commandReply(command, interaction, {
 			content: `You do not have permission to run this command, required permission: \`${PermissionLevel[requiredPermission]}\``,
-		})
+		});
 	}
 
 	return memberHasPermission;
@@ -68,7 +82,11 @@ export async function verifyGuildPermission(
  * @param {ChatInputCommandInteraction} interaction
  * @returns {*}
  */
-export async function handleSlashCommand(client: TriviousClient, command: SlashCommand, interaction: ChatInputCommandInteraction) {
+export async function handleSlashCommand(
+	client: TriviousClient,
+	command: SlashCommand,
+	interaction: ChatInputCommandInteraction
+) {
 	const { options } = interaction;
 
 	const hasPerm = await verifyGuildPermission(
