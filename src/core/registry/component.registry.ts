@@ -1,9 +1,8 @@
 import { Collection } from "discord.js";
-import { BaseRegistry } from "src/shared/typings/index.js";
+import { BaseRegistry, Component } from "src/shared/typings/index.js";
 import { exists, resolveUserPath } from "src/shared/utility/functions.js";
 import { promises as fs } from "fs";
 import path, { join } from "node:path";
-import { Component } from "../components/component.base.js";
 
 /**
  * Registry to load and get all components.
@@ -20,10 +19,10 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 	 * Load all components.
 	 *
 	 * @async
-	 * @param {string} [directory=getCorePath({ coreDirectory: "events" })]
+	 * @param {string} [directory=getCorePath({ coreDirectory: "components" })]
 	 * @returns {Promise<this>}
 	 */
-	async load(directory: string = resolveUserPath(path.join("src", "events"))): Promise<this> {
+	async load(directory: string = resolveUserPath(path.join("src", "components"))): Promise<this> {
 		if (!(await exists(directory))) return this;
 
 		const entries = await fs.readdir(directory, { withFileTypes: true });

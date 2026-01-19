@@ -2,6 +2,7 @@ import { Event } from "src/shared/typings/index.js";
 
 export default {
 	name: "clientReady",
+	once: true,
 	execute: async (client, _) => {
 		console.log(`Successfully logged into ${client.user?.username}`);
 	},

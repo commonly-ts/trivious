@@ -4,6 +4,34 @@ import {
 	CacheType,
 	ModalSubmitInteraction,
 } from "discord.js";
+import { PermissionLevel } from "./permissions.js";
+import TriviousClient from "src/core/client/trivious.client.js";
+
+/**
+ * Base component interface.
+ *
+ * @export
+ * @interface Component
+ * @typedef {Component}
+ */
+export interface Component {
+	component: ComponentType;
+	permission: PermissionLevel;
+	/**
+	 * The full constructed customId.
+	 *
+	 * @type {?string}
+	 */
+	customId?: string;
+	/**
+	 * The 'data' part of a constructed customId.
+	 *
+	 * @type {?string}
+	 */
+	customIdData?: string;
+	ephemeralReply?: boolean;
+	execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void> | void;
+}
 
 /**
  * Tags for component customIds.
