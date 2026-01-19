@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/commonly-ts/trivious/compare/v1.6.1...v1.6.2) (2026-01-19)
+
+
+### Bug Fixes
+
+* moved components into types ([4522aeb](https://github.com/commonly-ts/trivious/commit/4522aebabf5dfb4e099c01ff5d836dfed7cc6b21))
+
 ## [1.6.1](https://github.com/commonly-ts/trivious/compare/v1.6.0...v1.6.1) (2026-01-19)
 
 
