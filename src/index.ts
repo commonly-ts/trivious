@@ -15,6 +15,7 @@ export { default as TriviousClient } from "./core/client/trivious.client.js";
 
 // Commands
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
+export { commandReply, verifyGuildPermission, handleSlashCommand } from "./core/commands/methods.command.js";
 
 // Components
 // export { default as Component } from "./core/components/component.base.js";
