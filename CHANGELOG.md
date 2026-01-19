@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/commonly-ts/trivious/compare/v1.6.3...v1.6.4) (2026-01-19)
+
+
+### Bug Fixes
+
+* fixed command check ([979cdba](https://github.com/commonly-ts/trivious/commit/979cdbac519d424caa2da58a40ebc5777c119872))
+
 ## [1.6.3](https://github.com/commonly-ts/trivious/compare/v1.6.2...v1.6.3) (2026-01-19)
 
 
