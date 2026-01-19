@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/commonly-ts/trivious/compare/v1.6.0...v1.6.1) (2026-01-19)
+
+
+### Bug Fixes
+
+* esm only ([ac861ed](https://github.com/commonly-ts/trivious/commit/ac861edb9faaef3d5098d3c40b6ad75318d9286e))
+* fixed command exports ([d2999d1](https://github.com/commonly-ts/trivious/commit/d2999d173a79c3fda62d2d6190b37bfcaff829ac))
+
 # [1.6.0](https://github.com/commonly-ts/trivious/compare/v1.5.12...v1.6.0) (2026-01-19)
 
 
