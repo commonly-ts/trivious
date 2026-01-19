@@ -11,7 +11,7 @@
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
 			"src/*": ["src/*"]
