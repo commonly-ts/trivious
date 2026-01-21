@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/commonly-ts/trivious/compare/v1.6.5...v1.6.6) (2026-01-21)
+
+
+### Bug Fixes
+
+* exported utility functions ([55acf8a](https://github.com/commonly-ts/trivious/commit/55acf8ade53f441efc4bde1e6e65e43cfda56a77))
+
 ## [1.6.5](https://github.com/commonly-ts/trivious/compare/v1.6.4...v1.6.5) (2026-01-19)
 
 
