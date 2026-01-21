@@ -15,7 +15,11 @@ import {
 	SlashCommand,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import { handleSlashCommand, verifyGuildPermission } from "../commands/methods.command.js";
+import {
+	handleSlashCommand,
+	interactionReply,
+	verifyGuildPermission,
+} from "../commands/methods.command.js";
 import { ChatInputCommandInteraction } from "src/index.js";
 import { deconstructCustomId } from "src/shared/utility/components.utility.js";
 import TriviousClient from "../client/trivious.client.js";
@@ -43,9 +47,12 @@ export default {
 			const registeredCommands = client.registries.commands.get();
 			const command = registeredCommands.get(commandName);
 			if (!command) {
-				await interaction.reply({
-					content: `Command is outdated, inactive or does not have a handler!`,
-					flags: ["Ephemeral"],
+				await interactionReply({
+					flags: ["EphemeralReply"],
+					interaction,
+					options: {
+						content: `Command is outdated, inactive or does not have a handler!`,
+					},
 				});
 				return;
 			}
@@ -85,9 +92,12 @@ export default {
 			const registeredComponents = client.registries.components.get();
 			const component = registeredComponents.get(data);
 			if (!component) {
-				await interaction.reply({
-					content: `Command is outdated, inactive or does not have a handler!`,
-					flags: ["Ephemeral"],
+				await interactionReply({
+					flags: ["EphemeralReply"],
+					interaction,
+					options: {
+						content: `Command is outdated, inactive or does not have a handler!`,
+					},
 				});
 				return;
 			}

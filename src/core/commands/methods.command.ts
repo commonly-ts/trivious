@@ -1,13 +1,15 @@
 import {
+	CacheType,
+	ChatInputCommandInteraction,
 	GuildMember,
+	Interaction,
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
 	MessagePayload,
 } from "discord.js";
 import {
-	ChatInputCommandInteraction,
 	Command,
-	ContextMenuCommandInteraction,
+	CommandFlags,
 	PermissionLevel,
 	SlashCommand,
 	SlashSubcommand,
@@ -25,20 +27,28 @@ import { hasPermission } from "src/shared/utility/functions.js";
  * @param {(MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions)} options
  * @returns {*}
  */
-export async function commandReply(
-	command: Command,
-	interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
-	options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions
-) {
-	if (interaction.replied || interaction.deferred) {
-		await interaction.editReply(options as InteractionEditReplyOptions);
-		return;
+export async function interactionReply(data: {
+	flags?: ("FollowUp" | CommandFlags)[];
+	interaction: Interaction<CacheType>;
+	options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions;
+}) {
+	const { interaction, flags, options } = data;
+	if (!("reply" in interaction)) {
+		throw new Error(`Cannot reply to interaction type ${typeof interaction}`);
 	}
 
-	const newOptions = { ...options } as InteractionReplyOptions;
-	if (command.flags && command.flags.includes("EphemeralReply")) newOptions.flags = ["Ephemeral"];
+	const ephemeral = flags?.includes("EphemeralReply");
+	const followUp = flags?.includes("FollowUp");
 
-	await interaction.reply(newOptions);
+	const newOptions = options as InteractionReplyOptions;
+	if (ephemeral) newOptions.flags = ["Ephemeral"];
+
+	if (interaction.replied || interaction.deferred) {
+		if (followUp) await interaction.followUp(newOptions);
+		else await interaction.editReply(options as InteractionEditReplyOptions);
+	} else {
+		await interaction.reply(newOptions);
+	}
 }
 
 /**
@@ -55,19 +65,27 @@ export async function commandReply(
  */
 export async function verifyGuildPermission(
 	client: TriviousClient,
-	interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
+	interaction: Interaction<CacheType>,
 	command: Command,
 	requiredPermission: PermissionLevel,
 	doReply: boolean = true
 ) {
 	if (!interaction.inGuild()) return true;
 
+	if (command.flags && command.flags.includes("OwnerOnly")) {
+		requiredPermission = PermissionLevel.BOT_OWNER;
+	}
+
 	const member = interaction.member as GuildMember;
 	const memberHasPermission = hasPermission(client, { permission: requiredPermission, member });
 
 	if (!memberHasPermission && doReply) {
-		await commandReply(command, interaction, {
-			content: `You do not have permission to run this command, required permission: \`${PermissionLevel[requiredPermission]}\``,
+		await interactionReply({
+			flags: command.flags,
+			interaction,
+			options: {
+				content: `You do not have permission to run this command, required permission: \`${PermissionLevel[requiredPermission]}\``,
+			},
 		});
 	}
 
@@ -108,7 +126,11 @@ export async function handleSlashCommand(
 	// skip subcommand processing and respect command flags
 	if (!options.getSubcommand(false) || !("subcommands" in command)) {
 		if (command.flags?.includes("DeferReply")) {
-			await commandReply(command, interaction, { content: "Processing command..." });
+			await interactionReply({
+				flags: command.flags,
+				interaction,
+				options: { content: "Processing command..." },
+			});
 		}
 
 		return;
@@ -118,15 +140,23 @@ export async function handleSlashCommand(
 	const subcommand = command.subcommands!.get(subcommandName) as SlashSubcommand | undefined;
 
 	if (!subcommand) {
-		await commandReply(command, interaction, {
-			content: "This subcommand no longer exists or is not registered.",
+		await interactionReply({
+			flags: command.flags,
+			interaction,
+			options: {
+				content: "This subcommand no longer exists or is not registered.",
+			},
 		});
 		return;
 	}
 
 	// respect subcommand flags over command flags
 	if (subcommand.flags?.includes("DeferReply") && !subcommand.flags.includes("ModalResponse")) {
-		await commandReply(command, interaction, { content: "Processing command..." });
+		await interactionReply({
+			flags: command.flags,
+			interaction,
+			options: { content: "Processing command..." },
+		});
 	}
 
 	await subcommand.execute(client, interaction);
