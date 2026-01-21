@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/commonly-ts/trivious/compare/v1.6.6...v1.6.7) (2026-01-21)
+
+
+### Bug Fixes
+
+* respect subcommand flags over command flags ([0ced35a](https://github.com/commonly-ts/trivious/commit/0ced35a720a89b89b7d3a4123d7174307727b72e))
+
 ## [1.6.6](https://github.com/commonly-ts/trivious/compare/v1.6.5...v1.6.6) (2026-01-21)
 
 
