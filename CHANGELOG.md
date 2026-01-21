@@ -1,3 +1,10 @@
+## [1.6.11](https://github.com/commonly-ts/trivious/compare/v1.6.10...v1.6.11) (2026-01-21)
+
+
+### Bug Fixes
+
+* changed commandReply to interactionReply ([58dbb4d](https://github.com/commonly-ts/trivious/commit/58dbb4d4222168cf321e091ad6db9d452a90e5c3))
+
 ## [1.6.10](https://github.com/commonly-ts/trivious/compare/v1.6.9...v1.6.10) (2026-01-21)
 
 
