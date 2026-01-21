@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/commonly-ts/trivious/compare/v1.6.7...v1.6.8) (2026-01-21)
+
+
+### Bug Fixes
+
+* moved register and deploy into client.start ([7265848](https://github.com/commonly-ts/trivious/commit/7265848712e720a5112fbf8727f0de7aed7e5353))
+
 ## [1.6.7](https://github.com/commonly-ts/trivious/compare/v1.6.6...v1.6.7) (2026-01-21)
 
 
