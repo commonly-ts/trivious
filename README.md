@@ -5,11 +5,13 @@ Discord.js framework
 ---
 
 ### Installation
+
 ```bash
 npm install trivious
 yarn add trivious
 pnpm add trivious
 ```
+
 > Requires Node.js 18+
 
 ---
@@ -22,75 +24,85 @@ import { TriviousClient, PermissionLevel } from "trivious";
 import { GatewayIntentBits } from "discord.js";
 
 const client = new TriviousClient({
-  tokenReference: "BOT_TOKEN",
-  clientIdReference: "CLIENT_ID",
-  corePath: "core", // Folder containing commands/, events/, components/, modules/
-  intents: [GatewayIntentBits.Guilds],
-  rolePermissions: { // Altneratively can be set via client.rolePermissions
-    "123456789012345678": PermissionLevel.GUILD_MODERATOR, // Role ID → PermissionLevel
-  },
+	tokenReference: "BOT_TOKEN",
+	clientIdReference: "CLIENT_ID",
+	corePath: "core", // Folder containing commands/, events/, components/, modules/
+	intents: [GatewayIntentBits.Guilds],
+	rolePermissions: {
+		// Altneratively can be set via client.rolePermissions
+		"123456789012345678": PermissionLevel.GUILD_MODERATOR, // Role ID → PermissionLevel
+	},
 });
 
 (async () => {
-  try {
-    await client.register();  // Loads all commands, events, components, modules
-    await client.deploy();    // Registers slash commands globally
-    await client.start();      // Logs in
-  } catch (error) {
-    console.error("Failed to start bot:", error);
-  }
+	try {
+		await client.start();
+		// Registers all commands, events, components, modules;
+		// Deploys slash commands globally and then logs into the bot
+
+		// To separately register commands, events, etc - use client.register()
+		// To separately deploy commands - use client.deploy() followed by client.login()
+	} catch (error) {
+		console.error("Failed to start bot:", error);
+	}
 })();
 ```
 
 ---
 
+### Included Default Events
+
+Trivious automatically includes and inserts `clientReady` and `interactionCreate` handlers, which can be overwritten.
+It is recommended to use the default interactionCreate handler, which requires zero input in your own code.
+
+These default events can be found in `src/core/events` in the Trivious repository.
+
+---
+
 ### Creating a Slash Command
+
 ```ts
 // src/core/commands/debug/index.ts
-import { CommandBuilder, SlashCommand } from "trivious"
+import { SlashCommandBuilder } from "discord.js";
+import { PermissionLevel, SlashCommand } from "trivious";
 
-export default class DebugCommand extends SlashCommand {
-	constructor() {
-		super(new CommandBuilder()
-			.setName("debug")
-			.setDescription("Debug tools")
-			.setGuildOnly()
-			.setEphemeralReply())
-	}
-};
+export default {
+	active: true,
+	context: "SlashCommand",
+	flags: ["OwnerOnly", "GuildOnly", "EphemeralReply", "DeferReply"],
+	permission: PermissionLevel.BOT_OWNER,
+	data: new SlashCommandBuilder().setName("debug").setDescription("Debug commands"),
+} satisfies SlashCommand; // recommended for type-safety
 ```
+
 > Subcommands go in the same directory as the command file and are auto-detected.
 
 ### Creating a Subcommand
+
 ```ts
 // src/core/commands/debug/ping.ts
-import { ChatInputCommandInteraction, Subcommand, SubcommandBuilder, TriviousClient } from "trivious";
+import { SlashCommandSubcommandBuilder } from "discord.js";
+import { commandReply, SlashSubcommand } from "trivious";
 
-export default class DebugPingSubcommand extends Subcommand {
-	constructor() {
-		super(new SubcommandBuilder()
-			.setName("ping")
-			.setDescription("Ping pong!")
-			.setOwnerOnly())
-	}
+export default {
+	active: true,
+	context: "SlashSubcommand",
+	data: new SlashCommandSubcommandBuilder().setName("ping").setDescription("Ping pong!"),
 
-	execute = async (client: TriviousClient, interaction: ChatInputCommandInteraction) => {
-		try {
-			const sent = await interaction.fetchReply();
-			const latency = sent.createdTimestamp - interaction.createdTimestamp;
-			const apiLatency = Math.round(interaction.client.ws.ping);
+	async execute(client, interaction) {
+		const ping = (await interaction.fetchReply()).createdTimestamp - interaction.createdTimestamp;
 
-			await this.reply(interaction, { content: `Pong!\nLatency ${latency}ms API Latency: ${apiLatency}ms` });
-		} catch (error: any) {
-			console.error(error);
-		}
-	};
-};
+		await commandReply(this, interaction, {
+			content: `Pong!\nBot latency: ${ping}ms, API latency: ${client.ws.ping.toString()}ms`,
+		});
+	},
+} satisfies SlashSubcommand; // recommended for type-safety
 ```
 
 ---
 
 ### Permission Levels
+
 ```ts
 enum PermissionLevel {
 	USER = 0,
@@ -103,31 +115,26 @@ enum PermissionLevel {
 ```
 
 Set role permissions in client options
+
 ```ts
 rolePermissions: {
 	"987654321098765432": PermissionLevel.GUILD_ADMINISTRATOR,
 	moderatorRole.id: PermissionLevel.GUILD_MODERATOR,
 }
 ```
+
 Or dynamically at runtime:
+
 ```ts
 client.setRolePermissions({
-	"123456": PermissionLevel.GUILD_STAFF
-})
+	"123456": PermissionLevel.GUILD_STAFF,
+});
 ```
 
 ---
 
-### Context Menu Commands / Components / Events / Modules
-All follow the same, clean consistent pattern.
-- Context menus -> extend `ContextMenuCOmmand` + `ContextMenuBuilder`
-- Buttons/Modals/Select menus -> extend `Component` + use `ComponentBuilder().setCustomId(...)`
-- Events -> export an object with `name`, `once?` and `execute`
-- Modules -> export an object with events to trigger the module
-
----
-
 ### Recommended Project Structure
+
 ```
 src/
 ├── core/
