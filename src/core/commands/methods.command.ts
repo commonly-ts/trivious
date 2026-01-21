@@ -104,7 +104,15 @@ export async function handleSlashCommand(
 	}
 
 	if (!hasPerm) return;
-	if (!options.getSubcommand(false) || !("subcommands" in command)) return;
+
+	// skip subcommand processing and respect command flags
+	if (!options.getSubcommand(false) || !("subcommands" in command)) {
+		if (command.flags?.includes("DeferReply")) {
+			await commandReply(command, interaction, { content: "Processing command..." });
+		}
+
+		return;
+	}
 
 	const subcommandName = options.getSubcommand();
 	const subcommand = command.subcommands!.get(subcommandName) as SlashSubcommand | undefined;
@@ -114,6 +122,11 @@ export async function handleSlashCommand(
 			content: "This subcommand no longer exists or is not registered.",
 		});
 		return;
+	}
+
+	// respect subcommand flags over command flags
+	if (subcommand.flags?.includes("DeferReply") && !subcommand.flags.includes("ModalResponse")) {
+		await commandReply(command, interaction, { content: "Processing command..." });
 	}
 
 	await subcommand.execute(client, interaction);

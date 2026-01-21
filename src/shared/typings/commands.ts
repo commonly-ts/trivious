@@ -96,7 +96,12 @@ export type CommandInteraction = ChatInputCommandInteraction | ContextMenuComman
  * @export
  * @typedef {CommandFlags}
  */
-export type CommandFlags = "GuildOnly" | "OwnerOnly" | "EphemeralReply" | "DeferReply";
+export type CommandFlags =
+	| "GuildOnly"
+	| "OwnerOnly"
+	| "EphemeralReply"
+	| "DeferReply"
+	| "ModalResponse";
 
 /**
  * What type of command.

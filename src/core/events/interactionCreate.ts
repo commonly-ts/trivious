@@ -15,11 +15,7 @@ import {
 	SlashCommand,
 } from "src/shared/typings/index.js";
 import { hasPermission } from "src/shared/utility/functions.js";
-import {
-	commandReply,
-	handleSlashCommand,
-	verifyGuildPermission,
-} from "../commands/methods.command.js";
+import { handleSlashCommand, verifyGuildPermission } from "../commands/methods.command.js";
 import { ChatInputCommandInteraction } from "src/index.js";
 import { deconstructCustomId } from "src/shared/utility/components.utility.js";
 import TriviousClient from "../client/trivious.client.js";
@@ -62,10 +58,6 @@ export default {
 				requiredPermission || PermissionLevel.USER
 			);
 			if (!hasPermission) return;
-
-			if (command.flags?.includes("DeferReply")) {
-				await commandReply(command, interaction, { content: "Processing command..." });
-			}
 
 			if (command.context === "SlashCommand" && "data" in command) {
 				await handleSlashCommand(
