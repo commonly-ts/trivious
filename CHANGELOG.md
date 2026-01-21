@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/commonly-ts/trivious/compare/v1.6.8...v1.6.9) (2026-01-21)
+
+
+### Bug Fixes
+
+* fixed base registry importFile error handling for missing default ([9f61e19](https://github.com/commonly-ts/trivious/commit/9f61e1960c0bfc944867cf552ff283203072a481))
+
 ## [1.6.8](https://github.com/commonly-ts/trivious/compare/v1.6.7...v1.6.8) (2026-01-21)
 
 
