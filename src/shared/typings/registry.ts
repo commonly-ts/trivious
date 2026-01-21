@@ -43,9 +43,9 @@ export abstract class BaseRegistry<T> {
 	protected async importFile<T>(filePath: string): Promise<T | null> {
 		try {
 			const { default: file } = await import(pathToFileURL(filePath).href);
-			const imports = file.default ?? file;
+			if (!file || !file.default) return null;
 
-			if (!imports) return null;
+			const imports = file.default;
 
 			if (typeof imports === "function" && imports.prototype) {
 				return new imports();
