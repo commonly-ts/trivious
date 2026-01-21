@@ -73,6 +73,9 @@ export default class TriviousClient extends Client {
 			else throw new Error("[Trivious] Invalid token reference");
 		}
 
+		await this.register();
+		await this.deploy();
+
 		this.registries.bind(this);
 		await this.login(process.env[this._options.tokenReference]);
 	}
