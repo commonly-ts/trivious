@@ -1,3 +1,10 @@
+## [1.6.10](https://github.com/commonly-ts/trivious/compare/v1.6.9...v1.6.10) (2026-01-21)
+
+
+### Bug Fixes
+
+* fixed file checks ([63c117a](https://github.com/commonly-ts/trivious/commit/63c117a5861235159416c2aa61836ba248466fdb))
+
 ## [1.6.9](https://github.com/commonly-ts/trivious/compare/v1.6.8...v1.6.9) (2026-01-21)
 
 
