@@ -15,7 +15,7 @@ export { default as TriviousClient } from "./core/client/trivious.client.js";
 
 // Commands
 export { default as CommandRegistry } from "./core/registry/command.registry.js";
-export { commandReply, verifyGuildPermission, handleSlashCommand } from "./core/commands/methods.command.js";
+export * from "./core/commands/methods.command.js";
 
 // Components
 // export { default as Component } from "./core/components/component.base.js";
@@ -23,7 +23,11 @@ export { default as ComponentRegistry } from "./core/registry/component.registry
 // export { ComponentBuilder } from "./core/components/component.base.js";
 
 // Utility builders
-export { createActionRow, createEmbed } from "./core/builders/util.builders.js";
+export * from "./core/builders/util.builders.js";
+
+// Utility functions
+export * from "./shared/utility/components.utility.js";
+export * from "./shared/utility/permissions.utility.js";
 
 // Typings
 export * from "./shared/typings/index.js";
