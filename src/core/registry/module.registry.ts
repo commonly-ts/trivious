@@ -29,23 +29,17 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 		}
 
 		const entries = await fs.readdir(directory, { withFileTypes: true });
-
 		for (const entry of entries) {
 			const fullPath = join(directory, entry.name);
-			const entryName = entry.name;
 
 			if (entry.isDirectory()) {
 				await this.load(fullPath);
 				continue;
 			}
 
-			if (
-				(entryName.endsWith(".ts") || entryName.endsWith(".js")) &&
-				!entryName.startsWith("index.") &&
-				!entryName.endsWith(".d.ts")
-			) {
+			if (entry.isFile() && entry.name.endsWith(".js")) {
 				const moduleEvent = await this.importFile<Module>(fullPath);
-				if (!moduleEvent || !moduleEvent.events) continue;
+				if (!moduleEvent) continue;
 
 				this.items.set(moduleEvent.name, moduleEvent);
 			}
