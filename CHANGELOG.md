@@ -1,3 +1,10 @@
+## [1.6.13](https://github.com/commonly-ts/trivious/compare/v1.6.12...v1.6.13) (2026-01-22)
+
+
+### Bug Fixes
+
+* updated module registry loader ([41c30a6](https://github.com/commonly-ts/trivious/commit/41c30a6179a9bf9798a66fa5064d3cc2430fdb0e))
+
 ## [1.6.12](https://github.com/commonly-ts/trivious/compare/v1.6.11...v1.6.12) (2026-01-22)
 
 
