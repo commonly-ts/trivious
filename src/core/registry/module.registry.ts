@@ -32,17 +32,19 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 
 		for (const entry of entries) {
 			const fullPath = join(directory, entry.name);
-			if (!entry.isDirectory()) continue;
+			const entryName = entry.name;
 
-			const moduleFiles = (await fs.readdir(fullPath)).filter(
-				file =>
-					(file.endsWith(".ts") || file.endsWith(".js")) &&
-					!file.startsWith("index.") &&
-					!file.endsWith(".d.ts")
-			);
+			if (entry.isDirectory()) {
+				await this.load(fullPath);
+				continue;
+			}
 
-			for (const file of moduleFiles) {
-				const moduleEvent = await this.importFile<Module>(join(fullPath, file));
+			if (
+				(entryName.endsWith(".ts") || entryName.endsWith(".js")) &&
+				!entryName.startsWith("index.") &&
+				!entryName.endsWith(".d.ts")
+			) {
+				const moduleEvent = await this.importFile<Module>(fullPath);
 				if (!moduleEvent || !moduleEvent.events) continue;
 
 				this.items.set(moduleEvent.name, moduleEvent);
