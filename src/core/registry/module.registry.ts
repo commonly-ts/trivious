@@ -55,14 +55,16 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 	 */
 	bind(client: TriviousClient) {
 		for (const mod of this.items.values()) {
-			for (const [eventName, handler] of Object.entries(mod.events!)) {
+			if (!("events" in mod && "name" in mod)) continue;
+
+			for (const [moduleName, handler] of Object.entries(mod.events!)) {
 				if (typeof handler !== "function") continue;
 
 				const listener = (...args: unknown[]) => {
 					void (handler as (client: TriviousClient, ...args: unknown[]) => any)(client, ...args);
 				};
 
-				(client.on as any)(eventName, listener);
+				(client.on as any)(moduleName, listener);
 			}
 		}
 	}
