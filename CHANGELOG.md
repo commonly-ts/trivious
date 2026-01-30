@@ -1,3 +1,10 @@
+## [1.6.14](https://github.com/commonly-ts/trivious/compare/v1.6.13...v1.6.14) (2026-01-30)
+
+
+### Bug Fixes
+
+* fixed module checks ([d823f08](https://github.com/commonly-ts/trivious/commit/d823f08826fc546e6803734ef2ad395332ded796))
+
 ## [1.6.13](https://github.com/commonly-ts/trivious/compare/v1.6.12...v1.6.13) (2026-01-22)
 
 
