@@ -1,3 +1,10 @@
+## [1.6.15](https://github.com/commonly-ts/trivious/compare/v1.6.14...v1.6.15) (2026-02-01)
+
+
+### Bug Fixes
+
+* fixed registry checks ([d2d68de](https://github.com/commonly-ts/trivious/commit/d2d68de25e0ab8e06833afa21e79b4b123afc2c1))
+
 ## [1.6.14](https://github.com/commonly-ts/trivious/compare/v1.6.13...v1.6.14) (2026-01-30)
 
 
