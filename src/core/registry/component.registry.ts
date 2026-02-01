@@ -36,7 +36,7 @@ export default class ComponentRegistry extends BaseRegistry<Component> {
 
 			if (entry.isFile() && entry.name.endsWith(".js")) {
 				const event = await this.importFile<Component>(fullPath);
-				if (!event) continue;
+				if (!event || !("component" in event)) continue;
 
 				if (!(event.customId || event.customIdData)) {
 					console.error(`Component from ${entry.name} does not return customId nor customIdData!`);

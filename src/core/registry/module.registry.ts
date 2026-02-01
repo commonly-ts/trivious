@@ -39,7 +39,7 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 
 			if (entry.isFile() && entry.name.endsWith(".js")) {
 				const moduleEvent = await this.importFile<Module>(fullPath);
-				if (!moduleEvent) continue;
+				if (!moduleEvent || !("events" in moduleEvent && "name" in moduleEvent)) continue;
 
 				this.items.set(moduleEvent.name, moduleEvent);
 			}
@@ -55,8 +55,6 @@ export default class ModuleRegistry extends BaseRegistry<Module> {
 	 */
 	bind(client: TriviousClient) {
 		for (const mod of this.items.values()) {
-			if (!("events" in mod && "name" in mod)) continue;
-
 			for (const [moduleName, handler] of Object.entries(mod.events!)) {
 				if (typeof handler !== "function") continue;
 

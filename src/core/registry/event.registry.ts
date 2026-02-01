@@ -63,7 +63,7 @@ export default class EventRegistry extends BaseRegistry<Event> {
 
 			if (entry.isFile() && entry.name.endsWith(".js")) {
 				const event = await this.importFile<Event>(fullPath);
-				if (!event) continue;
+				if (!event || !("name" in event && "execute" in event)) continue;
 
 				this.items.set(event.name, event);
 			}
