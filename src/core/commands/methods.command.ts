@@ -117,6 +117,14 @@ export async function handleSlashCommand(
 		true
 	);
 
+	if (command.flags?.includes("DeferReply")) {
+		await interactionReply({
+			flags: command.flags,
+			interaction,
+			options: { content: "Processing command..." },
+		});
+	}
+
 	if ("run" in command && command.run && hasPerm) {
 		await command.run(client, interaction);
 	}
@@ -124,17 +132,7 @@ export async function handleSlashCommand(
 	if (!hasPerm) return;
 
 	// skip subcommand processing and respect command flags
-	if (!options.getSubcommand(false) || !("subcommands" in command)) {
-		if (command.flags?.includes("DeferReply")) {
-			await interactionReply({
-				flags: command.flags,
-				interaction,
-				options: { content: "Processing command..." },
-			});
-		}
-
-		return;
-	}
+	if (!options.getSubcommand(false) || !("subcommands" in command)) return;
 
 	const subcommandName = options.getSubcommand();
 	const subcommand = command.subcommands!.get(subcommandName) as SlashSubcommand | undefined;
@@ -153,7 +151,7 @@ export async function handleSlashCommand(
 	// respect subcommand flags over command flags
 	if (subcommand.flags?.includes("DeferReply") && !subcommand.flags.includes("ModalResponse")) {
 		await interactionReply({
-			flags: command.flags,
+			flags: subcommand.flags,
 			interaction,
 			options: { content: "Processing command..." },
 		});
