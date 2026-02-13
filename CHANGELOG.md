@@ -1,3 +1,10 @@
+## [1.6.17](https://github.com/commonly-ts/trivious/compare/v1.6.16...v1.6.17) (2026-02-13)
+
+
+### Bug Fixes
+
+* fixed deferReply flag for SlashCommand run ([c54657e](https://github.com/commonly-ts/trivious/commit/c54657e250a14d17e7ba4fcbcd5be73c88c9815d))
+
 ## [1.6.16](https://github.com/commonly-ts/trivious/compare/v1.6.15...v1.6.16) (2026-02-13)
 
 
