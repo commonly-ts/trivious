@@ -1,3 +1,10 @@
+## [1.6.16](https://github.com/commonly-ts/trivious/compare/v1.6.15...v1.6.16) (2026-02-13)
+
+
+### Bug Fixes
+
+* added SlashCommandOptionsOnlyBuilder to SlashCommands ([0615277](https://github.com/commonly-ts/trivious/commit/06152779ea4401afb6c84aa18261113ca2eedab4))
+
 ## [1.6.15](https://github.com/commonly-ts/trivious/compare/v1.6.14...v1.6.15) (2026-02-01)
 
 
