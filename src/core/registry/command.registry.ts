@@ -53,7 +53,7 @@ export default class CommandRegistry extends BaseRegistry<Command> {
 				| null;
 			if (!command || !command.active || !("data" in command)) continue;
 
-			if (command.context === "SlashCommand") {
+			if (command.context === "SlashCommand" && "addSubcommand" in command.data) {
 				const subcommandFiles = (await fs.readdir(fullPath)).filter(
 					file =>
 						(file.endsWith(".ts") || file.endsWith(".js")) &&

@@ -5,6 +5,7 @@ import {
 	ContextMenuCommandBuilder,
 	MessageContextMenuCommandInteraction,
 	SlashCommandBuilder,
+	SlashCommandOptionsOnlyBuilder,
 	SlashCommandSubcommandBuilder,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
@@ -38,7 +39,7 @@ export interface Command {
  */
 export interface SlashCommand extends Command {
 	readonly context: "SlashCommand";
-	readonly data: SlashCommandBuilder;
+	readonly data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
 	subcommands?: Collection<string, Command>;
 	readonly run?: (
 		client: TriviousClient,
