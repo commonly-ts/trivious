@@ -28,7 +28,7 @@ import { hasPermission } from "src/shared/utility/functions.js";
  * @returns {*}
  */
 export async function interactionReply(data: {
-	flags?: ("FollowUp" | CommandFlags)[];
+	flags?: ("ClearAll" | "FollowUp" | CommandFlags)[];
 	interaction: Interaction<CacheType>;
 	options: MessagePayload | InteractionEditReplyOptions | InteractionReplyOptions;
 }) {
@@ -40,12 +40,20 @@ export async function interactionReply(data: {
 	const ephemeral = flags?.includes("EphemeralReply");
 	const followUp = flags?.includes("FollowUp");
 
-	const newOptions = options as InteractionReplyOptions;
-	if (ephemeral) newOptions.flags = ["Ephemeral"];
+	let newOptions = options as InteractionReplyOptions;
+	if (flags?.includes("ClearAll")) {
+		newOptions.files = [];
+		newOptions.embeds = [];
+		newOptions.components = [];
+		newOptions.content = "";
 
+		newOptions = options as InteractionReplyOptions;
+	}
+
+	if (ephemeral) newOptions.flags = ["Ephemeral"];
 	if (interaction.replied || interaction.deferred) {
 		if (followUp) await interaction.followUp(newOptions);
-		else await interaction.editReply(options as InteractionEditReplyOptions);
+		else await interaction.editReply(newOptions as InteractionEditReplyOptions);
 	} else {
 		await interaction.reply(newOptions);
 	}
