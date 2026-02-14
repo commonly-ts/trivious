@@ -1,3 +1,11 @@
+## [1.6.18](https://github.com/commonly-ts/trivious/compare/v1.6.17...v1.6.18) (2026-02-14)
+
+
+### Bug Fixes
+
+* added ClearAll flag ([faa0ee0](https://github.com/commonly-ts/trivious/commit/faa0ee01888da8b2805b5accd898a29e7017b8af))
+* remove auto replies from component interactions ([61b1f3e](https://github.com/commonly-ts/trivious/commit/61b1f3e5f150c014d573bea79eee14f9f3cdee9d))
+
 ## [1.6.17](https://github.com/commonly-ts/trivious/compare/v1.6.16...v1.6.17) (2026-02-13)
 
 
