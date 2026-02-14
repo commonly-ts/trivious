@@ -110,7 +110,6 @@ export default {
 			);
 			if (!hasPermission) return;
 
-			if (!interaction.isModalSubmit()) await interaction.deferUpdate();
 			await component.execute(client, interaction);
 		}
 	},
