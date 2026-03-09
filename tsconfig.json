@@ -14,7 +14,9 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
-			"src/*": ["src/*"]
+			"src/*": ["src/*"],
+			"#shared/*": ["src/shared/*"],
+			"#feature/*": ["src/features/*"]
 		},
 		"typeRoots": ["node_modules/@types", "src/shared/typings/index"]
 	},
