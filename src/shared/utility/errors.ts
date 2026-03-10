@@ -26,6 +26,7 @@ export class CommandError extends Error {
 		this.name = "CommandError";
 
 		if ("data" in command) this.commandName = command.data?.name;
-		if (this.commandContext && this.commandName) this.cause = `Error in ${this.commandContext} '${this.commandName}'`;
+		if (this.commandContext && this.commandName)
+			this.cause = `Error in ${this.commandContext} '${this.commandName}'`;
 	}
 }

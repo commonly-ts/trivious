@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction } from 'discord.js';
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { SlashCommandData } from "./commands.types.js";
 import { CommandError } from "src/shared/utility/errors.js";
 import TriviousClient from "#feature/client/trivious.client.js";
@@ -9,7 +9,7 @@ export default async function handleSlashCommand(
 	interaction: ChatInputCommandInteraction<CacheType>
 ) {
 	try {
-		const { } = interaction;
+		const {} = interaction;
 		const { flags } = command;
 
 		if (flags?.includes("RequireCached")) {
@@ -17,7 +17,6 @@ export default async function handleSlashCommand(
 		}
 
 		if (flags?.includes("DeferReply")) {
-
 		}
 	} catch (err: unknown) {
 		throw new CommandError((err as Error).message, command);

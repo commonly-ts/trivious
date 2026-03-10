@@ -1,4 +1,13 @@
-import { CacheType, ChatInputCommandInteraction, Collection, SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "discord.js";
+import {
+	CacheType,
+	ChatInputCommandInteraction,
+	Collection,
+	SlashCommandSubcommandsOnlyBuilder,
+	SlashCommandBuilder,
+	SlashCommandOptionsOnlyBuilder,
+	SlashCommandSubcommandBuilder,
+	SlashCommandSubcommandGroupBuilder,
+} from "discord.js";
 import TriviousClient from "#feature/client/trivious.client.js";
 
 export type CommandBaseContext = "SlashCommand" | "SlashSubcommand" | "SlashSubcommandGroup";

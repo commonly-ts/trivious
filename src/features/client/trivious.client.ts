@@ -18,7 +18,10 @@ export default class TriviousClient extends Client {
 	async start() {
 		const token = process.env[this._options.credentials.tokenRefernece];
 		if (!token) {
-			throw new TriviousError(`Bot token environment variable '${this._options.credentials.tokenRefernece}' does not exist!`, "Null environment variable");
+			throw new TriviousError(
+				`Bot token environment variable '${this._options.credentials.tokenRefernece}' does not exist!`,
+				"Null environment variable"
+			);
 		}
 
 		await this.register();
@@ -27,11 +30,7 @@ export default class TriviousClient extends Client {
 		await this.login(token);
 	}
 
-	async register() {
+	async register() {}
 
-	}
-
-	async deploy() {
-
-	}
+	async deploy() {}
 }

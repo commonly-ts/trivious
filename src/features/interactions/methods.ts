@@ -1,4 +1,10 @@
-import { CacheType, Interaction, InteractionEditReplyOptions, InteractionReplyOptions, MessagePayload } from "discord.js";
+import {
+	CacheType,
+	Interaction,
+	InteractionEditReplyOptions,
+	InteractionReplyOptions,
+	MessagePayload,
+} from "discord.js";
 import { CommandFlags } from "../commands/commands.types.js";
 
 export function interactionReply(
