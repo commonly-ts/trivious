@@ -1,6 +1,7 @@
 import { Collection } from "discord.js";
 import { promises as fs } from "fs";
 import { join } from "path";
+import { TriviousError } from "src/shared/utility/errors.js";
 import { exists, importFile } from "src/shared/utility/functions.js";
 import {
 	SlashCommandData,
@@ -31,7 +32,11 @@ async function parseSubcommands(
 
 export const registry = {
 	async parse(directory: string) {
-		if (!(await exists(directory))) return;
+		if (!(await exists(directory)))
+			throw new TriviousError(
+				`Could not parse commands; passed directory '${directory}' does not exist!`,
+				"Nonexistant directory passed"
+			);
 
 		const commands = new Collection<string, SlashCommandData>();
 
