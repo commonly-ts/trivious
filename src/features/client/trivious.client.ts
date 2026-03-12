@@ -1,16 +1,41 @@
 import { TriviousError } from "#shared/utility/errors.js";
-import { Client } from "discord.js";
-import path, { dirname, join } from "path";
-import { fileURLToPath, pathToFileURL } from "url";
-import { registry as commandRegistry } from "../commands/registry.commands.js";
+import { Client, Collection } from "discord.js";
+import type {
+	MessageCommandData,
+	SlashCommandData,
+	UserCommandData,
+} from "../commands/commands.types.js";
+import { commandRegistry } from "../commands/registry.commands.js";
+import structure from "../structure/index.structure.js";
 import TriviousClientOptions from "./client.types.js";
 
 export default class TriviousClient extends Client {
 	_options: TriviousClientOptions;
+	readonly stores: {
+		commands: {
+			chatInput: Collection<string, SlashCommandData>;
+			user: Collection<string, UserCommandData>;
+			message: Collection<string, MessageCommandData>;
+		};
+		components: Collection<string, string>;
+		events: Collection<string, string>;
+		modules: Collection<string, string>;
+	};
 
 	constructor(options: TriviousClientOptions) {
 		super(options);
 		this._options = options;
+
+		this.stores = {
+			commands: {
+				chatInput: new Collection(),
+				message: new Collection(),
+				user: new Collection(),
+			},
+			components: new Collection(),
+			events: new Collection(),
+			modules: new Collection(),
+		};
 	}
 
 	/**
@@ -34,32 +59,45 @@ export default class TriviousClient extends Client {
 	}
 
 	async register() {
-		const structurePaths = this._options.structurePaths;
-		const paths: Record<string, string> = {
-			corePath: "",
-			commandsPath: "",
-			componentPath: "",
-			eventsPath: "",
-			modulesPath: "",
-		};
+		if (this._options.structurePaths.useTypeBasedStructure) {
+			const paths = this._options.structurePaths;
+			const resolvedPaths = structure.resolveTypeBasedStructure(paths.corePath);
 
-		const __filename = fileURLToPath(import.meta.url);
-		const __dirname = dirname(__filename);
+			await commandRegistry.register(this, resolvedPaths.get("commands") || "commands");
+			console.log(this.stores);
 
-		console.log(__filename);
-		console.log(__dirname);
-
-		if (structurePaths.useTypeBasedStructure) {
-			for (const pathType in paths) {
-				if (pathType === "useTypeBasedStructure") continue;
-				paths[pathType] =
-					(structurePaths as any)[pathType] || join(structurePaths.corePath, pathType.split("Path")[0]);
-			}
-
-			console.log(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
-			const commands = await commandRegistry.parse(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
-		} else {
+			// const dir = join(paths.corePath, "commands");
+			// const commandsPath = structure.resolveRelativePath(dir);
+			// console.log(dir, commandsPath);
 		}
+		// const commands = await commandRegistry.parse(structure.resolveStructurePath("test/src/features/moderation"))
+
+		// const structurePaths = this._options.structurePaths;
+		// const paths: Record<string, string> = {
+		// 	corePath: "",
+		// 	commandsPath: "",
+		// 	componentPath: "",
+		// 	eventsPath: "",
+		// 	modulesPath: "",
+		// };
+
+		// const __filename = fileURLToPath(import.meta.url);
+		// const __dirname = dirname(__filename);
+
+		// console.log(__filename);
+		// console.log(__dirname);
+
+		// if (structurePaths.useTypeBasedStructure) {
+		// 	for (const pathType in paths) {
+		// 		if (pathType === "useTypeBasedStructure") continue;
+		// 		paths[pathType] =
+		// 			(structurePaths as any)[pathType] || join(structurePaths.corePath, pathType.split("Path")[0]);
+		// 	}
+
+		// 	console.log(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
+		// 	const commands = await commandRegistry.parse(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
+		// } else {
+		// }
 
 		// const commands = commandRegistry.parse();
 	}

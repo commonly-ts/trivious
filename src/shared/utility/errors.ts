@@ -16,17 +16,15 @@ export class TriviousError extends Error {
 
 export class CommandError extends Error {
 	readonly commandName?: string;
-	readonly commandContext?: string;
 
 	constructor(message: string, command: Partial<BaseCommandData | SlashCommandData>) {
 		message = `[Trivious] ${message}`;
 		super(message);
 
-		this.commandContext = command.context;
 		this.name = "CommandError";
 
 		if ("data" in command) this.commandName = command.data?.name;
-		if (this.commandContext && this.commandName)
-			this.cause = `Error in ${this.commandContext} '${this.commandName}'`;
+		// if (this.commandContext && this.commandName)
+		// 	this.cause = `Error in ${this.commandContext} '${this.commandName}'`;
 	}
 }

@@ -1,7 +1,7 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
-import { SlashCommandData } from "./commands.types.js";
-import { CommandError } from "src/shared/utility/errors.js";
 import TriviousClient from "#feature/client/trivious.client.js";
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CommandError } from "src/shared/utility/errors.js";
+import { SlashCommandData } from "../commands.types.js";
 
 export default async function handleSlashCommand(
 	client: TriviousClient,

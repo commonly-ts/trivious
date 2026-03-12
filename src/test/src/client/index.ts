@@ -9,7 +9,7 @@ const client = new TriviousClient({
 	intents: [GatewayIntentBits.Guilds],
 	structurePaths: {
 		useTypeBasedStructure: true,
-		corePath: "test/src/features/moderation",
+		corePath: "core",
 	},
 });
 
