@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
 
-type ClientStores = "commands" | "components" | "events"| "modules";
+type ClientStores = "commands" | "components" | "events" | "modules";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

@@ -74,8 +74,8 @@ export interface BaseContextCommandData extends BaseCommandData {
 export interface SlashCommandData extends BaseChatInputCommandData {
 	context: "SlashCommand";
 	data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
-	subcommands?: Collection<string, SlashSubcommandData>;
-	subcommandGroups?: Collection<string, SlashSubcommandGroupData>;
+	subcommands?: Collection<string, SlashSubcommandData<true, "command">>;
+	subcommandGroups?: Collection<string, SlashSubcommandGroupData<true>>;
 	run?: ChatInputCommandFunction;
 }
 
@@ -85,10 +85,11 @@ export interface SlashCommandData extends BaseChatInputCommandData {
  * @param data The slash subcommand group builder
  * @param subcommands Collection of Subcommands
  */
-export interface SlashSubcommandGroupData extends BaseChatInputCommandData {
+export interface SlashSubcommandGroupData<Processed extends boolean = false> {
 	context: "SlashSubcommandGroup";
 	data: SlashCommandSubcommandGroupBuilder;
-	subcommands: Collection<string, SlashSubcommandData>;
+	subcommands: Collection<string, SlashSubcommandData<boolean, "group">>;
+	parent?: Processed extends true ? SlashCommandData : SlashCommandData | undefined;
 }
 
 /**
@@ -99,10 +100,20 @@ export interface SlashSubcommandGroupData extends BaseChatInputCommandData {
  * @param data The slash subcommand builder
  * @param execute Function for when the subcommand is executed
  */
-export interface SlashSubcommandData extends BaseChatInputCommandData {
+export interface SlashSubcommandData<
+	Processed extends boolean = false,
+	Parent extends "command" | "group" = "command",
+> extends BaseChatInputCommandData {
 	context: "SlashSubcommand";
 	data: SlashCommandSubcommandBuilder;
 	execute: ChatInputCommandFunction;
+	parent?: Processed extends true
+		? Parent extends "command"
+			? SlashCommandData
+			: SlashSubcommandGroupData<true>
+		: Parent extends "command"
+			? SlashCommandData | undefined
+			: SlashSubcommandGroupData<false> | undefined;
 }
 
 /**

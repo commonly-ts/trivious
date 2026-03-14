@@ -1,10 +1,12 @@
 import { ApplicationCommandType, Collection } from "discord.js";
-import { Dirent, promises as fs } from "fs";
-import { join } from "path";
+import { Dirent, existsSync, promises as fs } from "fs";
+import path, { join } from "path";
 import { TriviousError } from "src/shared/utility/errors.js";
-import { exists, importFile } from "src/shared/utility/functions.js";
-import type TriviousClient from "../client/trivious.client.js";
+import { importFile } from "src/shared/utility/functions.js";
+import TriviousClient from "../client/trivious.client.js";
 import type {
+	BaseChatInputCommandData,
+	BaseContextCommandData,
 	MessageCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
@@ -12,117 +14,120 @@ import type {
 	UserCommandData,
 } from "./commands.types.js";
 
-async function parseSubcommands(
-	directory: string,
-	collection: Collection<string, SlashSubcommandData>
-) {
-	const entries = (await fs.readdir(directory)).filter((f) => f.endsWith(".js"));
-	for (const entry of entries) {
-		if (!entry.endsWith(".js") && entry.startsWith("index")) continue;
+function validateCommand<T extends BaseChatInputCommandData | BaseContextCommandData>(
+	command: T,
+	expects: (command: Partial<T>) => boolean
+): boolean {
+	if (!("active" in command) || !("commandType" in command)) return false;
+	if (!command.active) return false;
+	return expects(command);
+}
 
-		const subcommand = await importFile<SlashSubcommandData>(join(directory, entry));
+async function parseSlashSubcommands(
+	directory: string,
+	data: SlashCommandData | SlashSubcommandGroupData<boolean>
+) {
+	const parentType = "context" in data ? "command" : "group";
+	const subcommands = new Collection<string, SlashSubcommandData<true, typeof parentType>>();
+
+	const files = fs.glob(join(directory, "./*.js"));
+	for await (const file of files) {
+		const subcommand = await importFile<SlashSubcommandData<true, typeof parentType>>(file);
 		if (
 			!subcommand ||
-			!("context" in subcommand) ||
-			subcommand.context !== "SlashSubcommand" ||
-			subcommand.commandType !== ApplicationCommandType.ChatInput
+			!validateCommand(subcommand, (subcmd) => subcmd.context === "SlashSubcommand")
 		)
 			continue;
-		if (!subcommand.active || !subcommand.data || !subcommand.execute) continue;
 
-		collection.set(subcommand.data.name, subcommand);
+		subcommand.parent = data;
+		subcommands.set(subcommand.data.name, subcommand);
+	}
+
+	if (subcommands.size > 0) data.subcommands = subcommands;
+	return subcommands;
+}
+
+async function parseSlashCommand(
+	file: string,
+	parentDir: string,
+	subdirectories: Dirent<string>[]
+) {
+	if (!existsSync(file)) return;
+
+	const command = await importFile<SlashCommandData>(file);
+	if (!command || !validateCommand(command, (cmd) => cmd.context === "SlashCommand")) return;
+
+	await parseSlashSubcommands(parentDir, command);
+
+	for (const subdir of subdirectories) {
+		const indexFile = path.resolve(subdir.parentPath, subdir.name, "index.js");
+		if (!existsSync(indexFile)) continue;
+
+		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile);
+		if (!group || !("context" in group) || group.context !== "SlashSubcommandGroup") continue;
+
+		group.parent = command;
+		if (!command.subcommandGroups) command.subcommandGroups = new Collection();
+		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
+
+		if (group.subcommands.size > 0) command.subcommandGroups.set(group.data.name, group);
+	}
+
+	return command;
+}
+
+async function parseContextCommand(parentDir: string) {
+	const collection = new Collection<string, MessageCommandData | UserCommandData>();
+	const files = fs.glob(join(parentDir, "**/*.js"));
+	for await (const file of files) {
+		const contextCommand = await importFile<MessageCommandData | UserCommandData>(file);
+		if (
+			!contextCommand ||
+			!validateCommand(
+				contextCommand,
+				(cmd) =>
+					cmd.commandType === ApplicationCommandType.Message ||
+					cmd.commandType === ApplicationCommandType.User
+			)
+		)
+			continue;
+
+		collection.set(contextCommand.data.name, contextCommand);
 	}
 
 	return collection;
 }
 
-export const commandRegistry = {
-	registryContext: "commands",
-	async parseChatInputCommand(entry: Dirent<string>, fullPath: string) {
-		if (!entry.isDirectory()) return null;
+async function registerDirectory(client: TriviousClient, parentDir: string) {
+	const entries = await fs.readdir(parentDir, { withFileTypes: true });
+	const subdirectories = entries.filter((entry) => entry.isDirectory());
 
-		const command = await importFile<SlashCommandData>(join(fullPath, "index.js"));
-		if (
-			!command ||
-			!("context" in command) ||
-			!("addSubcommand" in command.data) ||
-			command.context !== "SlashCommand" ||
-			command.commandType !== ApplicationCommandType.ChatInput
-		)
-			return null;
+	const indexFile = path.resolve(parentDir, "index.js");
+	const slashCommand = await parseSlashCommand(indexFile, parentDir, subdirectories);
+	if (slashCommand) client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 
-		const subcommands = await parseSubcommands(fullPath, new Collection());
-		const subcommandGroups = new Collection<string, SlashSubcommandGroupData>();
+	const contextCommands = await parseContextCommand(parentDir);
+	contextCommands.forEach((cmd) => client.stores.commands.context.set(cmd.data.name, cmd));
+}
 
-		const subdirectoryEntries = await fs.readdir(fullPath, { withFileTypes: true });
-		for (const subdir of subdirectoryEntries) {
-			if (!subdir.isDirectory()) continue;
-			const files = (await fs.readdir(join(fullPath, subdir.name))).filter((f) =>
-				f.endsWith(".js")
-			);
-			const indexFile = files.find((f) => f.startsWith("index"));
-			if (!indexFile) continue;
-
-			const groupData = await importFile<SlashSubcommandGroupData>(
-				join(fullPath, subdir.name, indexFile)
-			);
-			if (!groupData || !("data" in groupData)) continue;
-
-			if (!groupData.subcommands) groupData.subcommands = new Collection();
-			await parseSubcommands(join(fullPath, subdir.name), groupData.subcommands);
-
-			if (groupData.subcommands.size > 0) subcommandGroups.set(groupData.data.name, groupData);
-		}
-
-		if (subcommands.size > 0) command.subcommands = subcommands;
-		if (subcommandGroups.size > 0) command.subcommandGroups = subcommandGroups;
-
-		return command;
-	},
-
-	async parseContextCommand(entry: Dirent<string>, fullPath: string): Promise<UserCommandData | MessageCommandData | null> {
-		if (entry.isDirectory()) {
-			// return this.parseContextCommand(entry, fullPath);
-			return null;
-		}
-
-		if (!entry.name.endsWith(".js")) return null;
-
-		const command = await importFile<UserCommandData | MessageCommandData>(
-			join(fullPath, entry.name)
+export default async function registerCommands(client: TriviousClient, directory: string) {
+	if (!existsSync(directory))
+		throw new TriviousError(
+			`Could not parse commands; passed directory '${directory}' does not exist!`,
+			"Nonexistant directory passed"
 		);
-		if (!command || !("commandType" in command) || !("setType" in command.data)) return null;
-		if (
-			!(
-				command.commandType === ApplicationCommandType.Message ||
-				command.commandType === ApplicationCommandType.User
-			)
-		)
-			return null;
 
-		return command;
-	},
+	const processedDirectories = new Set<string>();
 
-	async register(client: TriviousClient, directory: string) {
-		if (!(await exists(directory)))
-			throw new TriviousError(
-				`Could not parse commands; passed directory '${directory}' does not exist!`,
-				"Nonexistant directory passed"
-			);
+	const files = fs.glob(join(directory, "**/*.js"));
+	for await (const file of files) {
+		const parentDir = path.dirname(file);
 
-		const entries = await fs.readdir(directory, { withFileTypes: true });
-		for (const entry of entries) {
-			const fullPath = join(directory, entry.name);
+		if (processedDirectories.has(parentDir)) continue;
+		processedDirectories.add(parentDir);
 
-			const chatInputCommand = await this.parseChatInputCommand(entry, fullPath);
-			console.log(chatInputCommand)
-			if (chatInputCommand) client.stores.commands.chatInput.set(chatInputCommand.data.name, chatInputCommand);
+		await registerDirectory(client, parentDir);
+	}
 
-			const contextCommand = await this.parseContextCommand(entry, fullPath);
-			if (contextCommand) {
-				const store = (contextCommand.commandType as ApplicationCommandType) === ApplicationCommandType.Message ? client.stores.commands.message : (contextCommand.commandType as ApplicationCommandType) === ApplicationCommandType.User ? client.stores.commands.user : null;
-				if (store) store.set(contextCommand.data.name, contextCommand as never);
-			}
-		}
-	},
-};
+	console.log(client.stores.commands);
+}

@@ -1,11 +1,7 @@
 import { TriviousError } from "#shared/utility/errors.js";
 import { Client, Collection } from "discord.js";
-import type {
-	MessageCommandData,
-	SlashCommandData,
-	UserCommandData,
-} from "../commands/commands.types.js";
-import { commandRegistry } from "../commands/registry.commands.js";
+import type { BaseContextCommandData, SlashCommandData } from "../commands/commands.types.js";
+import registerCommands from "../commands/registry.commands.js";
 import structure from "../structure/index.structure.js";
 import TriviousClientOptions from "./client.types.js";
 
@@ -14,8 +10,7 @@ export default class TriviousClient extends Client {
 	readonly stores: {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
-			user: Collection<string, UserCommandData>;
-			message: Collection<string, MessageCommandData>;
+			context: Collection<string, BaseContextCommandData>;
 		};
 		components: Collection<string, string>;
 		events: Collection<string, string>;
@@ -29,8 +24,7 @@ export default class TriviousClient extends Client {
 		this.stores = {
 			commands: {
 				chatInput: new Collection(),
-				message: new Collection(),
-				user: new Collection(),
+				context: new Collection(),
 			},
 			components: new Collection(),
 			events: new Collection(),
@@ -63,8 +57,9 @@ export default class TriviousClient extends Client {
 			const paths = this._options.structurePaths;
 			const resolvedPaths = structure.resolveTypeBasedStructure(paths.corePath);
 
-			await commandRegistry.register(this, resolvedPaths.get("commands") || "commands");
-			console.log(this.stores);
+			await registerCommands(this, structure.resolveRelativePath(paths.corePath));
+			// await commandRegistry.register(this, resolvedPaths.get("commands") || "commands");
+			// console.log(this.stores);
 
 			// const dir = join(paths.corePath, "commands");
 			// const commandsPath = structure.resolveRelativePath(dir);
