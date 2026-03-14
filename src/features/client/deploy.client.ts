@@ -1,7 +1,7 @@
 import { createHash } from "crypto";
+import { REST, Routes } from "discord.js";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
-import { REST, Routes } from "discord.js";
 import { TriviousError } from "src/utility/errors.js";
 import { MessageCommandData, UserCommandData } from "../commands/commands.types.js";
 import TriviousClient from "./trivious.client.js";
@@ -10,7 +10,7 @@ export default async function commandDeploy(client: TriviousClient) {
 	const { commandHashConfig } = client.trivious;
 
 	const clientId = process.env[client.trivious.credentials.clientIdReference];
-	const token = process.env[client.trivious.credentials.tokenRefernece];
+	const token = process.env[client.trivious.credentials.tokenReference];
 	if (!clientId || !token)
 		throw new TriviousError("Invalid clientId or token environment variable");
 
