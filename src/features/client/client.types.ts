@@ -80,9 +80,9 @@ export interface CommandHashConfiguration {
  * @param ownerUserIds Discord user IDs of bot owner(s)
  * @param commandHashConfig Command auto-deployment configuration
  */
-export default interface TriviousClientOptions extends ClientOptions {
+export interface TriviousClientOptions extends ClientOptions {
 	credentials: TriviousClientCredentials;
-	structurePaths: TypeBasedStructure | FeatureBasedStructure;
+	corePath: string;
 	ownerUserIds?: string[];
 	commandHashConfig?: CommandHashConfiguration;
 }

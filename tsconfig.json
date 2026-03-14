@@ -16,9 +16,11 @@
 		"paths": {
 			"src/*": ["src/*"],
 			"#shared/*": ["src/shared/*"],
-			"#feature/*": ["src/features/*"]
+			"#feature/*": ["src/features/*"],
+			"#utility/*": ["src/utility/*"],
+			"#typings": ["src/shared/typings.ts"]
 		},
-		"typeRoots": ["node_modules/@types", "src/shared/typings/index"]
+		"typeRoots": ["node_modules/@types", "src/shared/typings"]
 	},
 	"include": ["src", "vitest.config.ts", "tsup.config.ts", "eslint.config.js"],
 	"exclude": ["node_modules", "dist"]

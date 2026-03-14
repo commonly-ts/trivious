@@ -1,7 +1,6 @@
-import TriviousClient from "#feature/client/trivious.client.js";
+import type { TriviousClient } from "#typings";
 import type {
 	ApplicationCommandType,
-	CacheType,
 	ChatInputCommandInteraction,
 	Collection,
 	ContextMenuCommandBuilder,
@@ -16,11 +15,11 @@ import type {
 } from "discord.js";
 
 export type ChatInputCommandContext = "SlashCommand" | "SlashSubcommand" | "SlashSubcommandGroup";
-export type CommandFlags = "RequireCached" | "DeferReply" | "EphemerealReply" | "ExpectModal";
+export type CommandFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";
 
 export type ChatInputCommandFunction = (
 	client: TriviousClient,
-	interaction: ChatInputCommandInteraction<CacheType>
+	interaction: ChatInputCommandInteraction
 ) => Promise<void>;
 
 export type ContextMenuCommandFunction<T extends ContextMenuCommandInteraction> = (
@@ -127,7 +126,7 @@ export interface SlashSubcommandData<
 export interface MessageCommandData extends BaseContextCommandData {
 	commandType: ApplicationCommandType.Message;
 	data: ContextMenuCommandBuilder;
-	execute: ContextMenuCommandFunction<MessageContextMenuCommandInteraction<CacheType>>;
+	execute: ContextMenuCommandFunction<MessageContextMenuCommandInteraction>;
 }
 
 /**
@@ -141,5 +140,7 @@ export interface MessageCommandData extends BaseContextCommandData {
 export interface UserCommandData extends BaseContextCommandData {
 	commandType: ApplicationCommandType.User;
 	data: ContextMenuCommandBuilder;
-	execute: ContextMenuCommandFunction<UserContextMenuCommandInteraction<CacheType>>;
+	execute: ContextMenuCommandFunction<UserContextMenuCommandInteraction>;
 }
+
+export type ContextCommandData = MessageCommandData | UserCommandData;

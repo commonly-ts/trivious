@@ -1,9 +1,15 @@
-import { TriviousError } from "#shared/utility/errors.js";
+import type {
+	BaseContextCommandData,
+	Component,
+	Event,
+	Module,
+	SlashCommandData,
+	TriviousClientOptions,
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
 import { Client, Collection } from "discord.js";
-import type { BaseContextCommandData, SlashCommandData } from "../commands/commands.types.js";
-import registerCommands from "../commands/registry.commands.js";
+import registries from "src/shared/registries.js";
 import structure from "../structure/index.structure.js";
-import TriviousClientOptions from "./client.types.js";
 
 export default class TriviousClient extends Client {
 	_options: TriviousClientOptions;
@@ -12,9 +18,9 @@ export default class TriviousClient extends Client {
 			chatInput: Collection<string, SlashCommandData>;
 			context: Collection<string, BaseContextCommandData>;
 		};
-		components: Collection<string, string>;
-		events: Collection<string, string>;
-		modules: Collection<string, string>;
+		components: Collection<string, Component>;
+		events: Collection<string, Event>;
+		modules: Collection<string, Module>;
 	};
 
 	constructor(options: TriviousClientOptions) {
@@ -49,52 +55,26 @@ export default class TriviousClient extends Client {
 		await this.register();
 		await this.deploy();
 
+		try {
+			await registries.events.bind(this);
+			await registries.modules.bind(this);
+		} catch (err: any) {
+			const error = new TriviousError(err.message, "Error during events and modules binds");
+			console.error(error);
+		}
+
 		await this.login(token);
 	}
 
 	async register() {
-		if (this._options.structurePaths.useTypeBasedStructure) {
-			const paths = this._options.structurePaths;
-			const resolvedPaths = structure.resolveTypeBasedStructure(paths.corePath);
+		const dir = structure.resolveRelativePath(this._options.corePath);
 
-			await registerCommands(this, structure.resolveRelativePath(paths.corePath));
-			// await commandRegistry.register(this, resolvedPaths.get("commands") || "commands");
-			// console.log(this.stores);
+		await registries.events.register(this, dir);
+		await registries.modules.register(this, dir);
+		await registries.commands.register(this, dir);
+		await registries.components.register(this, dir);
 
-			// const dir = join(paths.corePath, "commands");
-			// const commandsPath = structure.resolveRelativePath(dir);
-			// console.log(dir, commandsPath);
-		}
-		// const commands = await commandRegistry.parse(structure.resolveStructurePath("test/src/features/moderation"))
-
-		// const structurePaths = this._options.structurePaths;
-		// const paths: Record<string, string> = {
-		// 	corePath: "",
-		// 	commandsPath: "",
-		// 	componentPath: "",
-		// 	eventsPath: "",
-		// 	modulesPath: "",
-		// };
-
-		// const __filename = fileURLToPath(import.meta.url);
-		// const __dirname = dirname(__filename);
-
-		// console.log(__filename);
-		// console.log(__dirname);
-
-		// if (structurePaths.useTypeBasedStructure) {
-		// 	for (const pathType in paths) {
-		// 		if (pathType === "useTypeBasedStructure") continue;
-		// 		paths[pathType] =
-		// 			(structurePaths as any)[pathType] || join(structurePaths.corePath, pathType.split("Path")[0]);
-		// 	}
-
-		// 	console.log(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
-		// 	const commands = await commandRegistry.parse(pathToFileURL(path.resolve(__dirname, "..", paths.commandsPath)).pathname);
-		// } else {
-		// }
-
-		// const commands = commandRegistry.parse();
+		console.log(this.stores);
 	}
 
 	async deploy() {}

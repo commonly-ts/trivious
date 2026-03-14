@@ -1,9 +1,3 @@
-import { ApplicationCommandType, Collection } from "discord.js";
-import { Dirent, existsSync, promises as fs } from "fs";
-import path, { join } from "path";
-import { TriviousError } from "src/shared/utility/errors.js";
-import { importFile } from "src/shared/utility/functions.js";
-import TriviousClient from "../client/trivious.client.js";
 import type {
 	BaseChatInputCommandData,
 	BaseContextCommandData,
@@ -11,14 +5,20 @@ import type {
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
+	TriviousClient,
 	UserCommandData,
-} from "./commands.types.js";
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
+import { importFile } from "#utility/functions.js";
+import { ApplicationCommandType, Collection } from "discord.js";
+import { Dirent, existsSync, promises as fs } from "fs";
+import path, { join } from "path";
 
 function validateCommand<T extends BaseChatInputCommandData | BaseContextCommandData>(
 	command: T,
 	expects: (command: Partial<T>) => boolean
 ): boolean {
-	if (!("active" in command) || !("commandType" in command)) return false;
+	if (!("active" in command && "commandType" in command)) return false;
 	if (!command.active) return false;
 	return expects(command);
 }
@@ -76,7 +76,7 @@ async function parseSlashCommand(
 	return command;
 }
 
-async function parseContextCommand(parentDir: string) {
+async function parseContextCommands(parentDir: string) {
 	const collection = new Collection<string, MessageCommandData | UserCommandData>();
 	const files = fs.glob(join(parentDir, "**/*.js"));
 	for await (const file of files) {
@@ -92,6 +92,7 @@ async function parseContextCommand(parentDir: string) {
 		)
 			continue;
 
+		contextCommand.data.setType(contextCommand.commandType);
 		collection.set(contextCommand.data.name, contextCommand);
 	}
 
@@ -106,14 +107,14 @@ async function registerDirectory(client: TriviousClient, parentDir: string) {
 	const slashCommand = await parseSlashCommand(indexFile, parentDir, subdirectories);
 	if (slashCommand) client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 
-	const contextCommands = await parseContextCommand(parentDir);
+	const contextCommands = await parseContextCommands(parentDir);
 	contextCommands.forEach((cmd) => client.stores.commands.context.set(cmd.data.name, cmd));
 }
 
 export default async function registerCommands(client: TriviousClient, directory: string) {
 	if (!existsSync(directory))
 		throw new TriviousError(
-			`Could not parse commands; passed directory '${directory}' does not exist!`,
+			`Could not register commands; passed directory '${directory}' does not exist!`,
 			"Nonexistant directory passed"
 		);
 
@@ -128,6 +129,4 @@ export default async function registerCommands(client: TriviousClient, directory
 
 		await registerDirectory(client, parentDir);
 	}
-
-	console.log(client.stores.commands);
 }
