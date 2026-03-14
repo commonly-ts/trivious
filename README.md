@@ -20,18 +20,17 @@ pnpm add trivious
 
 ```ts
 // src/index.ts
-import { TriviousClient, PermissionLevel } from "trivious";
+import { TriviousClient } from "trivious";
 import { GatewayIntentBits } from "discord.js";
 
 const client = new TriviousClient({
-	tokenReference: "BOT_TOKEN",
-	clientIdReference: "CLIENT_ID",
-	corePath: "core", // Folder containing commands/, events/, components/, modules/
-	intents: [GatewayIntentBits.Guilds],
-	rolePermissions: {
-		// Altneratively can be set via client.rolePermissions
-		"123456789012345678": PermissionLevel.GUILD_MODERATOR, // Role ID → PermissionLevel
+	credentials: {
+		tokenReference: "BOT_TOKEN",
+		clientIdReference: "CLIENT_ID",
 	},
+	corePath: "core", // Folder containing your bot's processes
+	intents: [GatewayIntentBits.Guilds],
+	ownerUserIds: ["1234"],
 });
 
 (async () => {
@@ -40,9 +39,9 @@ const client = new TriviousClient({
 		// Registers all commands, events, components, modules;
 		// Deploys slash commands globally and then logs into the bot
 
-		// To separately register commands, events, etc - use client.register()
 		// To separately deploy commands - use client.deploy() followed by client.login()
-	} catch (error) {
+	} catch (err: unknown) {
+		const error = err as Error;
 		console.error("Failed to start bot:", error);
 	}
 })();
@@ -53,36 +52,53 @@ const client = new TriviousClient({
 ### Included Default Events
 
 Trivious automatically includes and inserts `clientReady` and `interactionCreate` handlers, which can be overwritten.
-It is recommended to use the default interactionCreate handler, which requires zero input in your own code.
+It is recommended to use the default interactionCreate handler, which requires zero setup in your own code.
 
-These default events can be found in `src/core/events` in the Trivious repository.
+These default events can be found in `src/features/events/presets` in the Trivious repository.
 
 ---
 
 ### Creating a Slash Command
 
 ```ts
-// src/core/commands/debug/index.ts
+// commands/debug/index.ts
 import { SlashCommandBuilder } from "discord.js";
-import { PermissionLevel, SlashCommand } from "trivious";
+import { SlashCommandData } from "trivious";
 
 export default {
 	active: true,
 	context: "SlashCommand",
-	flags: ["OwnerOnly", "GuildOnly", "EphemeralReply", "DeferReply"],
-	permission: PermissionLevel.BOT_OWNER,
+	flags: ["Cached", "EphemeralReply", "DeferReply"],
 	data: new SlashCommandBuilder().setName("debug").setDescription("Debug commands"),
-} satisfies SlashCommand; // recommended for type-safety
+} satisfies SlashCommandData;
 ```
 
-> Subcommands go in the same directory as the command file and are auto-detected.
+### Creating a Subcommand Group
+
+```ts
+// commands/debug/config/index.ts
+import { Collection, SlashCommandSubcommandGroupBuilder } from "discord.js";
+import { SlashSubcommandGroupData } from "trivious";
+
+export default {
+	context: "SlashSubcommandGroup",
+	data: new SlashCommandSubcommandGroupBuilder()
+		.setName("config")
+		.setDescription("Config commands"),
+	subcommands: new Collection(),
+} satisfies SlashSubcommandGroupData;
+```
+
+> Subcommands go in the same directory as the subcommand group file and are auto-detected.
+
+---
 
 ### Creating a Subcommand
 
 ```ts
-// src/core/commands/debug/ping.ts
+// commands/debug/ping.ts
 import { SlashCommandSubcommandBuilder } from "discord.js";
-import { commandReply, SlashSubcommand } from "trivious";
+import { interactionReply, SlashSubcommandData } from "trivious";
 
 export default {
 	active: true,
@@ -92,61 +108,32 @@ export default {
 	async execute(client, interaction) {
 		const ping = (await interaction.fetchReply()).createdTimestamp - interaction.createdTimestamp;
 
-		await commandReply(this, interaction, {
-			content: `Pong!\nBot latency: ${ping}ms, API latency: ${client.ws.ping.toString()}ms`,
+		await interactionReply({
+			interaction,
+			replyPayload: {
+				content: `Pong!\nBot latency: ${ping}ms, API latency: ${client.ws.ping.toString()}ms`,
+			},
+			flags: ["EphemeralReply"],
 		});
 	},
-} satisfies SlashSubcommand; // recommended for type-safety
+} satisfies SlashSubcommandData;
 ```
 
 ---
 
-### Permission Levels
+### Project Structure
 
-```ts
-enum PermissionLevel {
-	USER = 0,
-	GUILD_STAFF = 1,
-	GUILD_MODERATOR = 2,
-	GUILD_ADMINISTRATOR = 3,
-	GUILD_OWNER = 4,
-	BOT_OWNER = 5,
-}
-```
+Any project structure (e.g. type-based, feature-based) is acceptable as long as everything you expect to be registered is within the core directory.
 
-Set role permissions in client options
+For example, if all of your commands, components, events and modules are anywhere inside src/features, assuming they export the correct data, they will be detected and registered to the client.
 
-```ts
-rolePermissions: {
-	"987654321098765432": PermissionLevel.GUILD_ADMINISTRATOR,
-	moderatorRole.id: PermissionLevel.GUILD_MODERATOR,
-}
-```
-
-Or dynamically at runtime:
-
-```ts
-client.setRolePermissions({
-	"123456": PermissionLevel.GUILD_STAFF,
-});
-```
-
----
-
-### Recommended Project Structure
+The only required specific structure are for slash commands, as shown below.
 
 ```
-src/
-├── core/
-│   ├── commands/
-│   │   └── debug/
-│   │       ├── index.ts
-│   │       └── ping.ts
-│   ├── events/
-│   │   └── ready.ts
-│   ├── components/
-│   │   └── ticket-create.ts
-│   └── modules/
-│       └── logging.ts
-└── index.ts
+command/
+├── index.ts
+├── subcommand.ts
+└── subcommand-group/
+		├── index.ts
+ 		└──subcommand.ts
 ```
