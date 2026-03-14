@@ -30,6 +30,8 @@ async function parseSlashSubcommands(
 	const _parentType = "context" in data ? "command" : "group";
 	const subcommands = new Collection<string, SlashSubcommandData<true, typeof _parentType>>();
 
+	if (!("addSubcommand" in data.data)) return subcommands;
+
 	const files = fs.glob(join(directory, "./*.js"));
 	for await (const file of files) {
 		const subcommand = await importFile<SlashSubcommandData<true, typeof _parentType>>(file);
@@ -40,6 +42,7 @@ async function parseSlashSubcommands(
 			continue;
 
 		subcommand.parent = data;
+		data.data.addSubcommand(subcommand.data);
 		subcommands.set(subcommand.data.name, subcommand);
 	}
 
@@ -55,7 +58,12 @@ async function parseSlashCommand(
 	if (!existsSync(file)) return;
 
 	const command = await importFile<SlashCommandData>(file);
-	if (!command || !validateCommand(command, (cmd) => cmd.context === "SlashCommand")) return;
+	if (
+		!command ||
+		!validateCommand(command, (cmd) => cmd.context === "SlashCommand") ||
+		!("addSubcommand" in command.data)
+	)
+		return;
 
 	await parseSlashSubcommands(parentDir, command);
 
@@ -70,7 +78,10 @@ async function parseSlashCommand(
 		if (!command.subcommandGroups) command.subcommandGroups = new Collection();
 		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
 
-		if (group.subcommands.size > 0) command.subcommandGroups.set(group.data.name, group);
+		if (group.subcommands.size > 0) {
+			command.data.addSubcommandGroup(group.data);
+			command.subcommandGroups.set(group.data.name, group);
+		}
 	}
 
 	return command;

@@ -62,12 +62,13 @@ These default events can be found in `src/features/events/presets` in the Trivio
 
 ```ts
 // commands/debug/index.ts
-import { SlashCommandBuilder } from "discord.js";
+import { ApplicationCommandType, SlashCommandBuilder } from "discord.js";
 import { SlashCommandData } from "trivious";
 
 export default {
 	active: true,
 	context: "SlashCommand",
+	commandType: ApplicationCommandType.ChatInput,
 	flags: ["Cached", "EphemeralReply", "DeferReply"],
 	data: new SlashCommandBuilder().setName("debug").setDescription("Debug commands"),
 } satisfies SlashCommandData;
@@ -97,12 +98,13 @@ export default {
 
 ```ts
 // commands/debug/ping.ts
-import { SlashCommandSubcommandBuilder } from "discord.js";
+import { ApplicationCommandType, SlashCommandSubcommandBuilder } from "discord.js";
 import { interactionReply, SlashSubcommandData } from "trivious";
 
 export default {
 	active: true,
 	context: "SlashSubcommand",
+	commandType: ApplicationCommandType.ChatInput,
 	data: new SlashCommandSubcommandBuilder().setName("ping").setDescription("Ping pong!"),
 
 	async execute(client, interaction) {

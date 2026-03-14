@@ -7,7 +7,7 @@ import { ClientOptions } from "discord.js";
  * @param clientId Environment variable name for bot client ID
  */
 export interface TriviousClientCredentials {
-	tokenRefernece: string;
+	tokenReference: string;
 	clientIdReference: string;
 }
 
