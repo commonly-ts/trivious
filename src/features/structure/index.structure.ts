@@ -1,7 +1,7 @@
-import { Collection } from "discord.js";
 import { existsSync } from "fs";
 import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
+import { Collection } from "discord.js";
 
 type ClientStores = "commands" | "components" | "events" | "modules";
 

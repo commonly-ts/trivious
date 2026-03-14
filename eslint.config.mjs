@@ -52,7 +52,7 @@ export default tseslint.config(
 					],
 				},
 			],
-			"import/order": ["warn", { "newlines-between": "always-and-inside-groups" }],
+			"import/order": ["off"],
 			"import/no-duplicates": "error",
 			"import/first": "error",
 			"import/newline-after-import": "error",

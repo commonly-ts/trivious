@@ -1,4 +1,3 @@
-import type { CommandFlags, SlashCommandData, TriviousClient } from "#typings";
 import type {
 	CacheType,
 	ChatInputCommandInteraction,
@@ -7,6 +6,7 @@ import type {
 	InteractionReplyOptions,
 	MessagePayload,
 } from "discord.js";
+import type { CommandFlags, SlashCommandData, TriviousClient } from "#typings";
 
 export async function interactionReply(options: {
 	interaction: Interaction<CacheType>;
@@ -47,7 +47,9 @@ export async function handleSlashCommand(
 	if ("run" in command && command.run) {
 		try {
 			await command.run(client, interaction);
-		} catch {}
+		} catch (err: any) {
+			console.error(err);
+		}
 	}
 
 	const subcommandGroup = options.getSubcommandGroup(false);

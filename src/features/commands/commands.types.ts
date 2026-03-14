@@ -1,4 +1,3 @@
-import type { TriviousClient } from "#typings";
 import type {
 	ApplicationCommandType,
 	ChatInputCommandInteraction,
@@ -13,6 +12,7 @@ import type {
 	SlashCommandSubcommandsOnlyBuilder,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
+import type { TriviousClient } from "#typings";
 
 export type ChatInputCommandContext = "SlashCommand" | "SlashSubcommand" | "SlashSubcommandGroup";
 export type CommandFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";

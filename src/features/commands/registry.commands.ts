@@ -27,12 +27,12 @@ async function parseSlashSubcommands(
 	directory: string,
 	data: SlashCommandData | SlashSubcommandGroupData<boolean>
 ) {
-	const parentType = "context" in data ? "command" : "group";
-	const subcommands = new Collection<string, SlashSubcommandData<true, typeof parentType>>();
+	const _parentType = "context" in data ? "command" : "group";
+	const subcommands = new Collection<string, SlashSubcommandData<true, typeof _parentType>>();
 
 	const files = fs.glob(join(directory, "./*.js"));
 	for await (const file of files) {
-		const subcommand = await importFile<SlashSubcommandData<true, typeof parentType>>(file);
+		const subcommand = await importFile<SlashSubcommandData<true, typeof _parentType>>(file);
 		if (
 			!subcommand ||
 			!validateCommand(subcommand, (subcmd) => subcmd.context === "SlashSubcommand")

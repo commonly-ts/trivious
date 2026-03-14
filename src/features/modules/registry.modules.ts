@@ -1,8 +1,8 @@
+import { existsSync, promises as fs } from "fs";
+import { join } from "path";
 import { Module, TriviousClient } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
-import { existsSync, promises as fs } from "fs";
-import { join } from "path";
 
 export async function bindModules(client: TriviousClient) {
 	for (const moduleData of client.stores.modules.values()) {

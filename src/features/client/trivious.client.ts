@@ -1,3 +1,7 @@
+import { Client, Collection } from "discord.js";
+import registries from "src/shared/registries.js";
+import structure from "../structure/index.structure.js";
+
 import type {
 	BaseContextCommandData,
 	Component,
@@ -7,12 +11,10 @@ import type {
 	TriviousClientOptions,
 } from "#typings";
 import { TriviousError } from "#utility/errors.js";
-import { Client, Collection } from "discord.js";
-import registries from "src/shared/registries.js";
-import structure from "../structure/index.structure.js";
+import commandDeploy from "./deploy.client.js";
 
 export default class TriviousClient extends Client {
-	_options: TriviousClientOptions;
+	trivious: TriviousClientOptions;
 	readonly stores: {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
@@ -25,7 +27,7 @@ export default class TriviousClient extends Client {
 
 	constructor(options: TriviousClientOptions) {
 		super(options);
-		this._options = options;
+		this.trivious = options;
 
 		this.stores = {
 			commands: {
@@ -44,10 +46,10 @@ export default class TriviousClient extends Client {
 	 * @throws {TriviousError} If invalid bot token
 	 */
 	async start() {
-		const token = process.env[this._options.credentials.tokenRefernece];
+		const token = process.env[this.trivious.credentials.tokenRefernece];
 		if (!token) {
 			throw new TriviousError(
-				`Bot token environment variable '${this._options.credentials.tokenRefernece}' does not exist!`,
+				`Bot token environment variable '${this.trivious.credentials.tokenRefernece}' does not exist!`,
 				"Null environment variable"
 			);
 		}
@@ -67,7 +69,7 @@ export default class TriviousClient extends Client {
 	}
 
 	async register() {
-		const dir = structure.resolveRelativePath(this._options.corePath);
+		const dir = structure.resolveRelativePath(this.trivious.corePath);
 
 		await registries.events.register(this, dir);
 		await registries.modules.register(this, dir);
@@ -77,5 +79,7 @@ export default class TriviousClient extends Client {
 		console.log(this.stores);
 	}
 
-	async deploy() {}
+	async deploy() {
+		await commandDeploy(this);
+	}
 }

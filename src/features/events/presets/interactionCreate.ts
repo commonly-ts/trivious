@@ -1,7 +1,7 @@
-import { ComponentContext, type ContextCommandData, type Event } from "#typings";
 import { ApplicationCommandType, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 import { handleSlashCommand, interactionReply } from "src/features/commands/methods.commands.js";
 import { decodeCustomId } from "src/features/customId/methods.customid.js";
+import { ComponentContext, type ContextCommandData, type Event } from "#typings";
 
 export default {
 	name: "interactionCreate",
