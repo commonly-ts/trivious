@@ -1,0 +1,132 @@
+import type {
+	BaseChatInputCommandData,
+	BaseContextCommandData,
+	MessageCommandData,
+	SlashCommandData,
+	SlashSubcommandData,
+	SlashSubcommandGroupData,
+	TriviousClient,
+	UserCommandData,
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
+import { importFile } from "#utility/functions.js";
+import { ApplicationCommandType, Collection } from "discord.js";
+import { Dirent, existsSync, promises as fs } from "fs";
+import path, { join } from "path";
+
+function validateCommand<T extends BaseChatInputCommandData | BaseContextCommandData>(
+	command: T,
+	expects: (command: Partial<T>) => boolean
+): boolean {
+	if (!("active" in command && "commandType" in command)) return false;
+	if (!command.active) return false;
+	return expects(command);
+}
+
+async function parseSlashSubcommands(
+	directory: string,
+	data: SlashCommandData | SlashSubcommandGroupData<boolean>
+) {
+	const _parentType = "context" in data ? "command" : "group";
+	const subcommands = new Collection<string, SlashSubcommandData<true, typeof _parentType>>();
+
+	const files = fs.glob(join(directory, "./*.js"));
+	for await (const file of files) {
+		const subcommand = await importFile<SlashSubcommandData<true, typeof _parentType>>(file);
+		if (
+			!subcommand ||
+			!validateCommand(subcommand, (subcmd) => subcmd.context === "SlashSubcommand")
+		)
+			continue;
+
+		subcommand.parent = data;
+		subcommands.set(subcommand.data.name, subcommand);
+	}
+
+	if (subcommands.size > 0) data.subcommands = subcommands;
+	return subcommands;
+}
+
+async function parseSlashCommand(
+	file: string,
+	parentDir: string,
+	subdirectories: Dirent<string>[]
+) {
+	if (!existsSync(file)) return;
+
+	const command = await importFile<SlashCommandData>(file);
+	if (!command || !validateCommand(command, (cmd) => cmd.context === "SlashCommand")) return;
+
+	await parseSlashSubcommands(parentDir, command);
+
+	for (const subdir of subdirectories) {
+		const indexFile = path.resolve(subdir.parentPath, subdir.name, "index.js");
+		if (!existsSync(indexFile)) continue;
+
+		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile);
+		if (!group || !("context" in group) || group.context !== "SlashSubcommandGroup") continue;
+
+		group.parent = command;
+		if (!command.subcommandGroups) command.subcommandGroups = new Collection();
+		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
+
+		if (group.subcommands.size > 0) command.subcommandGroups.set(group.data.name, group);
+	}
+
+	return command;
+}
+
+async function parseContextCommands(parentDir: string) {
+	const collection = new Collection<string, MessageCommandData | UserCommandData>();
+	const files = fs.glob(join(parentDir, "**/*.js"));
+	for await (const file of files) {
+		const contextCommand = await importFile<MessageCommandData | UserCommandData>(file);
+		if (
+			!contextCommand ||
+			!validateCommand(
+				contextCommand,
+				(cmd) =>
+					cmd.commandType === ApplicationCommandType.Message ||
+					cmd.commandType === ApplicationCommandType.User
+			)
+		)
+			continue;
+
+		contextCommand.data.setType(contextCommand.commandType);
+		collection.set(contextCommand.data.name, contextCommand);
+	}
+
+	return collection;
+}
+
+async function registerDirectory(client: TriviousClient, parentDir: string) {
+	const entries = await fs.readdir(parentDir, { withFileTypes: true });
+	const subdirectories = entries.filter((entry) => entry.isDirectory());
+
+	const indexFile = path.resolve(parentDir, "index.js");
+	const slashCommand = await parseSlashCommand(indexFile, parentDir, subdirectories);
+	if (slashCommand) client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
+
+	const contextCommands = await parseContextCommands(parentDir);
+	contextCommands.forEach((cmd) => client.stores.commands.context.set(cmd.data.name, cmd));
+}
+
+export default async function registerCommands(client: TriviousClient, directory: string) {
+	if (!existsSync(directory))
+		throw new TriviousError(
+			`Could not register commands; passed directory '${directory}' does not exist!`,
+			"Nonexistant directory passed"
+		);
+
+	const processedDirectories = new Set<string>();
+
+	const files = fs.glob(join(directory, "**/*.js"));
+	for await (const file of files) {
+		const parentDir = path.dirname(file);
+
+		if (processedDirectories.has(parentDir)) continue;
+		processedDirectories.add(parentDir);
+
+		await registerDirectory(client, parentDir);
+	}
+}

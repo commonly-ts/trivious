@@ -1,28 +1,34 @@
 {
-	"eslint.useFlatConfig": true,
-	"eslint.validate": ["javascript", "typescript"],
-	"eslint.run": "onType",
-	"eslint.probe": ["javascript", "typescript"],
-	"eslint.format.enable": true,
-	"eslint.lintTask.enable": true,
-	"eslint.codeActionsOnSave.mode": "all",
-	"eslint.debug": false,
-	"editor.insertSpaces": false,
-	"editor.detectIndentation": false,
-	"editor.tabSize": 2,
-
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint",
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": false,
 	"editor.formatOnType": false,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"prettier.requireConfig": true,
-	"prettier.useEditorConfig": false,
+
+	"eslint.useFlatConfig": true,
+	"eslint.format.enable": true,
+	"eslint.run": "onType",
+	"eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
 
 	"[typescript]": {
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		},
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[typescriptreact]": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit"
 		}
 	},
 
-	"problems.decorations.enabled": true
+	"javascript.format.enable": false,
+	"typescript.format.enable": false,
+
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+	"editor.detectIndentation": false,
+
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	}
 }

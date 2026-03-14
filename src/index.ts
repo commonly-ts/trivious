@@ -1,40 +1,4 @@
-import "dotenv/config";
-import "node:util";
-
-import type {
-	CacheType,
-	ChatInputCommandInteraction as DJS_ChatInputCommandInteraction,
-	ButtonInteraction as DJS_ButtonInteraction,
-	StringSelectMenuInteraction as DJS_StringSelectMenuInteraction,
-	ModalSubmitInteraction as DJS_ModalSubmitInteraction,
-	ContextMenuCommandInteraction as DJS_ContextMenuCommandInteraction,
-} from "discord.js";
-
-// Client
-export { default as TriviousClient } from "./core/client/trivious.client.js";
-
-// Commands
-export { default as CommandRegistry } from "./core/registry/command.registry.js";
-export * from "./core/commands/methods.command.js";
-
-// Components
-// export { default as Component } from "./core/components/component.base.js";
-export { default as ComponentRegistry } from "./core/registry/component.registry.js";
-// export { ComponentBuilder } from "./core/components/component.base.js";
-
-// Utility builders
-export * from "./core/builders/util.builders.js";
-
-// Utility functions
-export * from "./shared/utility/components.utility.js";
-export * from "./shared/utility/permissions.utility.js";
-
-// Typings
-export * from "./shared/typings/index.js";
-
-// Cached Interactions
-export type ChatInputCommandInteraction = DJS_ChatInputCommandInteraction<CacheType>;
-export type ButtonInteraction = DJS_ButtonInteraction<CacheType>;
-export type StringSelectMenuInteraction = DJS_StringSelectMenuInteraction<CacheType>;
-export type ModalSubmitInteraction = DJS_ModalSubmitInteraction<CacheType>;
-export type ContextMenuCommandInteraction = DJS_ContextMenuCommandInteraction<CacheType>;
+export * from "#feature/builders/utility.builders.js";
+export * from "#feature/commands/methods.commands.js";
+export * from "#feature/customId/methods.customid.js";
+export * from "#typings";
