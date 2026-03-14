@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/commonly-ts/trivious/compare/v2.0.0...v2.0.1) (2026-03-14)
+
+
+### Bug Fixes
+
+* bug fix ([c8f91c4](https://github.com/commonly-ts/trivious/commit/c8f91c43e043112e8f4faafd77ce24b6f78ae48f))
+* post-release bug fixes ([c37ae2b](https://github.com/commonly-ts/trivious/commit/c37ae2bc730780467147f43726f15e4736587118))
+
 # [2.0.0](https://github.com/commonly-ts/trivious/compare/v1.6.18...v2.0.0) (2026-03-14)
 
 
