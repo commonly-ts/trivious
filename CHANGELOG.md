@@ -1,3 +1,19 @@
+# [2.0.0](https://github.com/commonly-ts/trivious/compare/v1.6.18...v2.0.0) (2026-03-14)
+
+
+* feat!: refactored entire framework ([36dee4c](https://github.com/commonly-ts/trivious/commit/36dee4c8a8b4c8a1f63327c0f75f2056b66c7454))
+
+
+### Bug Fixes
+
+* regenerated pnpm yamls ([36b4a8a](https://github.com/commonly-ts/trivious/commit/36b4a8a8d8b186ae88ac04266684e2397fade9f6))
+* updated release.yml ([624a0b7](https://github.com/commonly-ts/trivious/commit/624a0b7ebb6243d1ea7da026a9491d409b74711f))
+
+
+### BREAKING CHANGES
+
+* Pretty much most things changed, README has been updated
+
 ## [1.6.18](https://github.com/commonly-ts/trivious/compare/v1.6.17...v1.6.18) (2026-02-14)
 
 
