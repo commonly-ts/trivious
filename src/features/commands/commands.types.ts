@@ -1,5 +1,5 @@
 import type { TriviousClient } from "#typings";
-import type {
+import {
 	ApplicationCommandType,
 	ChatInputCommandInteraction,
 	Collection,
