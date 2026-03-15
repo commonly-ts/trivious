@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/commonly-ts/trivious/compare/v2.0.2...v2.0.3) (2026-03-15)
+
+
+### Bug Fixes
+
+* updated discord.js imports ([bb75a6d](https://github.com/commonly-ts/trivious/commit/bb75a6dd5ef843926e55790ec800ebe185746c17))
+
 ## [2.0.2](https://github.com/commonly-ts/trivious/compare/v2.0.1...v2.0.2) (2026-03-15)
 
 
