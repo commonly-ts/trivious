@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/commonly-ts/trivious/compare/v2.0.3...v2.0.4) (2026-03-15)
+
+
+### Bug Fixes
+
+* removed import type in favour of plain imports ([848a417](https://github.com/commonly-ts/trivious/commit/848a41750cee5a1e8eb8b352b11525687fcbcd57))
+
 ## [2.0.3](https://github.com/commonly-ts/trivious/compare/v2.0.2...v2.0.3) (2026-03-15)
 
 
