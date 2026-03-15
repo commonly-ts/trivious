@@ -1,4 +1,4 @@
-import type { Event } from "#typings";
+import { Event } from "#typings";
 
 export default {
 	name: "clientReady",

@@ -1,9 +1,5 @@
-import type {
-	AnySelectMenuInteraction,
-	ButtonInteraction,
-	ModalSubmitInteraction,
-} from "discord.js";
-import type { TriviousClient } from "#typings";
+import { TriviousClient } from "#typings";
+import { AnySelectMenuInteraction, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 
 export type ComponentFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";
 export type ComponentInteraction =

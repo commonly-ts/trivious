@@ -2,7 +2,7 @@ import { Client, Collection } from "discord.js";
 import registries from "src/shared/registries.js";
 import structure from "../structure/index.structure.js";
 
-import type {
+import {
 	BaseContextCommandData,
 	Component,
 	Event,

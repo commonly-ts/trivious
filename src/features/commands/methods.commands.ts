@@ -1,4 +1,5 @@
-import type {
+import { CommandFlags, SlashCommandData, TriviousClient } from "#typings";
+import {
 	CacheType,
 	ChatInputCommandInteraction,
 	Interaction,
@@ -6,7 +7,6 @@ import type {
 	InteractionReplyOptions,
 	MessagePayload,
 } from "discord.js";
-import type { CommandFlags, SlashCommandData, TriviousClient } from "#typings";
 
 export async function interactionReply(options: {
 	interaction: Interaction<CacheType>;

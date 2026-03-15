@@ -1,9 +1,9 @@
-import { existsSync, promises as fs } from "fs";
-import path, { join } from "path";
-import type { ClientEvents } from "discord.js";
-import type { Event, TriviousClient } from "#typings";
+import { Event, TriviousClient } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
+import { ClientEvents } from "discord.js";
+import { existsSync, promises as fs } from "fs";
+import path, { join } from "path";
 
 async function loadPresetEvents(client: TriviousClient) {
 	const directory = path.resolve(import.meta.dirname, "presets");

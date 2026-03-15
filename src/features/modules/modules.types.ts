@@ -1,5 +1,5 @@
-import type { ClientEvents } from "discord.js";
-import type { TriviousClient } from "#typings";
+import { TriviousClient } from "#typings";
+import { ClientEvents } from "discord.js";
 
 export interface Module {
 	name: string;
