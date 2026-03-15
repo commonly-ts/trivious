@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/commonly-ts/trivious/compare/v2.0.1...v2.0.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* simplified CommandFunction type ([307587d](https://github.com/commonly-ts/trivious/commit/307587d6ee51c4c7092219bd66540b894c84d6bc))
+
 ## [2.0.1](https://github.com/commonly-ts/trivious/compare/v2.0.0...v2.0.1) (2026-03-14)
 
 
