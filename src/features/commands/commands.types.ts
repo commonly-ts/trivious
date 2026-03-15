@@ -1,9 +1,10 @@
+import type { TriviousClient } from "#typings";
 import type {
 	ApplicationCommandType,
 	ChatInputCommandInteraction,
 	Collection,
 	ContextMenuCommandBuilder,
-	ContextMenuCommandInteraction,
+	Interaction,
 	MessageContextMenuCommandInteraction,
 	SlashCommandBuilder,
 	SlashCommandOptionsOnlyBuilder,
@@ -12,17 +13,10 @@ import type {
 	SlashCommandSubcommandsOnlyBuilder,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
-import type { TriviousClient } from "#typings";
 
 export type ChatInputCommandContext = "SlashCommand" | "SlashSubcommand" | "SlashSubcommandGroup";
 export type CommandFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";
-
-export type ChatInputCommandFunction = (
-	client: TriviousClient,
-	interaction: ChatInputCommandInteraction
-) => Promise<void>;
-
-export type ContextMenuCommandFunction<T extends ContextMenuCommandInteraction> = (
+export type CommandFunction<T extends Interaction> = (
 	client: TriviousClient,
 	interaction: T
 ) => Promise<void>;
@@ -75,7 +69,7 @@ export interface SlashCommandData extends BaseChatInputCommandData {
 	data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
 	subcommands?: Collection<string, SlashSubcommandData<true, "command">>;
 	subcommandGroups?: Collection<string, SlashSubcommandGroupData<true>>;
-	run?: ChatInputCommandFunction;
+	run?: CommandFunction<ChatInputCommandInteraction>;
 }
 
 /**
@@ -105,7 +99,7 @@ export interface SlashSubcommandData<
 > extends BaseChatInputCommandData {
 	context: "SlashSubcommand";
 	data: SlashCommandSubcommandBuilder;
-	execute: ChatInputCommandFunction;
+	execute: CommandFunction<ChatInputCommandInteraction>;
 	parent?: Processed extends true
 		? Parent extends "command"
 			? SlashCommandData
@@ -126,7 +120,7 @@ export interface SlashSubcommandData<
 export interface MessageCommandData extends BaseContextCommandData {
 	commandType: ApplicationCommandType.Message;
 	data: ContextMenuCommandBuilder;
-	execute: ContextMenuCommandFunction<MessageContextMenuCommandInteraction>;
+	execute: CommandFunction<MessageContextMenuCommandInteraction>;
 }
 
 /**
@@ -140,7 +134,7 @@ export interface MessageCommandData extends BaseContextCommandData {
 export interface UserCommandData extends BaseContextCommandData {
 	commandType: ApplicationCommandType.User;
 	data: ContextMenuCommandBuilder;
-	execute: ContextMenuCommandFunction<UserContextMenuCommandInteraction>;
+	execute: CommandFunction<UserContextMenuCommandInteraction>;
 }
 
 export type ContextCommandData = MessageCommandData | UserCommandData;
