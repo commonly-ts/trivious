@@ -6,11 +6,9 @@ import {
 	ContextMenuCommandBuilder,
 	Interaction,
 	MessageContextMenuCommandInteraction,
-	SlashCommandBuilder,
-	SlashCommandOptionsOnlyBuilder,
+	SharedSlashCommand,
 	SlashCommandSubcommandBuilder,
 	SlashCommandSubcommandGroupBuilder,
-	SlashCommandSubcommandsOnlyBuilder,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
 
@@ -66,7 +64,7 @@ export interface BaseContextCommandData extends BaseCommandData {
  */
 export interface SlashCommandData extends BaseChatInputCommandData {
 	context: "SlashCommand";
-	data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+	data: SharedSlashCommand;
 	subcommands?: Collection<string, SlashSubcommandData<true, "command">>;
 	subcommandGroups?: Collection<string, SlashSubcommandGroupData<true>>;
 	run?: CommandFunction<ChatInputCommandInteraction>;
