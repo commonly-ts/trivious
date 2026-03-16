@@ -1,3 +1,11 @@
+## [2.0.6](https://github.com/commonly-ts/trivious/compare/v2.0.5...v2.0.6) (2026-03-16)
+
+
+### Bug Fixes
+
+* fixed internal use of customId ([4ff138d](https://github.com/commonly-ts/trivious/commit/4ff138d03d09b885fcd31c2141b956683c766887))
+* merged encodeCustomId and decodeCustomId into customId ([1c4aabc](https://github.com/commonly-ts/trivious/commit/1c4aabc40ce85a547bc14371c76bb124833a6e20))
+
 ## [2.0.5](https://github.com/commonly-ts/trivious/compare/v2.0.4...v2.0.5) (2026-03-16)
 
 
