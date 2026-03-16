@@ -1,7 +1,7 @@
+import { ComponentContext, type ContextCommandData, type Event } from "#typings";
 import { ApplicationCommandType, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 import { handleSlashCommand, interactionReply } from "src/features/commands/methods.commands.js";
-import { decodeCustomId } from "src/features/customId/methods.customid.js";
-import { ComponentContext, type ContextCommandData, type Event } from "#typings";
+import customId from "src/features/customId/methods.customid.js";
 
 export default {
 	name: "interactionCreate",
@@ -32,7 +32,7 @@ export default {
 				await (command as ContextCommandData).execute(client, interaction as never);
 			}
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
-			const { context, identifier, tags } = decodeCustomId(interaction.customId);
+			const { context, identifier, tags } = customId.decode(interaction.customId);
 
 			if (context === ComponentContext.Button && !(interaction instanceof ButtonInteraction))
 				return;
