@@ -10,7 +10,7 @@ import {
 } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
-import { ApplicationCommandType, Collection } from "discord.js";
+import { ApplicationCommandType, Collection, SlashCommandBuilder } from "discord.js";
 import { Dirent, existsSync, promises as fs } from "fs";
 import path, { join } from "path";
 
@@ -72,14 +72,19 @@ async function parseSlashCommand(
 		if (!existsSync(indexFile)) continue;
 
 		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile);
-		if (!group || !("context" in group) || group.context !== "SlashSubcommandGroup") continue;
+		if (
+			!group ||
+			!("context" in group && "addSubcommandGroup" in command.data) ||
+			group.context !== "SlashSubcommandGroup"
+		)
+			continue;
 
 		group.parent = command;
 		if (!command.subcommandGroups) command.subcommandGroups = new Collection();
 		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
 
 		if (group.subcommands.size > 0) {
-			command.data.addSubcommandGroup(group.data);
+			(command.data as SlashCommandBuilder).addSubcommandGroup(group.data);
 			command.subcommandGroups.set(group.data.name, group);
 		}
 	}
