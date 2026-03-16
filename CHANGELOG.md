@@ -1,3 +1,11 @@
+## [2.0.5](https://github.com/commonly-ts/trivious/compare/v2.0.4...v2.0.5) (2026-03-16)
+
+
+### Bug Fixes
+
+* fixed subcommand group errors ([c66f72a](https://github.com/commonly-ts/trivious/commit/c66f72a4f9995cbd571ec6dcc8484cb0001ce2c5))
+* updated SlashCommandData data type to SharedSlashCommand ([9c22a6b](https://github.com/commonly-ts/trivious/commit/9c22a6b8f1111e28db81357887aa15604494ae29))
+
 ## [2.0.4](https://github.com/commonly-ts/trivious/compare/v2.0.3...v2.0.4) (2026-03-15)
 
 
