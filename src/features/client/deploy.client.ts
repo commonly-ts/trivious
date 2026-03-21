@@ -3,7 +3,6 @@ import { REST, Routes } from "discord.js";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { TriviousError } from "src/utility/errors.js";
-import { MessageCommandData, UserCommandData } from "../commands/commands.types.js";
 import TriviousClient from "./trivious.client.js";
 
 export default async function commandDeploy(client: TriviousClient) {
@@ -17,9 +16,7 @@ export default async function commandDeploy(client: TriviousClient) {
 	const commands = client.stores.commands;
 	const body = [
 		...commands.chatInput.map((command) => command.data.toJSON()),
-		...commands.context.map((command) =>
-			(command as UserCommandData | MessageCommandData).data.toJSON()
-		),
+		...commands.context.map((command) => command.data.toJSON()),
 	];
 
 	if (commandHashConfig && commandHashConfig.enabled) {

@@ -51,8 +51,21 @@ export interface BaseChatInputCommandData extends BaseCommandData {
  *
  * @param commandType ApplicationCommandType.Message | ApplicationCommandType.User
  */
-export interface BaseContextCommandData extends BaseCommandData {
-	commandType: ApplicationCommandType.Message | ApplicationCommandType.User;
+export interface ContextCommandData<T extends "Message" | "User" | null = null>
+	extends BaseCommandData {
+	commandType: T extends null
+		? ApplicationCommandType.Message | ApplicationCommandType.User
+		: T extends "Message"
+			? ApplicationCommandType.Message
+			: ApplicationCommandType.User;
+	data: ContextMenuCommandBuilder;
+	execute: CommandFunction<
+		T extends null
+			? MessageContextMenuCommandInteraction | UserContextMenuCommandInteraction
+			: T extends "Message"
+				? MessageContextMenuCommandInteraction
+				: UserContextMenuCommandInteraction
+	>;
 }
 
 /**
@@ -109,33 +122,3 @@ export interface SlashSubcommandData<
 			? SlashCommandData | undefined
 			: SlashSubcommandGroupData<false> | undefined;
 }
-
-/**
- * Trivious message command data
- *
- * @param context MessageContextCommand
- * @param commandType ApplicationCommandType.Message
- * @param data The context menu builder
- * @param execute Function for when the message command is executed
- */
-export interface MessageCommandData extends BaseContextCommandData {
-	commandType: ApplicationCommandType.Message;
-	data: ContextMenuCommandBuilder;
-	execute: CommandFunction<MessageContextMenuCommandInteraction>;
-}
-
-/**
- * Trivious user command data
- *
- * @param context UserContextCommand
- * @param commandType ApplicationCommandType.User
- * @param data The context menu builder
- * @param execute Function for when the user command is executed
- */
-export interface UserCommandData extends BaseContextCommandData {
-	commandType: ApplicationCommandType.User;
-	data: ContextMenuCommandBuilder;
-	execute: CommandFunction<UserContextMenuCommandInteraction>;
-}
-
-export type ContextCommandData = MessageCommandData | UserCommandData;

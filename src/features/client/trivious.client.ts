@@ -3,8 +3,8 @@ import registries from "src/shared/registries.js";
 import structure from "../structure/index.structure.js";
 
 import {
-	BaseContextCommandData,
 	Component,
+	ContextCommandData,
 	Event,
 	Module,
 	SlashCommandData,
@@ -18,7 +18,7 @@ export default class TriviousClient extends Client {
 	readonly stores: {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
-			context: Collection<string, BaseContextCommandData>;
+			context: Collection<string, ContextCommandData>;
 		};
 		components: Collection<string, Component>;
 		events: Collection<string, Event>;

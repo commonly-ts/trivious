@@ -1,5 +1,4 @@
 import {
-	BaseContextCommandData,
 	ComponentContext,
 	SlashCommandData,
 	TriviousClient,
@@ -24,7 +23,7 @@ import { canMemberRunCommand } from "src/features/permissions/methods.permission
  */
 function validateMemberPermissionsForSubcommand(
 	client: TriviousClient,
-	command: SlashCommandData | BaseContextCommandData,
+	command: SlashCommandData | ContextCommandData,
 	interaction:
 		| ChatInputCommandInteraction
 		| MessageContextMenuCommandInteraction
