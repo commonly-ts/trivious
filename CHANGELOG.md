@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/commonly-ts/trivious/compare/v2.1.3...v2.1.4) (2026-03-21)
+
+
+### Bug Fixes
+
+* added command builders to barrel file ([f9135d7](https://github.com/commonly-ts/trivious/commit/f9135d7c76d0d227236a31891e91c59ccc3f10e2))
+
 ## [2.1.3](https://github.com/commonly-ts/trivious/compare/v2.1.2...v2.1.3) (2026-03-21)
 
 
