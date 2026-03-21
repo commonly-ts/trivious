@@ -1,7 +1,13 @@
 import { ComponentContext, type ContextCommandData, type Event } from "#typings";
-import { ApplicationCommandType, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
+import {
+	ApplicationCommandType,
+	ButtonInteraction,
+	GuildMember,
+	ModalSubmitInteraction,
+} from "discord.js";
 import { handleSlashCommand, interactionReply } from "src/features/commands/methods.commands.js";
 import customId from "src/features/customId/methods.customid.js";
+import { canMemberRunCommand } from "src/features/permissions/methods.permissions.js";
 
 export default {
 	name: "interactionCreate",
@@ -18,6 +24,16 @@ export default {
 				await interactionReply({
 					interaction,
 					replyPayload: { content: "Command is outdated, inactive, or does not have a handler!" },
+					flags: ["EphemeralReply"],
+				});
+				return;
+			}
+
+			const hasPermission = canMemberRunCommand(client, command, interaction.member as GuildMember);
+			if (!hasPermission) {
+				await interactionReply({
+					interaction,
+					replyPayload: { content: "You do not have permission to run this command" },
 					flags: ["EphemeralReply"],
 				});
 				return;
@@ -46,6 +62,20 @@ export default {
 				await interactionReply({
 					interaction,
 					replyPayload: { content: "Command is outdated, inactive, or does not have a handler!" },
+					flags: ["EphemeralReply"],
+				});
+				return;
+			}
+
+			const hasPermission = canMemberRunCommand(
+				client,
+				component,
+				interaction.member as GuildMember
+			);
+			if (!hasPermission) {
+				await interactionReply({
+					interaction,
+					replyPayload: { content: "You do not have permission to use this component" },
 					flags: ["EphemeralReply"],
 				});
 				return;
