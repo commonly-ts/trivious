@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/commonly-ts/trivious/compare/v2.1.2...v2.1.3) (2026-03-21)
+
+
+### Bug Fixes
+
+* added command builder helpers ([485a7c5](https://github.com/commonly-ts/trivious/commit/485a7c5cbe29cfb56f805515f64eb914d3986a84))
+* added warnings for duplicate commands ([64d0bca](https://github.com/commonly-ts/trivious/commit/64d0bca5c860d1e57b2719039e9c970dfe075e2b))
+* merged context commands into ContextCommandData ([ab90031](https://github.com/commonly-ts/trivious/commit/ab90031b819c9858cb3128c249e11e2cd8ccf107))
+
 ## [2.1.2](https://github.com/commonly-ts/trivious/compare/v2.1.1...v2.1.2) (2026-03-21)
 
 
