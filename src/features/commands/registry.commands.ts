@@ -10,7 +10,7 @@ import {
 } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
-import { ApplicationCommandType, Collection, SlashCommandBuilder } from "discord.js";
+import { ApplicationCommandType, Collection } from "discord.js";
 import { Dirent, existsSync, promises as fs } from "fs";
 import path, { join } from "path";
 
@@ -28,13 +28,13 @@ async function parseSlashSubcommands(
 	data: SlashCommandData | SlashSubcommandGroupData<boolean>
 ) {
 	const _parentType = "context" in data ? "command" : "group";
-	const subcommands = new Collection<string, SlashSubcommandData<true, typeof _parentType>>();
+	const subcommands = new Collection<string, SlashSubcommandData<typeof _parentType, true>>();
 
 	if (!("addSubcommand" in data.data)) return subcommands;
 
 	const files = fs.glob(join(directory, "./*.js"));
 	for await (const file of files) {
-		const subcommand = await importFile<SlashSubcommandData<true, typeof _parentType>>(file);
+		const subcommand = await importFile<SlashSubcommandData<typeof _parentType, true>>(file);
 		if (
 			!subcommand ||
 			!validateCommand(subcommand, (subcmd) => subcmd.context === "SlashSubcommand")
@@ -84,7 +84,7 @@ async function parseSlashCommand(
 		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
 
 		if (group.subcommands.size > 0) {
-			(command.data as SlashCommandBuilder).addSubcommandGroup(group.data);
+			command.data.addSubcommandGroup(group.data);
 			command.subcommandGroups.set(group.data.name, group);
 		}
 	}
