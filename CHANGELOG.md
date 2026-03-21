@@ -1,3 +1,11 @@
+## [2.1.2](https://github.com/commonly-ts/trivious/compare/v2.1.1...v2.1.2) (2026-03-21)
+
+
+### Bug Fixes
+
+* added check for userIds ([2a0b329](https://github.com/commonly-ts/trivious/commit/2a0b329bbabd9742de81171bfa21bdd0270e716d))
+* made userIds optional in CommandPermissionValues ([1265070](https://github.com/commonly-ts/trivious/commit/1265070e9d6275b93c9b3cfc4f359b894d9cafaa))
+
 ## [2.1.1](https://github.com/commonly-ts/trivious/compare/v2.1.0...v2.1.1) (2026-03-21)
 
 
