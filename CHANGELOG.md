@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/commonly-ts/trivious/compare/v2.0.6...v2.1.0) (2026-03-21)
+
+
+### Features
+
+* added command & component permissions ([99a5fab](https://github.com/commonly-ts/trivious/commit/99a5fabaa22a2ccd762abf92c2375743d2eb0b08))
+
 ## [2.0.6](https://github.com/commonly-ts/trivious/compare/v2.0.5...v2.0.6) (2026-03-16)
 
 
