@@ -1,10 +1,10 @@
-import { ApplicationCommandType, Collection } from "discord.js";
 import {
 	ContextCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
-} from "./commands.types.js";
+} from "#typings";
+import { ApplicationCommandType, Collection } from "discord.js";
 
 export function createSlashCommand(
 	data: Omit<SlashCommandData, "context" | "commandType" | "subcommands" | "subcommandGroups">
