@@ -1,4 +1,4 @@
-import { TriviousClient } from "#typings";
+import { CommandPermissionValues, TriviousClient } from "#typings";
 import { AnySelectMenuInteraction, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 
 export type ComponentFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";
@@ -24,5 +24,6 @@ export interface Component {
 	component: ComponentContext;
 	identifier: string;
 	flags?: ComponentFlags[];
+	permissions?: CommandPermissionValues;
 	execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
 }

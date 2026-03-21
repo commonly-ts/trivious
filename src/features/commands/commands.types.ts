@@ -1,4 +1,4 @@
-import { TriviousClient } from "#typings";
+import { CommandPermissionValues, TriviousClient } from "#typings";
 import {
 	ApplicationCommandType,
 	ChatInputCommandInteraction,
@@ -6,9 +6,11 @@ import {
 	ContextMenuCommandBuilder,
 	Interaction,
 	MessageContextMenuCommandInteraction,
-	SharedSlashCommand,
+	SlashCommandBuilder,
+	SlashCommandOptionsOnlyBuilder,
 	SlashCommandSubcommandBuilder,
 	SlashCommandSubcommandGroupBuilder,
+	SlashCommandSubcommandsOnlyBuilder,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
 
@@ -30,6 +32,7 @@ export type CommandFunction<T extends Interaction> = (
 export interface BaseCommandData {
 	active: boolean;
 	flags?: CommandFlags[];
+	permissions?: CommandPermissionValues;
 }
 
 /**
@@ -64,8 +67,8 @@ export interface BaseContextCommandData extends BaseCommandData {
  */
 export interface SlashCommandData extends BaseChatInputCommandData {
 	context: "SlashCommand";
-	data: SharedSlashCommand;
-	subcommands?: Collection<string, SlashSubcommandData<true, "command">>;
+	data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+	subcommands?: Collection<string, SlashSubcommandData<"command", true>>;
 	subcommandGroups?: Collection<string, SlashSubcommandGroupData<true>>;
 	run?: CommandFunction<ChatInputCommandInteraction>;
 }
@@ -79,7 +82,7 @@ export interface SlashCommandData extends BaseChatInputCommandData {
 export interface SlashSubcommandGroupData<Processed extends boolean = false> {
 	context: "SlashSubcommandGroup";
 	data: SlashCommandSubcommandGroupBuilder;
-	subcommands: Collection<string, SlashSubcommandData<boolean, "group">>;
+	subcommands: Collection<string, SlashSubcommandData<"group", boolean>>;
 	parent?: Processed extends true ? SlashCommandData : SlashCommandData | undefined;
 }
 
@@ -92,8 +95,8 @@ export interface SlashSubcommandGroupData<Processed extends boolean = false> {
  * @param execute Function for when the subcommand is executed
  */
 export interface SlashSubcommandData<
-	Processed extends boolean = false,
 	Parent extends "command" | "group" = "command",
+	Processed extends boolean = false,
 > extends BaseChatInputCommandData {
 	context: "SlashSubcommand";
 	data: SlashCommandSubcommandBuilder;
