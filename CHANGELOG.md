@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/commonly-ts/trivious/compare/v2.1.0...v2.1.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* added permission check to respect subcommand permissions ([b3c8c69](https://github.com/commonly-ts/trivious/commit/b3c8c69e39b7b2ebb1d14d933f284e9a66fedf2c))
+
 # [2.1.0](https://github.com/commonly-ts/trivious/compare/v2.0.6...v2.1.0) (2026-03-21)
 
 
