@@ -57,6 +57,7 @@ export function canUserRunCommand(
 	if (!userIds && (requiredMemberPermissions || requiredRoleIds))
 		return [false, "Cannot validate permissions; use canMemberRunCommand instead"];
 
+	if (!userIds) return [true, "No permissions set"];
 	return userIds.includes(user.id)
 		? [true, "User can run command"]
 		: [false, "User cannot run command"];
