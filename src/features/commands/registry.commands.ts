@@ -1,12 +1,10 @@
 import {
 	BaseChatInputCommandData,
-	BaseContextCommandData,
-	MessageCommandData,
+	ContextCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
-	UserCommandData,
 } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
@@ -14,7 +12,7 @@ import { ApplicationCommandType, Collection } from "discord.js";
 import { Dirent, existsSync, promises as fs } from "fs";
 import path, { join } from "path";
 
-function validateCommand<T extends BaseChatInputCommandData | BaseContextCommandData>(
+function validateCommand<T extends BaseChatInputCommandData | ContextCommandData>(
 	command: T,
 	expects: (command: Partial<T>) => boolean
 ): boolean {
@@ -43,6 +41,11 @@ async function parseSlashSubcommands(
 
 		subcommand.parent = data;
 		data.data.addSubcommand(subcommand.data);
+
+		if (subcommands.has(subcommand.data.name))
+			console.warn(
+				`[Trivious] Subcommand '${subcommand.data.name}' under ${data.context} '${data.data.name}' has a duplicate and has been overridden`
+			);
 		subcommands.set(subcommand.data.name, subcommand);
 	}
 
@@ -84,6 +87,11 @@ async function parseSlashCommand(
 		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
 
 		if (group.subcommands.size > 0) {
+			if (command.subcommandGroups.has(group.data.name))
+				console.warn(
+					`[Trivious] SubcommandGroup '${group.data.name}' under SlashCommand '${command.data.name}' has a duplicate and has been overridden`
+				);
+
 			command.data.addSubcommandGroup(group.data);
 			command.subcommandGroups.set(group.data.name, group);
 		}
@@ -93,10 +101,10 @@ async function parseSlashCommand(
 }
 
 async function parseContextCommands(parentDir: string) {
-	const collection = new Collection<string, MessageCommandData | UserCommandData>();
+	const collection = new Collection<string, ContextCommandData>();
 	const files = fs.glob(join(parentDir, "**/*.js"));
 	for await (const file of files) {
-		const contextCommand = await importFile<MessageCommandData | UserCommandData>(file);
+		const contextCommand = await importFile<ContextCommandData>(file);
 		if (
 			!contextCommand ||
 			!validateCommand(
@@ -121,7 +129,14 @@ async function registerDirectory(client: TriviousClient, parentDir: string) {
 
 	const indexFile = path.resolve(parentDir, "index.js");
 	const slashCommand = await parseSlashCommand(indexFile, parentDir, subdirectories);
-	if (slashCommand) client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
+	if (slashCommand) {
+		if (client.stores.commands.chatInput.has(slashCommand.data.name))
+			console.warn(
+				`[Trivious] SlashCommand '${slashCommand.data.name}' has a duplicate and has been overridden`
+			);
+
+		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
+	}
 
 	const contextCommands = await parseContextCommands(parentDir);
 	contextCommands.forEach((cmd) => client.stores.commands.context.set(cmd.data.name, cmd));
