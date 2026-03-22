@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/commonly-ts/trivious/compare/v2.1.4...v2.1.5) (2026-03-22)
+
+
+### Bug Fixes
+
+* updated customId exports ([cff58de](https://github.com/commonly-ts/trivious/commit/cff58de94e82f36519758bc37f618a8f9706863b))
+
 ## [2.1.4](https://github.com/commonly-ts/trivious/compare/v2.1.3...v2.1.4) (2026-03-21)
 
 
