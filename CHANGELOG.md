@@ -1,3 +1,10 @@
+## [2.1.7](https://github.com/commonly-ts/trivious/compare/v2.1.6...v2.1.7) (2026-04-03)
+
+
+### Bug Fixes
+
+* added overloads for InteractionReply ([d5b63dc](https://github.com/commonly-ts/trivious/commit/d5b63dcd44aba15aad05be7c816888dc9db6a4b3))
+
 ## [2.1.6](https://github.com/commonly-ts/trivious/compare/v2.1.5...v2.1.6) (2026-04-03)
 
 
