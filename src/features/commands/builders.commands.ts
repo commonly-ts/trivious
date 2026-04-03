@@ -36,7 +36,7 @@ export function createSubcommandGroup(
 	} satisfies SlashSubcommandGroupData;
 }
 
-export function createMessageComponentCommand(
+export function createMessageContextCommand(
 	data: Omit<ContextCommandData<"Message">, "commandType">
 ): ContextCommandData<"Message"> {
 	return {
@@ -45,7 +45,7 @@ export function createMessageComponentCommand(
 	} satisfies ContextCommandData<"Message">;
 }
 
-export function createUserComponentCommand(
+export function createUserContextCommand(
 	data: Omit<ContextCommandData<"User">, "commandType">
 ): ContextCommandData<"User"> {
 	return {
