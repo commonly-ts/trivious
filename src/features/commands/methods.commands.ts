@@ -5,8 +5,28 @@ import {
 	Interaction,
 	InteractionEditReplyOptions,
 	InteractionReplyOptions,
+	InteractionResponse,
+	Message,
 	MessagePayload,
 } from "discord.js";
+
+export async function interactionReply(options: {
+	interaction: Interaction<CacheType>;
+	replyPayload: InteractionReplyOptions;
+	flags?: (CommandFlags | "FollowUp")[];
+}): Promise<InteractionResponse<boolean>>;
+
+export async function interactionReply(options: {
+	interaction: Interaction<CacheType>;
+	replyPayload: InteractionEditReplyOptions;
+	flags?: (CommandFlags | "FollowUp")[];
+}): Promise<Message<boolean>>;
+
+export async function interactionReply(options: {
+	interaction: Interaction<CacheType>;
+	replyPayload: MessagePayload;
+	flags?: (CommandFlags | "FollowUp")[];
+}): Promise<InteractionResponse<boolean> | Message<boolean>>;
 
 export async function interactionReply(options: {
 	interaction: Interaction<CacheType>;
