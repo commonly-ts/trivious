@@ -1,3 +1,10 @@
+## [2.1.6](https://github.com/commonly-ts/trivious/compare/v2.1.5...v2.1.6) (2026-04-03)
+
+
+### Bug Fixes
+
+* corrected context command create utilities ([ad278b9](https://github.com/commonly-ts/trivious/commit/ad278b9ebd4b5c4f46ca55e8039c682926ee143a))
+
 ## [2.1.5](https://github.com/commonly-ts/trivious/compare/v2.1.4...v2.1.5) (2026-03-22)
 
 
