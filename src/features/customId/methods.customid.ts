@@ -11,7 +11,9 @@ const customId = {
 			string,
 			string | undefined,
 		];
-		const [data, ...tags] = info?.split(".") as [string | undefined, ...ComponentTag[]];
+		const [data, ...tags] = info
+			? (info.split(".") as [string | undefined, ...ComponentTag[]])
+			: [undefined, undefined];
 
 		return {
 			context,
