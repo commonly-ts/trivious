@@ -1,3 +1,10 @@
+## [2.1.8](https://github.com/commonly-ts/trivious/compare/v2.1.7...v2.1.8) (2026-04-04)
+
+
+### Bug Fixes
+
+* added logic check for customId info extraction ([4cbce35](https://github.com/commonly-ts/trivious/commit/4cbce35b62c29423a615e3f455c04c1a619fcc70))
+
 ## [2.1.7](https://github.com/commonly-ts/trivious/compare/v2.1.6...v2.1.7) (2026-04-03)
 
 
