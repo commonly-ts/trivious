@@ -12,7 +12,7 @@ yarn add trivious
 pnpm add trivious
 ```
 
-> Requires Node.js 18+
+> Requires Node.js 22+
 
 ---
 
