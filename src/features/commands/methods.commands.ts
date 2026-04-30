@@ -47,6 +47,18 @@ export async function interactionReply(options: {
 	return await interaction.reply(payload);
 }
 
+async function handleFlags(interaction: ChatInputCommandInteraction, flags?: CommandFlags[]) {
+	if (flags?.includes("Cached") && !interaction.inCachedGuild()) return;
+	if (flags?.includes("ExpectModal")) return;
+	if (flags?.includes("DeferReply")) {
+		await interactionReply({
+			interaction,
+			flags: flags,
+			replyPayload: { content: "Processing command..." },
+		});
+	}
+}
+
 export async function handleSlashCommand(
 	client: TriviousClient,
 	command: SlashCommandData,
@@ -54,26 +66,22 @@ export async function handleSlashCommand(
 ) {
 	const { options } = interaction;
 
-	if (command.flags?.includes("Cached") && !interaction.inCachedGuild()) return;
-	if (command.flags?.includes("ExpectModal")) return;
-	if (command.flags?.includes("DeferReply")) {
-		await interactionReply({
-			interaction,
-			flags: command.flags,
-			replyPayload: { content: "Processing command..." },
-		});
-	}
-
-	if ("run" in command && command.run) {
-		try {
-			await command.run(client, interaction);
-		} catch (err: any) {
-			console.error(err);
-		}
-	}
-
 	const subcommandGroup = options.getSubcommandGroup(false);
 	const subcommand = options.getSubcommand(false);
+
+	if (!subcommandGroup || !subcommand) {
+		await handleFlags(interaction, command.flags);
+
+		if ("run" in command && command.run) {
+			try {
+				await command.run(client, interaction);
+			} catch (err: any) {
+				console.error(err);
+			}
+		}
+
+		return;
+	}
 
 	if (subcommandGroup && command.subcommandGroups && subcommand) {
 		const foundGroup = command.subcommandGroups.get(subcommandGroup);
@@ -98,6 +106,7 @@ export async function handleSlashCommand(
 			return;
 		}
 
+		await handleFlags(interaction, foundSubcommand.flags);
 		return await foundSubcommand.execute(client, interaction);
 	} else if (subcommand && command.subcommands) {
 		const foundSubcommand = command.subcommands.get(subcommand);
@@ -110,6 +119,13 @@ export async function handleSlashCommand(
 			return;
 		}
 
+		await handleFlags(interaction, foundSubcommand.flags);
 		return await foundSubcommand.execute(client, interaction);
+	} else {
+		await interactionReply({
+			interaction,
+			flags: ["EphemeralReply"],
+			replyPayload: { content: "Command is outdated, inactive, or does not have a handler!" },
+		});
 	}
 }
