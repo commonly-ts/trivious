@@ -76,7 +76,7 @@ export default {
 
 			const subcommandPerms = validateMemberPermissionsForSubcommand(client, command, interaction);
 			const commandPerms = canMemberRunCommand(client, command, interaction.member as GuildMember);
-			const hasPermission = subcommandPerms[0] || commandPerms[0] ? true : false;
+			const hasPermission = subcommandPerms[0] && commandPerms[0] ? true : false;
 			if (!hasPermission) {
 				await interactionReply({
 					interaction,
