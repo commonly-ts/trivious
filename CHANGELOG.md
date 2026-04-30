@@ -1,3 +1,11 @@
+## [2.1.9](https://github.com/commonly-ts/trivious/compare/v2.1.8...v2.1.9) (2026-04-30)
+
+
+### Bug Fixes
+
+* consistent command builder function names ([f9bea10](https://github.com/commonly-ts/trivious/commit/f9bea10b928594297b3405569397875bc556a0a4))
+* refactored handling of command/subcommand flags ([f22109a](https://github.com/commonly-ts/trivious/commit/f22109aacfdfb3c0a633c99a6d31ca39f4c93f71))
+
 ## [2.1.8](https://github.com/commonly-ts/trivious/compare/v2.1.7...v2.1.8) (2026-04-04)
 
 
