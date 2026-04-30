@@ -1,3 +1,10 @@
+## [2.1.13](https://github.com/commonly-ts/trivious/compare/v2.1.12...v2.1.13) (2026-04-30)
+
+
+### Bug Fixes
+
+* further corrected hasPermission logic ([f347051](https://github.com/commonly-ts/trivious/commit/f347051dfc20a6e37db67494fc2285d4f3c15b87))
+
 ## [2.1.12](https://github.com/commonly-ts/trivious/compare/v2.1.11...v2.1.12) (2026-04-30)
 
 
