@@ -16,6 +16,9 @@ export function createSlashCommand(
 	} satisfies SlashCommandData;
 }
 
+/**
+ * @deprecated Use createSlashSubcommand instead
+ */
 export function createSubcommand(
 	data: Omit<SlashSubcommandData, "context" | "commandType" | "parent">
 ): SlashSubcommandData {
@@ -26,7 +29,30 @@ export function createSubcommand(
 	} satisfies SlashSubcommandData;
 }
 
+export function createSlashSubcommand(
+	data: Omit<SlashSubcommandData, "context" | "commandType" | "parent">
+): SlashSubcommandData {
+	return {
+		...data,
+		context: "SlashSubcommand",
+		commandType: ApplicationCommandType.ChatInput,
+	} satisfies SlashSubcommandData;
+}
+
+/**
+ * @deprecated Use createSlashSubcommandGroup instead
+ */
 export function createSubcommandGroup(
+	data: Omit<SlashSubcommandGroupData, "context" | "parent" | "subcommands">
+): SlashSubcommandGroupData {
+	return {
+		...data,
+		context: "SlashSubcommandGroup",
+		subcommands: new Collection(),
+	} satisfies SlashSubcommandGroupData;
+}
+
+export function createSlashSubcommandGroup(
 	data: Omit<SlashSubcommandGroupData, "context" | "parent" | "subcommands">
 ): SlashSubcommandGroupData {
 	return {
