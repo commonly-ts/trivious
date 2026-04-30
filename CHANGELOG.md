@@ -1,3 +1,10 @@
+## [2.1.12](https://github.com/commonly-ts/trivious/compare/v2.1.11...v2.1.12) (2026-04-30)
+
+
+### Bug Fixes
+
+* corrected hasPermission logic in interactionCreate ([b2914cf](https://github.com/commonly-ts/trivious/commit/b2914cf057cce663ead3c18ce013300a2288f413))
+
 ## [2.1.11](https://github.com/commonly-ts/trivious/compare/v2.1.10...v2.1.11) (2026-04-30)
 
 
