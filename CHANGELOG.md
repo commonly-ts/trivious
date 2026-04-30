@@ -1,3 +1,10 @@
+## [2.1.10](https://github.com/commonly-ts/trivious/compare/v2.1.9...v2.1.10) (2026-04-30)
+
+
+### Bug Fixes
+
+* added subcommand flags fallback ([2a21ab9](https://github.com/commonly-ts/trivious/commit/2a21ab9031820391a81e57ccae7fd510062f0ad1))
+
 ## [2.1.9](https://github.com/commonly-ts/trivious/compare/v2.1.8...v2.1.9) (2026-04-30)
 
 
