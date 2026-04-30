@@ -106,7 +106,7 @@ export async function handleSlashCommand(
 			return;
 		}
 
-		await handleFlags(interaction, foundSubcommand.flags);
+		await handleFlags(interaction, foundSubcommand.flags || command.flags);
 		return await foundSubcommand.execute(client, interaction);
 	} else if (subcommand && command.subcommands) {
 		const foundSubcommand = command.subcommands.get(subcommand);
@@ -119,7 +119,7 @@ export async function handleSlashCommand(
 			return;
 		}
 
-		await handleFlags(interaction, foundSubcommand.flags);
+		await handleFlags(interaction, foundSubcommand.flags || command.flags);
 		return await foundSubcommand.execute(client, interaction);
 	} else {
 		await interactionReply({
