@@ -74,14 +74,14 @@ export default {
 				return;
 			}
 
-			const hasPermission =
-				validateMemberPermissionsForSubcommand(client, command, interaction) ||
-				canMemberRunCommand(client, command, interaction.member as GuildMember);
-			if (!hasPermission[0]) {
+			const subcommandPerms = validateMemberPermissionsForSubcommand(client, command, interaction);
+			const commandPerms = canMemberRunCommand(client, command, interaction.member as GuildMember);
+			const hasPermission = subcommandPerms[0] || commandPerms[0] ? true : false;
+			if (!hasPermission) {
 				await interactionReply({
 					interaction,
 					replyPayload: {
-						content: `You do not have permission to run this command: ${hasPermission[1]}`,
+						content: `You do not have permission to run this command`,
 					},
 					flags: ["EphemeralReply"],
 				});
