@@ -28,30 +28,30 @@ function validateMemberPermissionsForSubcommand(
 		| ChatInputCommandInteraction
 		| MessageContextMenuCommandInteraction
 		| UserContextMenuCommandInteraction
-): boolean {
-	if (!("subcommands" in command)) return false;
-	if (!interaction.isChatInputCommand()) return false;
+): [boolean, string] {
+	if (!("subcommands" in command)) return [false, "Cannot validate subcommand permissions"];
+	if (!interaction.isChatInputCommand()) return [false, "Cannot validate subcommand permissions"];
 
 	const { options } = interaction;
 
 	const subcommandName = options.getSubcommand(false);
 	const groupName = options.getSubcommandGroup(false);
-	if (!subcommandName) return false;
+	if (!subcommandName) return [false, "Cannot validate subcommand permissions"];
 
 	if (groupName) {
 		const group = command.subcommandGroups?.get(groupName);
-		if (!group) return false;
+		if (!group) return [false, "Cannot validate subcommand permissions"];
 
 		const subcommand = group.subcommands.get(subcommandName);
-		if (!subcommand) return false;
+		if (!subcommand) return [false, "Cannot validate subcommand permissions"];
 
-		return canMemberRunCommand(client, subcommand, interaction.member as GuildMember)[0];
+		return canMemberRunCommand(client, subcommand, interaction.member as GuildMember);
 	}
 
 	const subcommand = command.subcommands?.get(subcommandName);
-	if (!subcommand) return false;
+	if (!subcommand) return [false, "Cannot validate subcommand permissions"];
 
-	return canMemberRunCommand(client, subcommand, interaction.member as GuildMember)[0];
+	return canMemberRunCommand(client, subcommand, interaction.member as GuildMember);
 }
 
 export default {
@@ -77,10 +77,12 @@ export default {
 			const hasPermission =
 				validateMemberPermissionsForSubcommand(client, command, interaction) ||
 				canMemberRunCommand(client, command, interaction.member as GuildMember);
-			if (!hasPermission) {
+			if (!hasPermission[0]) {
 				await interactionReply({
 					interaction,
-					replyPayload: { content: "You do not have permission to run this command" },
+					replyPayload: {
+						content: `You do not have permission to run this command: ${hasPermission[1]}`,
+					},
 					flags: ["EphemeralReply"],
 				});
 				return;
