@@ -1,6 +1,12 @@
 # Trivious
 
-Discord.js framework
+Hate doing boilerplate work for your d.js bot? Trivious solves that.
+- automatic command registration, deployment & handling
+- automatic permission registration for commands and components
+- lets you focus on writing the actual event-driven, functional code
+- type-based and feature-based structures are equally accepted
+
+Looking for support? Join the Alien Logger server: https://discord.gg/ScY9s6xjFb
 
 ---
 
@@ -130,17 +136,19 @@ export default {
 
 ### Project Structure
 
-Any project structure (e.g. type-based, feature-based) is acceptable as long as everything you expect to be registered are within the core directory.
+Any project structure (e.g. type-based, feature-based) is acceptable as long as everything you expect to be registered is within the core directory.
 
 For example, if all of your commands, components, events and modules are anywhere inside src/features, assuming they export the correct data, they will be detected and registered to the client.
 
-The only required specific structure are for slash commands, as shown below.
+The only required specific structure is for slash commands, as shown below.
 
 ```
 command/
-├── index.ts
+├── index.ts*
 ├── subcommand.ts
 └── subcommand-group/
-		├── index.ts
- 		└──subcommand.ts
+		├── index.ts*
+ 		└── subcommand.ts
+
+*file name must be exact
 ```
