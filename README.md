@@ -1,10 +1,11 @@
 # Trivious
 
-Hate doing boilerplate work for your d.js bot? Trivious solves that.
-- automatic slash command registration, deployment & handling
-- automatic permission handling for commands and components
-- lets you focus on writing the actual event-driven, functional code
-- type-based and feature-based structures are equally accepted
+Spend less time wiring, and more time writing behaviour.
+- declarative handlers
+- structured files
+- encoded interaction routing
+- slash command auto-loading & deployment
+- builtin permission handling
 
 Looking for support? Join the Alien Logger server: https://discord.gg/ScY9s6xjFb
 
