@@ -75,6 +75,6 @@
 		"vitest": "^4.0.13"
 	},
 	"dependencies": {
-		"discord.js": "^14.26.3"
+		"discord.js": "^14.26.4"
 	}
 }
