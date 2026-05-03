@@ -56,6 +56,14 @@ const client = new TriviousClient({
 
 ---
 
+### Additional packages
+
+[Google Sheets API client](https://github.com/commonly-ts/trivious-sheets) - Integrate your bot with a Google Service Account to automate certain processes on Sheets
+
+[Trello API client](https://github.com/commonly-ts/trivious-trello) - Integrate your bot with Trello to automate cards handling
+
+---
+
 ### Included Default Events
 
 Trivious automatically includes and inserts `clientReady` and `interactionCreate` handlers, which can be overwritten.
