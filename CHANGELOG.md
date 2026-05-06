@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/commonly-ts/trivious/compare/v2.2.0...v2.2.1) (2026-05-06)
+
+
+### Bug Fixes
+
+* updated barrel file ([41eb95b](https://github.com/commonly-ts/trivious/commit/41eb95bd01678a848907eace910c7eaa73ebe056))
+
 # [2.2.0](https://github.com/commonly-ts/trivious/compare/v2.1.13...v2.2.0) (2026-05-06)
 
 
