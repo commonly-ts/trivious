@@ -49,6 +49,9 @@ export default async function registerEvents(client: TriviousClient, directory: 
 		const event = await parseEvent(file);
 		if (!event) continue;
 
+		if (client.stores.events.get(event.name))
+			console.warn(`[Trivious] Event '${event.name}' has a duplicate and has been overridden`);
+
 		client.stores.events.set(event.name, event);
 	}
 }

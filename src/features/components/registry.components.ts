@@ -1,4 +1,4 @@
-import { Component, TriviousClient } from "#typings";
+import { Component, ComponentContext, TriviousClient } from "#typings";
 import { TriviousError } from "#utility/errors.js";
 import { importFile } from "#utility/functions.js";
 import { existsSync, promises as fs } from "fs";
@@ -20,6 +20,12 @@ export default async function registerComponents(client: TriviousClient, directo
 		)
 			continue;
 
-		client.stores.components.set(component.identifier, component);
+		const contextIdentifier = component.context.toString() + component.identifier;
+		if (client.stores.components.get(contextIdentifier))
+			console.warn(
+				`[Trivious] Component identifier '${component.identifier}' with the context '${ComponentContext[component.context]}' has a duplicate and has been overridden`
+			);
+
+		client.stores.components.set(contextIdentifier, component);
 	}
 }
