@@ -14,11 +14,11 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
+			"#typings": ["src/shared/typings.ts"],
 			"src/*": ["src/*"],
 			"#shared/*": ["src/shared/*"],
 			"#feature/*": ["src/features/*"],
-			"#utility/*": ["src/utility/*"],
-			"#typings": ["src/shared/typings.ts"]
+			"#utility/*": ["src/utility/*"]
 		},
 		"typeRoots": ["node_modules/@types", "src/shared/typings"]
 	},
