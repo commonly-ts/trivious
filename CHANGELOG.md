@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/commonly-ts/trivious/compare/v2.2.1...v2.2.2) (2026-05-06)
+
+
+### Bug Fixes
+
+* updated component builder types ([633d019](https://github.com/commonly-ts/trivious/commit/633d0196d7b75e4e47c6b784cfc20694aceaa5b1))
+
 ## [2.2.1](https://github.com/commonly-ts/trivious/compare/v2.2.0...v2.2.1) (2026-05-06)
 
 
