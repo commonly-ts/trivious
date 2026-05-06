@@ -1,3 +1,18 @@
+# [2.2.0](https://github.com/commonly-ts/trivious/compare/v2.1.13...v2.2.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* added overwrite warnings for other registries ([64c03dd](https://github.com/commonly-ts/trivious/commit/64c03dddf90ece737738fc56d3610f8fb4122bea))
+* added sanity checks for component interactions and handlers ([3364527](https://github.com/commonly-ts/trivious/commit/3364527ce1547aa942c1cfe9a8ca1b46d4fa592e))
+* moved typings to top for DevEx ([fef586f](https://github.com/commonly-ts/trivious/commit/fef586fdbbdbe3d8da68229d0031a805cea1134d))
+
+
+### Features
+
+* added components builders ([93fcfa0](https://github.com/commonly-ts/trivious/commit/93fcfa02990e6b7ed74525346a84e6c1656b0b14))
+* added events and modules builders ([6d8eb58](https://github.com/commonly-ts/trivious/commit/6d8eb58b065cee84cbebd7464f7d089dfca26852))
+
 ## [2.1.13](https://github.com/commonly-ts/trivious/compare/v2.1.12...v2.1.13) (2026-04-30)
 
 
