@@ -42,7 +42,7 @@ const client = new TriviousClient({
 
 	// Auto-deploy slash commands.
 	// Using the commandHash feature is recommended
-	// since it won't redeploy unchanged commands every restart
+	// since it won't redeploy unchanged commands every restart.
 	commandHashConfig: {
 		enabled: true,
 		persistentDataPath: "data",
