@@ -8,9 +8,7 @@ import { Component, ComponentContext } from "#typings";
 export function createComponent<Context extends ComponentContext = ComponentContext>(
 	data: Component<Context>
 ): Component<Context> {
-	return {
-		...data,
-	} satisfies Component<Context>;
+	return data;
 }
 
 /**
@@ -19,12 +17,12 @@ export function createComponent<Context extends ComponentContext = ComponentCont
  * @returns Button Component
  */
 export function createButtonComponent(
-	data: Omit<Component, "context" | "component">
+	data: Omit<Component<ComponentContext.Button>, "context" | "component">
 ): Component<ComponentContext.Button> {
 	return {
 		context: ComponentContext.Button,
 		...data,
-	} satisfies Component;
+	};
 }
 
 /**
@@ -33,12 +31,12 @@ export function createButtonComponent(
  * @returns AnySelectMenu Component
  */
 export function createSelectMenuComponent(
-	data: Omit<Component, "context" | "component">
+	data: Omit<Component<ComponentContext.SelectMenu>, "context" | "component">
 ): Component<ComponentContext.SelectMenu> {
 	return {
 		context: ComponentContext.SelectMenu,
 		...data,
-	} satisfies Component;
+	};
 }
 
 /**
@@ -47,10 +45,10 @@ export function createSelectMenuComponent(
  * @returns Modal Component
  */
 export function createModalComponent(
-	data: Omit<Component, "context" | "component">
+	data: Omit<Component<ComponentContext.Modal>, "context" | "component">
 ): Component<ComponentContext.Modal> {
 	return {
 		context: ComponentContext.Modal,
 		...data,
-	} satisfies Component;
+	};
 }
