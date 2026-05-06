@@ -13,17 +13,33 @@ export enum ComponentContext {
 	Modal,
 }
 
+type ContextualComponentInteraction<Context extends ComponentContext = ComponentContext> =
+	Context extends ComponentContext.Button
+		? ButtonInteraction
+		: Context extends ComponentContext.SelectMenu
+			? AnySelectMenuInteraction
+			: Context extends ComponentContext.Modal
+				? ModalSubmitInteraction
+				: ComponentInteraction;
+
 /**
  * Trivious component
- * @param component The component type
+ * @param context The component context
  * @param identifier The unique identifier inside the custom id
  * @param flags The component flags
  * @param execute Component handler
  */
-export interface Component {
-	component: ComponentContext;
+export interface Component<Context extends ComponentContext = ComponentContext> {
+	/**
+	 * @deprecated Use context instead
+	 */
+	component?: Context;
+	context: Context;
 	identifier: string;
 	flags?: ComponentFlags[];
 	permissions?: CommandPermissionValues;
-	execute: (client: TriviousClient, interaction: ComponentInteraction) => Promise<void>;
+	execute: (
+		client: TriviousClient,
+		interaction: ContextualComponentInteraction<Context>
+	) => Promise<void>;
 }
