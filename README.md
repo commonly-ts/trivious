@@ -1,6 +1,7 @@
 # Trivious
 
 Spend less time wiring, and more time writing behaviour.
+
 - declarative handlers
 - structured files
 - encoded interaction routing
@@ -35,9 +36,17 @@ const client = new TriviousClient({
 		tokenReference: "BOT_TOKEN",
 		clientIdReference: "CLIENT_ID",
 	},
-	corePath: "core", // Folder containing your bot's processes
+	corePath: "core", // Folder containing your bot's handlers
 	intents: [GatewayIntentBits.Guilds],
 	ownerUserIds: ["1234"],
+
+	// Auto-deploy slash commands.
+	// Using the commandHash feature is recommended
+	// since it won't redeploy unchanged commands every restart
+	commandHashConfig: {
+		enabled: true,
+		persistentDataPath: "data",
+	},
 });
 
 (async () => {
@@ -74,6 +83,7 @@ These default events can be found in `src/features/events/presets` in the Trivio
 ---
 
 ### Code examples
+
 Examples for commands, components, events and modules can be found at https://github.com/commonly-ts/discord-bot-template/tree/main/templates.
 
 ---
@@ -83,7 +93,7 @@ Examples for commands, components, events and modules can be found at https://gi
 ```ts
 // commands/debug/index.ts
 import { ApplicationCommandType, SlashCommandBuilder } from "discord.js";
-import { SlashCommandData } from "trivious";
+import { createSlashCommand, SlashCommandData } from "trivious";
 
 export default {
 	active: true,
@@ -92,6 +102,17 @@ export default {
 	flags: ["Cached", "EphemeralReply", "DeferReply"],
 	data: new SlashCommandBuilder().setName("debug").setDescription("Debug commands"),
 } satisfies SlashCommandData;
+
+// Or alternatively...
+export default createSlashCommand({
+	active: true,
+	flags: ["Cached", "EphemeralReply", "DeferReply"],
+	data: new SlashCommandBuilder().setName("debug").setDescription("Debug commands"),
+});
+
+// You have the choice to do export default {} satisfies <...> OR use
+// a builder such as createSlashCommand (cleaner & less repetitive).
+// There are builders available for commands, components, events and modules.
 ```
 
 ### Creating a Subcommand Group
