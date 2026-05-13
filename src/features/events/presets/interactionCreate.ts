@@ -98,9 +98,6 @@ export default {
 			}
 		} else if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
 			const { context, identifier, tags } = customId.decode(interaction.customId);
-			const identContext = identifier.slice(0, 1);
-			if (context !== Number(identContext)) return;
-
 			if (context === ComponentContext.Button && !(interaction instanceof ButtonInteraction))
 				return;
 			if (context === ComponentContext.Modal && !(interaction instanceof ModalSubmitInteraction))

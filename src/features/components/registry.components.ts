@@ -20,12 +20,11 @@ export default async function registerComponents(client: TriviousClient, directo
 		)
 			continue;
 
-		const contextIdentifier = component.context.toString() + component.identifier;
-		if (client.stores.components.get(contextIdentifier))
+		if (client.stores.components.get(component.identifier))
 			console.warn(
 				`[Trivious] Component identifier '${component.identifier}' with the context '${ComponentContext[component.context]}' has a duplicate and has been overridden`
 			);
 
-		client.stores.components.set(contextIdentifier, component);
+		client.stores.components.set(component.identifier, component);
 	}
 }
