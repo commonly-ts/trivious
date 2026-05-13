@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/commonly-ts/trivious/compare/v2.2.2...v2.2.3) (2026-05-13)
+
+
+### Bug Fixes
+
+* fixed command handling logic ([25dc985](https://github.com/commonly-ts/trivious/commit/25dc9857d988a052f673789cdf0f6c993e579b42))
+
 ## [2.2.2](https://github.com/commonly-ts/trivious/compare/v2.2.1...v2.2.2) (2026-05-06)
 
 
