@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/commonly-ts/trivious/compare/v2.2.3...v2.2.4) (2026-05-13)
+
+
+### Bug Fixes
+
+* removed redundant component context logic ([6760d6d](https://github.com/commonly-ts/trivious/commit/6760d6d4b5b0cefb71581b411306bd10cbb6ba4d))
+
 ## [2.2.3](https://github.com/commonly-ts/trivious/compare/v2.2.2...v2.2.3) (2026-05-13)
 
 
