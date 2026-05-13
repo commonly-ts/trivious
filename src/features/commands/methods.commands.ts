@@ -69,7 +69,7 @@ export async function handleSlashCommand(
 	const subcommandGroup = options.getSubcommandGroup(false);
 	const subcommand = options.getSubcommand(false);
 
-	if (!subcommandGroup || !subcommand) {
+	if (!subcommandGroup && !subcommand) {
 		await handleFlags(interaction, command.flags);
 
 		if ("run" in command && command.run) {
