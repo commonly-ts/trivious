@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/commonly-ts/trivious/compare/v2.2.4...v2.2.5) (2026-05-16)
+
+
+### Bug Fixes
+
+* updated memberPermission type to bigint for permission bits ([f33b70e](https://github.com/commonly-ts/trivious/commit/f33b70eb8588905eec1ec18f3702dd9cad3744f4))
+
 ## [2.2.4](https://github.com/commonly-ts/trivious/compare/v2.2.3...v2.2.4) (2026-05-13)
 
 
