@@ -1,4 +1,4 @@
-import { Event } from "#typings";
+import { Event } from "@typings";
 
 /**
  * Create an event handler

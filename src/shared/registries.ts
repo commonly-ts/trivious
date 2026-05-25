@@ -1,7 +1,7 @@
-import registerCommands from "src/features/commands/registry.commands.js";
-import registerComponents from "src/features/components/registry.components.js";
-import registerEvents, { bindEvents } from "src/features/events/registry.events.js";
-import registerModules, { bindModules } from "src/features/modules/registry.modules.js";
+import registerCommands from "@feature/commands/registry.commands.js";
+import registerComponents from "@feature/components/registry.components.js";
+import registerEvents, { bindEvents } from "@feature/events/registry.events.js";
+import registerModules, { bindModules } from "@feature/modules/registry.modules.js";
 
 export default {
 	commands: {

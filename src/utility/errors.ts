@@ -1,4 +1,4 @@
-import { BaseCommandData, SlashCommandData } from "src/features/commands/commands.types.js";
+import { BaseCommandData, SlashCommandData } from "@feature/commands/commands.types.js";
 
 export class TriviousError extends Error {
 	readonly field?: string;

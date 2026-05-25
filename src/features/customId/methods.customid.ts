@@ -1,5 +1,5 @@
-import { ComponentContext, ComponentCustomId, ComponentTag } from "#typings";
-import { TriviousError } from "#utility/errors.js";
+import { ComponentContext, ComponentCustomId, ComponentTag } from "@typings";
+import { TriviousError } from "@utility/errors.js";
 
 const customId = {
 	/**

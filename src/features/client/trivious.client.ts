@@ -1,5 +1,5 @@
+import registries from "@shared/registries.js";
 import { Client, Collection } from "discord.js";
-import registries from "src/shared/registries.js";
 import structure from "../structure/index.structure.js";
 
 import {
@@ -9,8 +9,8 @@ import {
 	Module,
 	SlashCommandData,
 	TriviousClientOptions,
-} from "#typings";
-import { TriviousError } from "#utility/errors.js";
+} from "@typings";
+import { TriviousError } from "@utility/errors.js";
 import commandDeploy from "./deploy.client.js";
 
 export default class TriviousClient extends Client {

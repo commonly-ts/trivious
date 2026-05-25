@@ -1,10 +1,13 @@
+import { handleSlashCommand, interactionReply } from "@feature/commands/methods.commands.js";
+import customId from "@feature/customId/methods.customid.js";
+import { canMemberRunCommand } from "@feature/permissions/methods.permissions.js";
 import {
 	ComponentContext,
 	SlashCommandData,
 	TriviousClient,
 	type ContextCommandData,
 	type Event,
-} from "#typings";
+} from "@typings";
 import {
 	ApplicationCommandType,
 	ButtonInteraction,
@@ -14,9 +17,6 @@ import {
 	ModalSubmitInteraction,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
-import { handleSlashCommand, interactionReply } from "src/features/commands/methods.commands.js";
-import customId from "src/features/customId/methods.customid.js";
-import { canMemberRunCommand } from "src/features/permissions/methods.permissions.js";
 
 /**
  * Check if the command is a subcommand and validate whether the member can run the command based on subcommand permissions

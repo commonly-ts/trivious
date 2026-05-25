@@ -1,4 +1,4 @@
-import { ComponentContext } from "#typings";
+import { ComponentContext } from "@typings";
 
 export type ComponentTag = "awaited";
 export interface ComponentCustomId {

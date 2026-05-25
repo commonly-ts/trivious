@@ -1,4 +1,4 @@
-import { BaseCommandData, Component, TriviousClient } from "#typings";
+import { BaseCommandData, Component, TriviousClient } from "@typings";
 import { GuildMember, User } from "discord.js";
 
 export function canMemberRunCommand(

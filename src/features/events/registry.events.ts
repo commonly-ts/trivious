@@ -1,6 +1,6 @@
-import { Event, TriviousClient } from "#typings";
-import { TriviousError } from "#utility/errors.js";
-import { importFile } from "#utility/functions.js";
+import { Event, TriviousClient } from "@typings";
+import { TriviousError } from "@utility/errors.js";
+import { importFile } from "@utility/functions.js";
 import { ClientEvents } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path, { join } from "path";

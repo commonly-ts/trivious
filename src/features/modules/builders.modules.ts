@@ -1,4 +1,4 @@
-import { Module } from "#typings";
+import { Module } from "@typings";
 
 /**
  * Create a module

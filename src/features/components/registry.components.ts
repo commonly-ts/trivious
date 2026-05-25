@@ -1,6 +1,6 @@
-import { Component, ComponentContext, TriviousClient } from "#typings";
-import { TriviousError } from "#utility/errors.js";
-import { importFile } from "#utility/functions.js";
+import { Component, ComponentContext, TriviousClient } from "@typings";
+import { TriviousError } from "@utility/errors.js";
+import { importFile } from "@utility/functions.js";
 import { existsSync, promises as fs } from "fs";
 import { join } from "path";
 

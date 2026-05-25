@@ -3,7 +3,7 @@ import {
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
-} from "#typings";
+} from "@typings";
 import { ApplicationCommandType, Collection } from "discord.js";
 
 export function createSlashCommand(

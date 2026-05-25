@@ -1,8 +1,8 @@
+import { TriviousError } from "@utility/errors.js";
 import { createHash } from "crypto";
 import { REST, Routes } from "discord.js";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
-import { TriviousError } from "src/utility/errors.js";
 import TriviousClient from "./trivious.client.js";
 
 export default async function commandDeploy(client: TriviousClient) {

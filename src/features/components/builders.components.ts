@@ -1,4 +1,4 @@
-import { Component, ComponentContext } from "#typings";
+import { Component, ComponentContext } from "@typings";
 
 /**
  * Create component handler
