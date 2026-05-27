@@ -122,3 +122,9 @@ export interface SlashSubcommandData<
 			? SlashCommandData | undefined
 			: SlashSubcommandGroupData<false> | undefined;
 }
+
+export type CollatedCommandData = {
+	SlashCommand: Set<SlashCommandData>;
+	SlashSubcommand: Set<SlashSubcommandData>;
+	SlashSubcommandGroup: Set<SlashSubcommandGroupData>;
+};

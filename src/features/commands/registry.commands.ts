@@ -5,9 +5,9 @@ import {
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
-} from "#typings";
-import { TriviousError } from "#utility/errors.js";
-import { importFile } from "#utility/functions.js";
+} from "@typings";
+import { TriviousError } from "@utility/errors.js";
+import { importFile } from "@utility/functions.js";
 import { ApplicationCommandType, Collection } from "discord.js";
 import { Dirent, existsSync, promises as fs } from "fs";
 import path, { join } from "path";
@@ -21,16 +21,22 @@ function validateCommand<T extends BaseChatInputCommandData | ContextCommandData
 	return expects(command);
 }
 
+function getJsOrTsFile(...partial: string[]) {
+	const jsFile = path.resolve(partial + ".js");
+	const tsFile = path.resolve(partial + ".ts");
+	if (existsSync(jsFile)) return jsFile;
+	return existsSync(tsFile) ? tsFile : null;
+}
+
 async function parseSlashSubcommands(
 	directory: string,
 	data: SlashCommandData | SlashSubcommandGroupData<boolean>
 ) {
 	const _parentType = "context" in data ? "command" : "group";
 	const subcommands = new Collection<string, SlashSubcommandData<typeof _parentType, true>>();
-
 	if (!("addSubcommand" in data.data)) return subcommands;
 
-	const files = fs.glob(join(directory, "./*.js"));
+	const files = fs.glob(join(directory, "./*.{js,ts}"));
 	for await (const file of files) {
 		const subcommand = await importFile<SlashSubcommandData<typeof _parentType, true>>(file);
 		if (
@@ -71,10 +77,8 @@ async function parseSlashCommand(
 	await parseSlashSubcommands(parentDir, command);
 
 	for (const subdir of subdirectories) {
-		const indexFile = path.resolve(subdir.parentPath, subdir.name, "index.js");
-		if (!existsSync(indexFile)) continue;
-
-		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile);
+		const indexFile = getJsOrTsFile(subdir.parentPath, subdir.name, "index");
+		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile!);
 		if (
 			!group ||
 			!("context" in group && "addSubcommandGroup" in command.data) ||
