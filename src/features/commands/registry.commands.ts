@@ -1,6 +1,6 @@
 import {
-	BaseChatInputCommandData,
-	ContextCommandData,
+	CollatedCommandData,
+	CommandSetData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
@@ -8,160 +8,133 @@ import {
 } from "@typings";
 import { TriviousError } from "@utility/errors.js";
 import { importFile } from "@utility/functions.js";
-import { ApplicationCommandType, Collection } from "discord.js";
-import { Dirent, existsSync, promises as fs } from "fs";
-import path, { join } from "path";
+import { Collection } from "discord.js";
+import { existsSync, promises as fs } from "fs";
+import path from "path";
 
-function validateCommand<T extends BaseChatInputCommandData | ContextCommandData>(
-	command: T,
-	expects: (command: Partial<T>) => boolean
-): boolean {
-	if (!("active" in command && "commandType" in command)) return false;
-	if (!command.active) return false;
-	return expects(command);
-}
-
-function getJsOrTsFile(...partial: string[]) {
-	const jsFile = path.resolve(partial + ".js");
-	const tsFile = path.resolve(partial + ".ts");
-	if (existsSync(jsFile)) return jsFile;
-	return existsSync(tsFile) ? tsFile : null;
-}
-
-async function parseSlashSubcommands(
-	directory: string,
-	data: SlashCommandData | SlashSubcommandGroupData<boolean>
-) {
-	const _parentType = "context" in data ? "command" : "group";
-	const subcommands = new Collection<string, SlashSubcommandData<typeof _parentType, true>>();
-	if (!("addSubcommand" in data.data)) return subcommands;
-
-	const files = fs.glob(join(directory, "./*.{js,ts}"));
-	for await (const file of files) {
-		const subcommand = await importFile<SlashSubcommandData<typeof _parentType, true>>(file);
-		if (
-			!subcommand ||
-			!validateCommand(subcommand, (subcmd) => subcmd.context === "SlashSubcommand")
-		)
-			continue;
-
-		subcommand.parent = data;
-		data.data.addSubcommand(subcommand.data);
-
-		if (subcommands.has(subcommand.data.name))
-			console.warn(
-				`[Trivious] Subcommand '${subcommand.data.name}' under ${data.context} '${data.data.name}' has a duplicate and has been overridden`
-			);
-		subcommands.set(subcommand.data.name, subcommand);
+async function parseBase<T>(input: string | T, expects?: (base: Partial<T>) => boolean) {
+	if (typeof input !== "string") {
+		if (expects && !expects(input)) return null;
+		return input;
 	}
-
-	if (subcommands.size > 0) data.subcommands = subcommands;
-	return subcommands;
+	if (!existsSync(input)) return null;
+	const base = await importFile<T>(input);
+	if (!base) return null;
+	if (expects && !expects(base)) return null;
+	return base;
 }
 
-async function parseSlashCommand(
-	file: string,
-	parentDir: string,
-	subdirectories: Dirent<string>[]
+async function parseDirectory(data: CollatedCommandData, directory: string): Promise<void> {
+	const files = fs.glob(path.join(directory, "*.{js,ts}"));
+	for await (const file of files) {
+		const base = await parseBase<SlashCommandData | SlashSubcommandData | SlashSubcommandGroupData>(
+			file,
+			(base) => "context" in base && !!base.context
+		);
+		if (!base) continue;
+		const targetSet = data[base.context];
+		if (targetSet) (targetSet as Set<[typeof base, string]>).add([base, directory]);
+	}
+}
+
+function isSubdirectoryOf(directory: string, subdirectory: string) {
+	const relative = path.relative(path.resolve(directory), path.resolve(subdirectory));
+	return !!relative && !relative.startsWith("..") && !path.isAbsolute(relative);
+}
+
+function getDataFromCommandSet<Data>(
+	set: Set<CommandSetData<Data>>,
+	options: { matchParentDirectory?: string; matchData?: Partial<Data> }
 ) {
-	if (!existsSync(file)) return;
+	const { matchData, matchParentDirectory } = options;
+	if (!matchData && !matchParentDirectory) return undefined;
+	const array = Array.from(set.entries());
+	let bestMatch: CommandSetData<Data> | undefined;
+	let bestDepth = -1;
 
-	const command = await importFile<SlashCommandData>(file);
-	if (
-		!command ||
-		!validateCommand(command, (cmd) => cmd.context === "SlashCommand") ||
-		!("addSubcommand" in command.data)
-	)
-		return;
-
-	await parseSlashSubcommands(parentDir, command);
-
-	for (const subdir of subdirectories) {
-		const indexFile = getJsOrTsFile(subdir.parentPath, subdir.name, "index");
-		const group = await importFile<SlashSubcommandGroupData<true>>(indexFile!);
-		if (
-			!group ||
-			!("context" in group && "addSubcommandGroup" in command.data) ||
-			group.context !== "SlashSubcommandGroup"
-		)
-			continue;
-
-		group.parent = command;
-		if (!command.subcommandGroups) command.subcommandGroups = new Collection();
-		await parseSlashSubcommands(join(subdir.parentPath, subdir.name), group);
-
-		if (group.subcommands.size > 0) {
-			if (command.subcommandGroups.has(group.data.name))
-				console.warn(
-					`[Trivious] SubcommandGroup '${group.data.name}' under SlashCommand '${command.data.name}' has a duplicate and has been overridden`
-				);
-
-			command.data.addSubcommandGroup(group.data);
-			command.subcommandGroups.set(group.data.name, group);
+	for (const entry of array) {
+		const [key, [data, directory]] = entry;
+		if (matchData && data === matchData) return key[0];
+		if (!matchParentDirectory) continue;
+		const isExact = directory === matchParentDirectory;
+		const isParent = isSubdirectoryOf(directory, matchParentDirectory);
+		if (isExact || isParent) {
+			const depth = directory.split(/\\|\//).length;
+			if (depth > bestDepth) {
+				bestDepth = depth;
+				bestMatch = entry[0];
+			}
 		}
 	}
 
-	return command;
+	return bestMatch?.[0];
 }
 
-async function parseContextCommands(parentDir: string) {
-	const collection = new Collection<string, ContextCommandData>();
-	const files = fs.glob(join(parentDir, "**/*.js"));
-	for await (const file of files) {
-		const contextCommand = await importFile<ContextCommandData>(file);
-		if (
-			!contextCommand ||
-			!validateCommand(
-				contextCommand,
-				(cmd) =>
-					cmd.commandType === ApplicationCommandType.Message ||
-					cmd.commandType === ApplicationCommandType.User
-			)
-		)
+async function setChildrenToParents(data: CollatedCommandData) {
+	for (const [group, directory] of data.SlashSubcommandGroup) {
+		const slashCommand =
+			group.parent || getDataFromCommandSet(data.SlashCommand, { matchParentDirectory: directory });
+
+		if (!slashCommand || !("addSubcommandGroup" in slashCommand.data)) {
+			console.warn("[Trivious] Could not find parent for subcommand group", group.data.name);
 			continue;
-
-		contextCommand.data.setType(contextCommand.commandType);
-		collection.set(contextCommand.data.name, contextCommand);
-	}
-
-	return collection;
-}
-
-async function registerDirectory(client: TriviousClient, parentDir: string) {
-	const entries = await fs.readdir(parentDir, { withFileTypes: true });
-	const subdirectories = entries.filter((entry) => entry.isDirectory());
-
-	const indexFile = path.resolve(parentDir, "index.js");
-	const slashCommand = await parseSlashCommand(indexFile, parentDir, subdirectories);
-	if (slashCommand) {
-		if (client.stores.commands.chatInput.has(slashCommand.data.name))
+		}
+		if (!slashCommand.subcommandGroups) slashCommand.subcommandGroups = new Collection();
+		if (slashCommand.subcommandGroups.has(group.data.name))
 			console.warn(
-				`[Trivious] SlashCommand '${slashCommand.data.name}' has a duplicate and has been overridden`
+				`[Trivious] SubcommandGroup '${group.data.name}' under SlashCommand '${slashCommand.data.name}' has been overridden by a group with the same name`
 			);
-
-		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
+		group.parent = slashCommand;
+		slashCommand.subcommandGroups.set(group.data.name, group);
+		slashCommand.data.addSubcommandGroup(group.data);
 	}
 
-	const contextCommands = await parseContextCommands(parentDir);
-	contextCommands.forEach((cmd) => client.stores.commands.context.set(cmd.data.name, cmd));
+	for (const [subcommand, directory] of data.SlashSubcommand) {
+		const parent =
+			subcommand.parent ||
+			getDataFromCommandSet(data.SlashSubcommandGroup, { matchParentDirectory: directory }) ||
+			getDataFromCommandSet(data.SlashCommand, { matchParentDirectory: directory });
+
+		if (!parent || !("addSubcommand" in parent.data)) {
+			console.warn("[Trivious] Could not find parent for subcommand", subcommand.data.name);
+			continue;
+		}
+		if (!parent.subcommands) parent.subcommands = new Collection();
+		if (parent.subcommands.has(subcommand.data.name))
+			console.warn(
+				`[Trivious] Subcommand '${subcommand.data.name}' under SlashCommand/SubcommandGroup '${parent.data.name}' has been overridden by a subcommand with the same name`
+			);
+		subcommand.parent = parent;
+		parent.subcommands.set(subcommand.data.name, subcommand);
+		parent.data.addSubcommand(subcommand.data);
+	}
 }
 
 export default async function registerCommands(client: TriviousClient, directory: string) {
 	if (!existsSync(directory))
 		throw new TriviousError(
-			`Could not register commands; passed directory '${directory}' does not exist!`,
+			`Could not regsiter commands; passed directory ${directory} does not exist`,
 			"Nonexistant directory passed"
 		);
-
 	const processedDirectories = new Set<string>();
-
-	const files = fs.glob(join(directory, "**/*.js"));
+	const files = fs.glob(path.join(directory, "**/*.{js,ts}"));
+	const data: CollatedCommandData = {
+		SlashCommand: new Set<CommandSetData<SlashCommandData>>(),
+		SlashSubcommand: new Set<CommandSetData<SlashSubcommandData>>(),
+		SlashSubcommandGroup: new Set<CommandSetData<SlashSubcommandGroupData>>(),
+	};
 	for await (const file of files) {
 		const parentDir = path.dirname(file);
-
 		if (processedDirectories.has(parentDir)) continue;
 		processedDirectories.add(parentDir);
-
-		await registerDirectory(client, parentDir);
+		await parseDirectory(data, parentDir);
+	}
+	await setChildrenToParents(data);
+	for (const [slashCommand] of data.SlashCommand) {
+		if (client.stores.commands.chatInput.get(slashCommand.data.name))
+			console.warn(
+				`[Trivious] Command '${slashCommand.data.name}' has been overridden by a command with the same name`
+			);
+		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 	}
 }

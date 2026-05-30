@@ -81,7 +81,7 @@ export interface ContextCommandData<T extends "Message" | "User" | null = null>
 export interface SlashCommandData extends BaseChatInputCommandData {
 	context: "SlashCommand";
 	data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
-	subcommands?: Collection<string, SlashSubcommandData<"command", true>>;
+	subcommands?: Collection<string, SlashSubcommandData<true>>;
 	subcommandGroups?: Collection<string, SlashSubcommandGroupData<true>>;
 	run?: CommandFunction<ChatInputCommandInteraction>;
 }
@@ -95,7 +95,7 @@ export interface SlashCommandData extends BaseChatInputCommandData {
 export interface SlashSubcommandGroupData<Processed extends boolean = false> {
 	context: "SlashSubcommandGroup";
 	data: SlashCommandSubcommandGroupBuilder;
-	subcommands: Collection<string, SlashSubcommandData<"group", boolean>>;
+	subcommands: Collection<string, SlashSubcommandData>;
 	parent?: Processed extends true ? SlashCommandData : SlashCommandData | undefined;
 }
 
@@ -107,24 +107,20 @@ export interface SlashSubcommandGroupData<Processed extends boolean = false> {
  * @param data The slash subcommand builder
  * @param execute Function for when the subcommand is executed
  */
-export interface SlashSubcommandData<
-	Parent extends "command" | "group" = "command",
-	Processed extends boolean = false,
-> extends BaseChatInputCommandData {
+export interface SlashSubcommandData<Processed extends boolean = false>
+	extends BaseChatInputCommandData {
 	context: "SlashSubcommand";
 	data: SlashCommandSubcommandBuilder;
 	execute: CommandFunction<ChatInputCommandInteraction>;
 	parent?: Processed extends true
-		? Parent extends "command"
-			? SlashCommandData
-			: SlashSubcommandGroupData<true>
-		: Parent extends "command"
-			? SlashCommandData | undefined
-			: SlashSubcommandGroupData<false> | undefined;
+		? SlashCommandData | SlashSubcommandGroupData<true>
+		: SlashCommandData | SlashSubcommandGroupData<false>;
 }
 
+export type CommandSetData<Data> = [Data, directory: string];
+
 export type CollatedCommandData = {
-	SlashCommand: Set<SlashCommandData>;
-	SlashSubcommand: Set<SlashSubcommandData>;
-	SlashSubcommandGroup: Set<SlashSubcommandGroupData>;
+	SlashCommand: Set<CommandSetData<SlashCommandData>>;
+	SlashSubcommand: Set<CommandSetData<SlashSubcommandData>>;
+	SlashSubcommandGroup: Set<CommandSetData<SlashSubcommandGroupData>>;
 };

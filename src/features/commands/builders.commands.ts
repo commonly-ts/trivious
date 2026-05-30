@@ -20,7 +20,7 @@ export function createSlashCommand(
  * @deprecated Use createSlashSubcommand instead
  */
 export function createSubcommand(
-	data: Omit<SlashSubcommandData, "context" | "commandType" | "parent">
+	data: Omit<SlashSubcommandData, "context" | "commandType">
 ): SlashSubcommandData {
 	return {
 		...data,
@@ -30,7 +30,7 @@ export function createSubcommand(
 }
 
 export function createSlashSubcommand(
-	data: Omit<SlashSubcommandData, "context" | "commandType" | "parent">
+	data: Omit<SlashSubcommandData, "context" | "commandType">
 ): SlashSubcommandData {
 	return {
 		...data,
@@ -43,7 +43,7 @@ export function createSlashSubcommand(
  * @deprecated Use createSlashSubcommandGroup instead
  */
 export function createSubcommandGroup(
-	data: Omit<SlashSubcommandGroupData, "context" | "parent" | "subcommands">
+	data: Omit<SlashSubcommandGroupData, "context" | "subcommands">
 ): SlashSubcommandGroupData {
 	return {
 		...data,
@@ -53,7 +53,7 @@ export function createSubcommandGroup(
 }
 
 export function createSlashSubcommandGroup(
-	data: Omit<SlashSubcommandGroupData, "context" | "parent" | "subcommands">
+	data: Omit<SlashSubcommandGroupData, "context" | "subcommands">
 ): SlashSubcommandGroupData {
 	return {
 		...data,
