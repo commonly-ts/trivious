@@ -44,9 +44,9 @@
 		"lint": "eslint --fix src",
 		"format": "prettier --write src",
 		"typecheck": "tsc --noEmit",
-		"test": "vitest run --pass-with-no-tests",
+		"test": "vitest",
+		"dev": "tsx dev/index.ts",
 		"coverage": "vitest run --coverage",
-		"dev": "tsup --watch",
 		"release": "semantic-release",
 		"prepare": "npm run build"
 	},
@@ -56,10 +56,11 @@
 		"@semantic-release/git": "^10.0.1",
 		"@semantic-release/github": "^12.0.2",
 		"@semantic-release/npm": "^13.1.2",
+		"@swc/core": "^1.15.40",
 		"@types/node": "^24.10.1",
 		"@typescript-eslint/eslint-plugin": "^8.57.0",
 		"@typescript-eslint/parser": "^8.57.0",
-		"@vitest/coverage-v8": "^4.0.13",
+		"@vitest/coverage-v8": "^4.1.7",
 		"dotenv": "^17.2.3",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
@@ -70,9 +71,12 @@
 		"semantic-release": "^25.0.2",
 		"tsc-alias": "^1.8.16",
 		"tsup": "^8.5.1",
+		"tsx": "^4.22.3",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.57.0",
-		"vitest": "^4.0.13"
+		"vite": "^8.0.14",
+		"vite-tsconfig-paths": "^6.1.1",
+		"vitest": "^4.1.7"
 	},
 	"dependencies": {
 		"discord.js": "^14.26.4"
