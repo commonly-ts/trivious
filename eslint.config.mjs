@@ -60,7 +60,7 @@ export default tseslint.config(
 	},
 
 	{
-		files: ["src/**/*.ts", "src/**/*.tsx"],
+		files: ["src/**/*.ts", "src/**/*.tsx", "dev/**/*.ts", "tests/**/*.ts"],
 		languageOptions: {
 			parserOptions: {
 				project: "./tsconfig.json",
