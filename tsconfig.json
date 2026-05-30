@@ -13,13 +13,12 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"sourceMap": true,
-		"baseUrl": ".",
 		"paths": {
-			"@typings": ["src/shared/typings.ts"],
-			"@shared/*": ["src/shared/*"],
-			"@feature/*": ["src/features/*"],
-			"@utility/*": ["src/utility/*"],
-			"@src/*": ["src/*"]
+			"@typings": ["./src/shared/typings.ts"],
+			"@shared/*": ["./src/shared/*"],
+			"@feature/*": ["./src/features/*"],
+			"@utility/*": ["./src/utility/*"],
+			"@src/*": ["./src/*"]
 		},
 		"typeRoots": ["node_modules/@types", "src/shared/typings"]
 	},
