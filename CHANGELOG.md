@@ -1,3 +1,17 @@
+# [2.3.0](https://github.com/commonly-ts/trivious/compare/v2.2.5...v2.3.0) (2026-05-30)
+
+
+### Bug Fixes
+
+* modernised tsconfig and allowed builds ([1804d44](https://github.com/commonly-ts/trivious/commit/1804d4487788e1c287c97054defa27c8cfb79c14))
+* updated/added configs and packages ([391c0cc](https://github.com/commonly-ts/trivious/commit/391c0ccc0cba309ce3756e2f41b984cd312459de))
+
+
+### Features
+
+* **commands:** Commands Registry Refactor ([6b5b357](https://github.com/commonly-ts/trivious/commit/6b5b3574e02e1936f88fd910bd029c3567ca4402)), closes [#7](https://github.com/commonly-ts/trivious/issues/7)
+* **commands:** refactored command registry ([c94bd10](https://github.com/commonly-ts/trivious/commit/c94bd10c8b760b3e288331aa77adbf5521789b42))
+
 ## [2.2.5](https://github.com/commonly-ts/trivious/compare/v2.2.4...v2.2.5) (2026-05-16)
 
 
