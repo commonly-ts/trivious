@@ -85,4 +85,5 @@ export interface TriviousClientOptions extends ClientOptions {
 	corePath: string;
 	ownerUserIds?: string[];
 	commandHashConfig?: CommandHashConfiguration;
+	debug?: boolean;
 }

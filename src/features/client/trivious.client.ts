@@ -12,6 +12,7 @@ import {
 } from "@typings";
 import { TriviousError } from "@utility/errors.js";
 import commandDeploy from "./deploy.client.js";
+import { Logger } from "./logger.js";
 
 export default class TriviousClient extends Client {
 	trivious: TriviousClientOptions;
@@ -24,10 +25,12 @@ export default class TriviousClient extends Client {
 		events: Collection<string, Event>;
 		modules: Collection<string, Module>;
 	};
+	logger: Logger;
 
 	constructor(options: TriviousClientOptions) {
 		super(options);
 		this.trivious = options;
+		this.logger = new Logger("Trivious", !!options.debug);
 
 		this.stores = {
 			commands: {
