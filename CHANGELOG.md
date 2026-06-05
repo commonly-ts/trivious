@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/commonly-ts/trivious/compare/v2.3.1...v2.3.2) (2026-06-05)
+
+
+### Bug Fixes
+
+* moved chalk to dependency from dev ([b640cd9](https://github.com/commonly-ts/trivious/commit/b640cd9aff7023615d11987d14dd4975215d1c9a))
+
 ## [2.3.1](https://github.com/commonly-ts/trivious/compare/v2.3.0...v2.3.1) (2026-06-05)
 
 
