@@ -13,12 +13,10 @@ import { existsSync, promises as fs } from "fs";
 import path from "path";
 
 async function parseBase<T>(input: string | T, expects?: (base: Partial<T>) => boolean) {
-	if (typeof input !== "string") {
-		if (expects && !expects(input)) return null;
-		return input;
-	}
-	if (!existsSync(input)) return null;
-	const base = await importFile<T>(input);
+	let base: T | null = null;
+	if (typeof input === "string") {
+		base = await importFile<T>(input);
+	} else base = input;
 	if (!base) return null;
 	if (expects && !expects(base)) return null;
 	return base;
@@ -123,6 +121,7 @@ export default async function registerCommands(client: TriviousClient, directory
 		SlashSubcommand: new Set<CommandSetData<SlashSubcommandData>>(),
 		SlashSubcommandGroup: new Set<CommandSetData<SlashSubcommandGroupData>>(),
 	};
+	client.logger.debug("Starting command registration in:", directory);
 	for await (const file of files) {
 		const parentDir = path.dirname(file);
 		if (processedDirectories.has(parentDir)) continue;
@@ -132,8 +131,8 @@ export default async function registerCommands(client: TriviousClient, directory
 	await setChildrenToParents(data);
 	for (const [slashCommand] of data.SlashCommand) {
 		if (client.stores.commands.chatInput.get(slashCommand.data.name))
-			console.warn(
-				`[Trivious] Command '${slashCommand.data.name}' has been overridden by a command with the same name`
+			client.logger.warn(
+				`Command '${slashCommand.data.name}' has been overridden by a command with the same name`
 			);
 		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 	}
