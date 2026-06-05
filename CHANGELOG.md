@@ -1,3 +1,11 @@
+## [2.3.1](https://github.com/commonly-ts/trivious/compare/v2.3.0...v2.3.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* added logger and debug option to client ([74b933f](https://github.com/commonly-ts/trivious/commit/74b933f2fc689cc199cf8fe71383a9e5fa1bfdda))
+* potential fix for command registry circular dependency issue ([4bce705](https://github.com/commonly-ts/trivious/commit/4bce705421bd3f8b55576ecf1814618f26c2ef35))
+
 # [2.3.0](https://github.com/commonly-ts/trivious/compare/v2.2.5...v2.3.0) (2026-05-30)
 
 
