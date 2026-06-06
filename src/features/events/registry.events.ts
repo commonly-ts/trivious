@@ -9,7 +9,7 @@ async function loadPresetEvents(client: TriviousClient) {
 	const directory = path.resolve(import.meta.dirname, "presets");
 	if (!existsSync(directory)) return;
 
-	const files = fs.glob(join(directory, "./*.js"));
+	const files = fs.glob(join(directory, "*.js"));
 	for await (const file of files) {
 		const event = await parseEvent(file);
 		if (!event) continue;
