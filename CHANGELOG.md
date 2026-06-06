@@ -1,3 +1,13 @@
+## [2.3.3](https://github.com/commonly-ts/trivious/compare/v2.3.2...v2.3.3) (2026-06-06)
+
+
+### Bug Fixes
+
+* added considerPackageFiles to resolveRelativePath ([8449a31](https://github.com/commonly-ts/trivious/commit/8449a31accb16763ff3b9ade49fc04fab07847f2))
+* errors within importFile now log to console ([753f590](https://github.com/commonly-ts/trivious/commit/753f59035a4718464bbeefab066f13d2f88cc9de))
+* improved permission checks and permission names ([bafb5f7](https://github.com/commonly-ts/trivious/commit/bafb5f79a55b475c1cf6007f8c5055167911262b))
+* made loadPresetEvents glob pattern less redundant ([3026479](https://github.com/commonly-ts/trivious/commit/302647916b4d45d401a2b3bdd6cebace4ac9714a))
+
 ## [2.3.2](https://github.com/commonly-ts/trivious/compare/v2.3.1...v2.3.2) (2026-06-05)
 
 
