@@ -1,5 +1,5 @@
 import { BaseCommandData, Component, TriviousClient } from "@typings";
-import { GuildMember, User } from "discord.js";
+import { GuildMember, PermissionFlagsBits, User } from "discord.js";
 
 export function canMemberRunCommand(
 	client: TriviousClient,
@@ -9,36 +9,35 @@ export function canMemberRunCommand(
 	const { permissions } = command;
 	if (!permissions) return [true, "No permissions set"];
 
-	if (client.trivious.ownerUserIds && client.trivious.ownerUserIds.includes(member.user.id))
-		return [true, "User can run command"];
+	// If the member is a bot owner or has Administrator permissions
+	if (
+		(client.trivious.ownerUserIds && client.trivious.ownerUserIds.includes(member.user.id)) ||
+		member.permissions.has(PermissionFlagsBits.Administrator)
+	)
+		return [true, "User can run command; Administrator privileges"];
 
 	const { requiredMemberPermissions, requiredRoleIds, userIds } = permissions;
 	if (userIds) return canUserRunCommand(client, command, member.user);
+	const permissionFlags = requiredMemberPermissions || permissions.permissionFlags;
+	const roleIds = requiredRoleIds || permissions.roleIds;
 
-	let memberHasPermission = false;
-	let memberHasRole = false;
-
-	if (requiredMemberPermissions) {
-		for (const bit of requiredMemberPermissions) {
+	if (permissionFlags) {
+		for (const bit of permissionFlags) {
 			if (member.permissions.has(bit)) {
-				memberHasPermission = true;
-				break;
+				return [true, "User can run command; Has required permission(s)"];
 			}
 		}
 	}
 
-	if (requiredRoleIds) {
-		for (const roleId of requiredRoleIds) {
+	if (roleIds) {
+		for (const roleId of roleIds) {
 			if (member.roles.cache.has(roleId)) {
-				memberHasRole = true;
-				break;
+				return [true, "User can run command; Has required role(s)"];
 			}
 		}
 	}
 
-	return memberHasPermission || memberHasRole
-		? [true, "User can run command"]
-		: [false, "User cannot run command"];
+	return [false, "User cannot run command; Meets zero requirements"];
 }
 
 export function canUserRunCommand(
@@ -53,8 +52,10 @@ export function canUserRunCommand(
 		return [true, "User can run command"];
 
 	const { requiredMemberPermissions, requiredRoleIds, userIds } = permissions;
+	const permissionFlags = requiredMemberPermissions || permissions.permissionFlags;
+	const roleIds = requiredRoleIds || permissions.roleIds;
 
-	if (!userIds && (requiredMemberPermissions || requiredRoleIds))
+	if (!userIds && (permissionFlags || roleIds))
 		return [false, "Cannot validate permissions; use canMemberRunCommand instead"];
 
 	if (!userIds) return [true, "No permissions set"];
