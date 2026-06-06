@@ -1,3 +1,11 @@
+## [2.3.5](https://github.com/commonly-ts/trivious/compare/v2.3.4...v2.3.5) (2026-06-06)
+
+
+### Bug Fixes
+
+* added check for non .ts files in importFile ([4f9a419](https://github.com/commonly-ts/trivious/commit/4f9a4198359acd71ce454f503a342dc4a3416729))
+* improved handling of command deployment ([97379f9](https://github.com/commonly-ts/trivious/commit/97379f97e5228cf02375d83f7c946569e4f609c5))
+
 ## [2.3.4](https://github.com/commonly-ts/trivious/compare/v2.3.3...v2.3.4) (2026-06-06)
 
 
