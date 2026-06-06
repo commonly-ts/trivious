@@ -28,6 +28,11 @@ export default async function commandDeploy(client: TriviousClient) {
 		let oldHash = "";
 		if (existsSync(hashFile)) oldHash = readFileSync(hashFile, "utf-8");
 
+		if (body.length === 0 && !oldHash) {
+			console.debug(`[Trivious] No commands found, skipping deployment.`);
+			return;
+		}
+
 		if (newHash === oldHash) {
 			console.debug(`[Trivious] No changes in commands found, skipping deployment.`);
 			return;
