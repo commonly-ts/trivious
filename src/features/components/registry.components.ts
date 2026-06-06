@@ -5,18 +5,23 @@ import { existsSync, promises as fs } from "fs";
 import { join } from "path";
 
 export default async function registerComponents(client: TriviousClient, directory: string) {
+	client.logger.debug("Starting component registration in:", directory);
 	if (!existsSync(directory))
 		throw new TriviousError(
 			`Could not register components; passed directory '${directory} does not exist!'`,
 			"Nonexistant directory passed"
 		);
 
-	const files = fs.glob(join(directory, "**/*.js"));
+	const files = fs.glob(join(directory, "**/*.{js,ts}"));
 	for await (const file of files) {
 		const component = await importFile<Component>(file);
 		if (
 			!component ||
-			!("component" in component && "identifier" in component && "execute" in component)
+			!(
+				("component" in component || "context" in component) &&
+				"identifier" in component &&
+				"execute" in component
+			)
 		)
 			continue;
 
@@ -25,6 +30,7 @@ export default async function registerComponents(client: TriviousClient, directo
 				`[Trivious] Component identifier '${component.identifier}' with the context '${ComponentContext[component.context]}' has a duplicate and has been overridden`
 			);
 
+		client.logger.debug("Registered component:", component.identifier);
 		client.stores.components.set(component.identifier, component);
 	}
 }
