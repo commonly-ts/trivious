@@ -3,7 +3,8 @@ import path from "path";
 import { pathToFileURL } from "url";
 
 const fileCache = new Map<string, Promise<any | null>>();
-export function importFile<T>(filePath: string): Promise<T | null> {
+export function importFile<T>(filePath: string) {
+	if (filePath.endsWith(".d.ts") || filePath.endsWith(".js.map")) return null;
 	const absolutePath = path.resolve(filePath);
 	if (fileCache.has(absolutePath)) return fileCache.get(absolutePath)!;
 
@@ -13,10 +14,10 @@ export function importFile<T>(filePath: string): Promise<T | null> {
 			if (!file) return null;
 
 			const imports = file.default || file;
-			if (typeof imports === "function" && imports.prototype) return new imports();
+			if (typeof imports === "function" && imports.prototype) return new imports() as T;
 			if (typeof imports === "object" && imports !== null) {
 				if (Object.keys(imports).length === 0) return null;
-				return imports;
+				return imports as T;
 			}
 
 			return null;
