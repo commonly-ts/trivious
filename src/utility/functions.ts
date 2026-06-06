@@ -18,7 +18,8 @@ export async function importFile<T>(filePath: string): Promise<T | null> {
 		}
 
 		return null;
-	} catch {
+	} catch (err: any) {
+		console.warn(`[Trivious] Error while importing file ${filePath}`, err);
 		return null;
 	}
 }
