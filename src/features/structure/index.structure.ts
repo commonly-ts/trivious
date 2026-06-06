@@ -1,7 +1,7 @@
+import { Collection } from "discord.js";
 import { existsSync } from "fs";
 import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
-import { Collection } from "discord.js";
 
 type ClientStores = "commands" | "components" | "events" | "modules";
 
@@ -23,19 +23,23 @@ const structure = {
 		return __dirname;
 	},
 
-	resolveRelativePath(relativePath: string) {
+	resolveRelativePath(relativePath: string, considerPackageFiles = false) {
 		const workingDir = process.cwd();
 		const packageRoot = this.getPackageRoot();
 
 		const candidates = [
 			join(workingDir, "lib", relativePath),
 			join(workingDir, "dist", relativePath),
-			join(packageRoot, "lib", relativePath),
-			join(packageRoot, "dist", relativePath),
-
-			join(packageRoot, relativePath),
 			join(workingDir, relativePath),
 		];
+
+		if (considerPackageFiles) {
+			candidates.push(
+				join(packageRoot, "lib", relativePath),
+				join(packageRoot, "dist", relativePath),
+				join(packageRoot, relativePath)
+			);
+		}
 
 		for (const candidate of candidates) {
 			const full = resolve(candidate);
