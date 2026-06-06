@@ -9,5 +9,3 @@ export { default as customId } from "@feature/customId/methods.customid.js";
 // Builders
 export * from "@feature/commands/builders.commands.js";
 export * from "@feature/components/builders.components.js";
-export * from "@feature/events/builders.events.js";
-export * from "@feature/modules/builders.modules.js";
