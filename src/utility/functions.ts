@@ -1,27 +1,40 @@
 import { promises as fs } from "fs";
+import path from "path";
 import { pathToFileURL } from "url";
 
-export async function importFile<T>(filePath: string): Promise<T | null> {
-	try {
-		const { default: file } = await import(pathToFileURL(filePath).href);
-		if (!file) return null;
+const fileCache = new Map<string, Promise<any | null>>();
+export function importFile<T>(filePath: string): Promise<T | null> {
+	const absolutePath = path.resolve(filePath);
+	if (fileCache.has(absolutePath)) return fileCache.get(absolutePath)!;
 
-		const imports = file.default || file;
+	const processPromise = (async () => {
+		try {
+			const { default: file } = await import(pathToFileURL(absolutePath).href);
+			if (!file) return null;
 
-		if (typeof imports === "function" && imports.prototype) {
-			return new imports() as T;
+			const imports = file.default || file;
+			if (typeof imports === "function" && imports.prototype) return new imports();
+			if (typeof imports === "object" && imports !== null) {
+				if (Object.keys(imports).length === 0) return null;
+				return imports;
+			}
+
+			return null;
+		} catch (err: any) {
+			console.warn(`[Trivious] Error while import file ${filePath}`, err);
+			return null;
 		}
+	})();
 
-		if (typeof imports == "object") {
-			if (Object.keys(imports).length === 0) return null;
-			return imports as T;
-		}
+	fileCache.set(absolutePath, processPromise);
+	processPromise.then((result) => {
+		if (result === null) fileCache.delete(absolutePath);
+	});
+	return processPromise;
+}
 
-		return null;
-	} catch (err: any) {
-		console.warn(`[Trivious] Error while importing file ${filePath}`, err);
-		return null;
-	}
+export function clearFileImportsCache() {
+	fileCache.clear();
 }
 
 export async function exists(path: string) {
