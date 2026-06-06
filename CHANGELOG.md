@@ -1,3 +1,14 @@
+## [2.3.4](https://github.com/commonly-ts/trivious/compare/v2.3.3...v2.3.4) (2026-06-06)
+
+
+### Bug Fixes
+
+* refactored importFile function ([93a7bf7](https://github.com/commonly-ts/trivious/commit/93a7bf78960f1aa86683e08501a151569b1ba9c8))
+* removed module and event builders ([ba79f60](https://github.com/commonly-ts/trivious/commit/ba79f60f93e0938c0b8611123ec8433706670471))
+* update tests ([4fcd57e](https://github.com/commonly-ts/trivious/commit/4fcd57e75f39b55d9e5d42282ab368dae5bf9a22))
+* updated component validation logic ([e94168e](https://github.com/commonly-ts/trivious/commit/e94168e160814ff99de158d1b1ac33fe77d9ed38))
+* updated workflows ([bd5dac2](https://github.com/commonly-ts/trivious/commit/bd5dac221455d50412cf1cb9b5648de84e297afe))
+
 ## [2.3.3](https://github.com/commonly-ts/trivious/compare/v2.3.2...v2.3.3) (2026-06-06)
 
 
