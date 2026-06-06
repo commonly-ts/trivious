@@ -134,6 +134,7 @@ export default async function registerCommands(client: TriviousClient, directory
 			client.logger.warn(
 				`Command '${slashCommand.data.name}' has been overridden by a command with the same name`
 			);
+		client.logger.debug("Registered slash command:", slashCommand.data.name);
 		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 	}
 }

@@ -1,9 +1,11 @@
+import registerCommands from "@feature/commands/registry.commands.js";
 import {
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
 } from "@typings";
+import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Commands Registry", () => {
@@ -24,17 +26,16 @@ describe("Commands Registry", () => {
 				clientIdReference: "",
 				tokenReference: "",
 			},
+			debug: true,
 		});
 
-		await client.register();
+		await registerCommands(client, path.resolve(client.trivious.corePath));
 		debugCommand = client.stores.commands.chatInput.get("debug");
 		noteCommand = client.stores.commands.chatInput.get("note");
 		debugConfigGroup = debugCommand?.subcommandGroups?.get("config");
 		pingSubcommand = debugCommand?.subcommands?.get("ping");
 		statsSubcommand = debugCommand?.subcommands?.get("stats");
 		editSubcommand = debugConfigGroup?.subcommands.get("edit");
-
-		console.log(client.stores.commands.chatInput);
 	});
 
 	it("should have registered slash commands", () => {

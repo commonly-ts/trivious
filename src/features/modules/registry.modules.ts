@@ -16,13 +16,14 @@ export async function bindModules(client: TriviousClient) {
 }
 
 export default async function registerModules(client: TriviousClient, directory: string) {
+	client.logger.debug("Starting module registration in:", directory);
 	if (!existsSync(directory))
 		throw new TriviousError(
 			`Could not register modules; passed directory '${directory}' does not exist!`,
 			"Nonexistant directory passed"
 		);
 
-	const files = fs.glob(join(directory, "**/*.js"));
+	const files = fs.glob(join(directory, "**/*.{js,ts}"));
 	for await (const file of files) {
 		const moduleData = await importFile<Module>(file);
 		if (!moduleData || !("name" in moduleData && "events" in moduleData)) continue;
