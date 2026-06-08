@@ -1,3 +1,10 @@
+## [2.3.6](https://github.com/commonly-ts/trivious/compare/v2.3.5...v2.3.6) (2026-06-08)
+
+
+### Bug Fixes
+
+* added context menu commands to registry ([e94f3f5](https://github.com/commonly-ts/trivious/commit/e94f3f59a357afdff5bec02a9397c362309a73da))
+
 ## [2.3.5](https://github.com/commonly-ts/trivious/compare/v2.3.4...v2.3.5) (2026-06-06)
 
 
