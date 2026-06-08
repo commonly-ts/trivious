@@ -123,4 +123,5 @@ export type CollatedCommandData = {
 	SlashCommand: Set<CommandSetData<SlashCommandData>>;
 	SlashSubcommand: Set<CommandSetData<SlashSubcommandData>>;
 	SlashSubcommandGroup: Set<CommandSetData<SlashSubcommandGroupData>>;
+	ContextCommand: Set<CommandSetData<ContextCommandData>>;
 };

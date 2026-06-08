@@ -1,6 +1,7 @@
 import {
 	CollatedCommandData,
 	CommandSetData,
+	ContextCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
@@ -8,7 +9,7 @@ import {
 } from "@typings";
 import { TriviousError } from "@utility/errors.js";
 import { importFile } from "@utility/functions.js";
-import { Collection } from "discord.js";
+import { ApplicationCommandType, Collection } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path from "path";
 
@@ -25,12 +26,18 @@ async function parseBase<T>(input: string | T, expects?: (base: Partial<T>) => b
 async function parseDirectory(data: CollatedCommandData, directory: string): Promise<void> {
 	const files = fs.glob(path.join(directory, "*.{js,ts}"));
 	for await (const file of files) {
-		const base = await parseBase<SlashCommandData | SlashSubcommandData | SlashSubcommandGroupData>(
-			file,
-			(base) => "context" in base && !!base.context
-		);
+		const base = await parseBase<
+			SlashCommandData | SlashSubcommandData | SlashSubcommandGroupData | ContextCommandData
+		>(file);
 		if (!base) continue;
-		const targetSet = data[base.context];
+		const targetSet =
+			"context" in base
+				? data[base.context]
+				: "commandType" in base &&
+					  (base.commandType === ApplicationCommandType.Message ||
+							base.commandType === ApplicationCommandType.User)
+					? data.ContextCommand
+					: null;
 		if (targetSet) (targetSet as Set<[typeof base, string]>).add([base, directory]);
 	}
 }
@@ -108,26 +115,7 @@ async function setChildrenToParents(data: CollatedCommandData) {
 	}
 }
 
-export default async function registerCommands(client: TriviousClient, directory: string) {
-	if (!existsSync(directory))
-		throw new TriviousError(
-			`Could not regsiter commands; passed directory ${directory} does not exist`,
-			"Nonexistant directory passed"
-		);
-	const processedDirectories = new Set<string>();
-	const files = fs.glob(path.join(directory, "**/*.{js,ts}"));
-	const data: CollatedCommandData = {
-		SlashCommand: new Set<CommandSetData<SlashCommandData>>(),
-		SlashSubcommand: new Set<CommandSetData<SlashSubcommandData>>(),
-		SlashSubcommandGroup: new Set<CommandSetData<SlashSubcommandGroupData>>(),
-	};
-	client.logger.debug("Starting command registration in:", directory);
-	for await (const file of files) {
-		const parentDir = path.dirname(file);
-		if (processedDirectories.has(parentDir)) continue;
-		processedDirectories.add(parentDir);
-		await parseDirectory(data, parentDir);
-	}
+async function registerSlashCommands(client: TriviousClient, data: CollatedCommandData) {
 	await setChildrenToParents(data);
 	for (const [slashCommand] of data.SlashCommand) {
 		if (client.stores.commands.chatInput.get(slashCommand.data.name))
@@ -137,4 +125,45 @@ export default async function registerCommands(client: TriviousClient, directory
 		client.logger.debug("Registered slash command:", slashCommand.data.name);
 		client.stores.commands.chatInput.set(slashCommand.data.name, slashCommand);
 	}
+}
+
+async function registerContextMenuCommands(client: TriviousClient, data: CollatedCommandData) {
+	for (const [contextCommand] of data.ContextCommand) {
+		if (client.stores.commands.chatInput.get(contextCommand.data.name))
+			client.logger.warn(
+				`Command '${contextCommand.data.name}' has been overridden by a command with the same name`
+			);
+		client.logger.debug(
+			"Registered",
+			ApplicationCommandType[contextCommand.commandType],
+			"context command:",
+			contextCommand.data.name
+		);
+		client.stores.commands.context.set(contextCommand.data.name, contextCommand);
+	}
+}
+
+export default async function registerCommands(client: TriviousClient, directory: string) {
+	if (!existsSync(directory))
+		throw new TriviousError(
+			`Could not regsiter commands; passed directory ${directory} does not exist`,
+			"Nonexistant directory passed"
+		);
+	const data: CollatedCommandData = {
+		SlashCommand: new Set<CommandSetData<SlashCommandData>>(),
+		SlashSubcommand: new Set<CommandSetData<SlashSubcommandData>>(),
+		SlashSubcommandGroup: new Set<CommandSetData<SlashSubcommandGroupData>>(),
+		ContextCommand: new Set<CommandSetData<ContextCommandData>>(),
+	};
+	client.logger.debug("Starting command registration in:", directory);
+	const files = fs.glob(path.join(directory, "**/*.{js,ts}"));
+	const processedDirectories = new Set<string>();
+	for await (const file of files) {
+		const parentDir = path.dirname(file);
+		if (processedDirectories.has(parentDir)) continue;
+		processedDirectories.add(parentDir);
+		await parseDirectory(data, parentDir);
+	}
+	await registerSlashCommands(client, data);
+	await registerContextMenuCommands(client, data);
 }
