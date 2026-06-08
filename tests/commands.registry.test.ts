@@ -1,5 +1,6 @@
 import registerCommands from "@feature/commands/registry.commands.js";
 import {
+	ContextCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
@@ -17,6 +18,8 @@ describe("Commands Registry", () => {
 	let pingSubcommand: SlashSubcommandData | undefined;
 	let statsSubcommand: SlashSubcommandData | undefined;
 	let editSubcommand: SlashSubcommandData | undefined;
+	let messageContextCommand: ContextCommandData | undefined;
+	let userContextCommand: ContextCommandData | undefined;
 
 	beforeAll(async () => {
 		client = new TriviousClient({
@@ -36,6 +39,8 @@ describe("Commands Registry", () => {
 		pingSubcommand = debugCommand?.subcommands?.get("ping");
 		statsSubcommand = debugCommand?.subcommands?.get("stats");
 		editSubcommand = debugConfigGroup?.subcommands.get("edit");
+		messageContextCommand = client.stores.commands.context.get("message-context");
+		userContextCommand = client.stores.commands.context.get("user-context");
 	});
 
 	it("should have registered slash commands", () => {
@@ -54,5 +59,10 @@ describe("Commands Registry", () => {
 		expect(!!pingSubcommand).toBe(true);
 		expect(!!statsSubcommand).toBe(true);
 		expect(!!editSubcommand).toBe(true);
+	});
+
+	it("should have registered context menu commands", () => {
+		expect(!!messageContextCommand).toBe(true);
+		expect(!!userContextCommand).toBe(true);
 	});
 });
