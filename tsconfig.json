@@ -3,6 +3,7 @@
 		"target": "esnext",
 		"module": "nodenext",
 		"moduleResolution": "nodenext",
+		"ignoreDeprecations": "6.0",
 		"outDir": "dist",
 		"rootDir": ".",
 		"noEmit": true,
@@ -16,8 +17,7 @@
 			"@feature/*": ["./src/features/*"],
 			"@utility/*": ["./src/utility/*"],
 			"@src/*": ["./src/*"]
-		},
-		"typeRoots": ["node"]
+		}
 	},
 	"include": ["src", "dev", "tests", "vitest.config.ts", "tsup.config.ts", "eslint.config.mjs"],
 	"exclude": ["node_modules", "dist"]
