@@ -1,3 +1,11 @@
+## [2.3.7](https://github.com/commonly-ts/trivious/compare/v2.3.6...v2.3.7) (2026-06-21)
+
+
+### Bug Fixes
+
+* added registries to Trivious client ([30abb80](https://github.com/commonly-ts/trivious/commit/30abb801cd46a67113dd96d1d655c0cb2f2cb17b))
+* updated release workflow ([25bd698](https://github.com/commonly-ts/trivious/commit/25bd698dbd6a98897b62e16197955401535d5b88))
+
 ## [2.3.6](https://github.com/commonly-ts/trivious/compare/v2.3.5...v2.3.6) (2026-06-08)
 
 
