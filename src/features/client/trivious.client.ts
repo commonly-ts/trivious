@@ -16,6 +16,7 @@ import { Logger } from "./logger.js";
 
 export default class TriviousClient extends Client {
 	trivious: TriviousClientOptions;
+	readonly registries = registries;
 	readonly stores: {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
@@ -73,7 +74,6 @@ export default class TriviousClient extends Client {
 
 	async register() {
 		const dir = structure.resolveRelativePath(this.trivious.corePath);
-
 		await registries.events.register(this, dir);
 		await registries.modules.register(this, dir);
 		await registries.commands.register(this, dir);
