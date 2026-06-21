@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2025",
+		"target": "esnext",
 		"module": "nodenext",
 		"moduleResolution": "nodenext",
 		"outDir": "dist",
