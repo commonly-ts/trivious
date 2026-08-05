@@ -1,13 +1,13 @@
-import { handleSlashCommand, interactionReply } from "@feature/commands/methods.commands.js";
-import customId from "@feature/customId/methods.customid.js";
-import { canMemberRunCommand } from "@feature/permissions/methods.permissions.js";
+import { handleSlashCommand, interactionReply } from "#feature/commands/methods.commands.js";
+import customId from "#feature/customId/methods.customid.js";
+import { canMemberRunCommand } from "#feature/permissions/methods.permissions.js";
 import {
 	ComponentContext,
 	SlashCommandData,
 	TriviousClient,
 	type ContextCommandData,
 	type Event,
-} from "@typings";
+} from "#typings";
 import {
 	ApplicationCommandType,
 	ButtonInteraction,

@@ -6,9 +6,9 @@ import {
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
-} from "@typings";
-import { TriviousError } from "@utility/errors.js";
-import { importFile } from "@utility/functions.js";
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
+import { importFile } from "#utility/functions.js";
 import { ApplicationCommandType, Collection } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path from "path";

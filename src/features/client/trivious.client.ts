@@ -1,4 +1,4 @@
-import registries from "@shared/registries.js";
+import registries from "#shared/registries.js";
 import { Client, Collection } from "discord.js";
 import structure from "../structure/index.structure.js";
 
@@ -9,8 +9,8 @@ import {
 	Module,
 	SlashCommandData,
 	TriviousClientOptions,
-} from "@typings";
-import { TriviousError } from "@utility/errors.js";
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
 import commandDeploy from "./deploy.client.js";
 import { Logger } from "./logger.js";
 

@@ -1,11 +1,11 @@
-import registerCommands from "@feature/commands/registry.commands.js";
+import registerCommands from "#feature/commands/registry.commands.js";
 import {
 	ContextCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
-} from "@typings";
+} from "#typings";
 import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";
 

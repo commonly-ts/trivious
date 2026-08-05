@@ -1,6 +1,6 @@
-import registerModules from "@feature/modules/registry.modules.js";
-import structure from "@feature/structure/index.structure.js";
-import { Module, TriviousClient } from "@typings";
+import registerModules from "#feature/modules/registry.modules.js";
+import structure from "#feature/structure/index.structure.js";
+import { Module, TriviousClient } from "#typings";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Modules Registry", () => {

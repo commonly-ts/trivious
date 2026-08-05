@@ -1,6 +1,6 @@
-import registerComponents from "@feature/components/registry.components.js";
-import structure from "@feature/structure/index.structure.js";
-import { Component, TriviousClient } from "@typings";
+import registerComponents from "#feature/components/registry.components.js";
+import structure from "#feature/structure/index.structure.js";
+import { Component, TriviousClient } from "#typings";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Components Registry", () => {

@@ -1,4 +1,4 @@
-import { CommandFlags, SlashCommandData, TriviousClient } from "@typings";
+import { CommandFlags, SlashCommandData, TriviousClient } from "#typings";
 import {
 	CacheType,
 	ChatInputCommandInteraction,

@@ -4,21 +4,21 @@
 		"module": "nodenext",
 		"moduleResolution": "nodenext",
 		"ignoreDeprecations": "6.0",
-		"outDir": "dist",
-		"rootDir": ".",
 		"noEmit": true,
 		"declaration": true,
 		"strict": true,
 		"allowSyntheticDefaultImports": true,
 		"sourceMap": true,
+		"outDir": "dist",
+		"rootDir": ".",
 		"paths": {
-			"@typings": ["./src/shared/typings.ts"],
-			"@shared/*": ["./src/shared/*"],
-			"@feature/*": ["./src/features/*"],
-			"@utility/*": ["./src/utility/*"],
-			"@src/*": ["./src/*"]
+			"#typings": ["./src/shared/typings.ts"],
+			"#shared/*": ["./src/shared/*"],
+			"#feature/*": ["./src/features/*"],
+			"#utility/*": ["./src/utility/*"],
+			"#src/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "dev", "tests", "vitest.config.ts", "tsup.config.ts", "eslint.config.mjs"],
+	"include": ["src", "dev", "tests", "vitest.config.ts", "tsup.config.ts", "eslint.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

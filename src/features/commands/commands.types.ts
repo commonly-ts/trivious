@@ -1,4 +1,4 @@
-import { CommandPermissionValues, TriviousClient } from "@typings";
+import { CommandPermissionValues, TriviousClient } from "#typings";
 import {
 	ApplicationCommandType,
 	ChatInputCommandInteraction,

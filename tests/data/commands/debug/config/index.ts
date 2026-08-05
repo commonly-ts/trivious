@@ -1,4 +1,4 @@
-import { createSlashSubcommandGroup } from "@src/index.js";
+import { createSlashSubcommandGroup } from "#src/index.js";
 import { SlashCommandSubcommandGroupBuilder } from "discord.js";
 
 export default createSlashSubcommandGroup({

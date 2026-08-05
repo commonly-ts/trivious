@@ -1,4 +1,4 @@
-import { CommandPermissionValues, TriviousClient } from "@typings";
+import { CommandPermissionValues, TriviousClient } from "#typings";
 import { AnySelectMenuInteraction, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 
 export type ComponentFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";

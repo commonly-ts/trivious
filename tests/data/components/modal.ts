@@ -1,4 +1,4 @@
-import { createModalComponent } from "@src/index.js";
+import { createModalComponent } from "#src/index.js";
 
 export default createModalComponent({
 	identifier: "modal",

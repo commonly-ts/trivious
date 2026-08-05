@@ -1,6 +1,6 @@
-import registerEvents from "@feature/events/registry.events.js";
-import structure from "@feature/structure/index.structure.js";
-import { Event, TriviousClient } from "@typings";
+import registerEvents from "#feature/events/registry.events.js";
+import structure from "#feature/structure/index.structure.js";
+import { Event, TriviousClient } from "#typings";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Events Registry", () => {

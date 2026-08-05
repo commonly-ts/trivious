@@ -1,4 +1,4 @@
-import { createMessageContextCommand } from "@src/index.js";
+import { createMessageContextCommand } from "#src/index.js";
 import { ContextMenuCommandBuilder } from "discord.js";
 
 export default createMessageContextCommand({

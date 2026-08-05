@@ -1,4 +1,4 @@
-import { TriviousClient } from "@typings";
+import { TriviousClient } from "#typings";
 
 const client = new TriviousClient({
 	corePath: "tests/data",
@@ -7,6 +7,7 @@ const client = new TriviousClient({
 		clientIdReference: "",
 		tokenReference: "",
 	},
+	debug: true,
 });
 
 (async () => {
