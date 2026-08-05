@@ -5,6 +5,7 @@ import {
 	Collection,
 	ContextMenuCommandBuilder,
 	Interaction,
+	Message,
 	MessageContextMenuCommandInteraction,
 	SlashCommandBuilder,
 	SlashCommandOptionsOnlyBuilder,
@@ -124,4 +125,34 @@ export type CollatedCommandData = {
 	SlashSubcommand: Set<CommandSetData<SlashSubcommandData>>;
 	SlashSubcommandGroup: Set<CommandSetData<SlashSubcommandGroupData>>;
 	ContextCommand: Set<CommandSetData<ContextCommandData>>;
+	MessageCommand: Set<CommandSetData<MessageCommandData>>;
 };
+
+export interface MessageCommandBaseData {
+	active: boolean;
+	permissions?: CommandPermissionValues;
+}
+
+export type ReadOnlyStrArray = readonly string[] | undefined;
+export type MessageCommandArgs<Arguments extends ReadOnlyStrArray> =
+	Arguments extends readonly string[]
+		? [Arguments[number]] extends [never]
+			? null
+			: Map<Arguments[number], string>
+		: null;
+
+export interface MessageCommandData<
+	Arguments extends ReadOnlyStrArray = readonly string[] | undefined,
+> {
+	context: "MessageCommand";
+	active: boolean;
+	permissions?: CommandPermissionValues;
+	name: string;
+	arguments?: Arguments;
+	aliases?: string[];
+	execute: (
+		client: TriviousClient,
+		message: Message<boolean>,
+		args: MessageCommandArgs<Arguments>
+	) => Promise<void>;
+}

@@ -6,6 +6,7 @@ import {
 	Component,
 	ContextCommandData,
 	Event,
+	MessageCommandData,
 	Module,
 	SlashCommandData,
 	TriviousClientOptions,
@@ -21,10 +22,12 @@ export default class TriviousClient extends Client {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
 			context: Collection<string, ContextCommandData>;
+			message: Collection<string, MessageCommandData>;
 		};
 		components: Collection<string, Component>;
 		events: Collection<string, Event>;
 		modules: Collection<string, Module>;
+		messageCommandAlises: Collection<string, string>;
 	};
 	logger: Logger;
 
@@ -37,10 +40,12 @@ export default class TriviousClient extends Client {
 			commands: {
 				chatInput: new Collection(),
 				context: new Collection(),
+				message: new Collection(),
 			},
 			components: new Collection(),
 			events: new Collection(),
 			modules: new Collection(),
+			messageCommandAlises: new Collection(),
 		};
 	}
 
@@ -49,7 +54,7 @@ export default class TriviousClient extends Client {
 	 *
 	 * @throws {TriviousError} If invalid bot token
 	 */
-	async start() {
+	async start(deploy?: boolean) {
 		const token = process.env[this.trivious.credentials.tokenReference];
 		if (!token) {
 			throw new TriviousError(
@@ -59,7 +64,7 @@ export default class TriviousClient extends Client {
 		}
 
 		await this.register();
-		await this.deploy();
+		if (deploy || deploy === undefined) await this.deploy();
 
 		try {
 			await registries.events.bind(this);
@@ -74,10 +79,10 @@ export default class TriviousClient extends Client {
 
 	async register() {
 		const dir = structure.resolveRelativePath(this.trivious.corePath);
-		await registries.events.register(this, dir);
-		await registries.modules.register(this, dir);
 		await registries.commands.register(this, dir);
 		await registries.components.register(this, dir);
+		await registries.events.register(this, dir);
+		await registries.modules.register(this, dir);
 	}
 
 	async deploy() {

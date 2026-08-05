@@ -1,10 +1,21 @@
 import {
 	ContextCommandData,
+	MessageCommandData,
+	ReadOnlyStrArray,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 } from "#typings";
 import { ApplicationCommandType, Collection } from "discord.js";
+
+export function createMessageCommand<const T extends ReadOnlyStrArray = undefined>(
+	command: Omit<MessageCommandData<T>, "context">
+): MessageCommandData<T> {
+	return {
+		context: "MessageCommand",
+		...command,
+	};
+}
 
 export function createSlashCommand(
 	data: Omit<SlashCommandData, "context" | "commandType" | "subcommands" | "subcommandGroups">
@@ -65,6 +76,7 @@ export function createSlashSubcommandGroup(
 export function createMessageContextCommand(
 	data: Omit<ContextCommandData<"Message">, "commandType">
 ): ContextCommandData<"Message"> {
+	data.data.setType(ApplicationCommandType.Message);
 	return {
 		...data,
 		commandType: ApplicationCommandType.Message,
@@ -74,6 +86,7 @@ export function createMessageContextCommand(
 export function createUserContextCommand(
 	data: Omit<ContextCommandData<"User">, "commandType">
 ): ContextCommandData<"User"> {
+	data.data.setType(ApplicationCommandType.User);
 	return {
 		...data,
 		commandType: ApplicationCommandType.User,

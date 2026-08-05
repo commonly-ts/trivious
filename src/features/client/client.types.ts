@@ -86,4 +86,5 @@ export interface TriviousClientOptions extends ClientOptions {
 	ownerUserIds?: string[];
 	commandHashConfig?: CommandHashConfiguration;
 	debug?: boolean;
+	messageCommandPrefix?: string;
 }
