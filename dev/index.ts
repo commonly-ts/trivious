@@ -12,10 +12,6 @@ const client = new TriviousClient({
 		clientIdReference: "CLIENT_ID",
 		tokenReference: "BOT_TOKEN",
 	},
-	commandHashConfig: {
-		enabled: true,
-		persistentDataPath: "data",
-	},
 	messageCommandPrefix: "?",
 	debug: true,
 });

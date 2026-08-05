@@ -3,5 +3,5 @@ import { SlashCommandBuilder } from "discord.js";
 
 export default createSlashCommand({
 	active: true,
-	data: new SlashCommandBuilder().setName("note"),
+	data: new SlashCommandBuilder().setName("note").setDescription("Placeholder"),
 });
