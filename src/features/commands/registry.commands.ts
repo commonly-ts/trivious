@@ -166,12 +166,18 @@ async function registerMessageCommands(client: TriviousClient, data: CollatedCom
 		client.logger.debug("Registered message command:", command.name);
 		client.stores.commands.message.set(command.name, command);
 		if (command.aliases)
-			command.aliases.forEach((alias) =>
+			command.aliases.forEach((alias) => {
+				client.logger.debug(
+					"Registered message command alias:",
+					alias.trim().toLowerCase(),
+					"->",
+					command.name.toLowerCase()
+				);
 				client.stores.messageCommandAlises.set(
 					alias.trim().toLowerCase(),
 					command.name.toLowerCase()
-				)
-			);
+				);
+			});
 	}
 }
 
