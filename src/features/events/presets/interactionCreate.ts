@@ -56,6 +56,11 @@ function validateMemberPermissionsForSubcommand(
 
 export default {
 	name: "interactionCreate",
+	conditions(client) {
+		return [
+			[client.stores.commands.chatInput.size > 0, "At least one (1) slash command registered."],
+		];
+	},
 	async execute(client, interaction) {
 		if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
 			const { commandName } = interaction;
