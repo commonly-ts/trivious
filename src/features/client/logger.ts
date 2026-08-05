@@ -14,10 +14,10 @@ export class Logger {
 	}
 
 	warn(...args: any[]) {
-		console.log(`[${this.prefix} [WARN]]`, ...args);
+		console.log(`[${this.prefix}] [WARN]`, ...args);
 	}
 
 	error(...args: any[]) {
-		console.log(`[${this.prefix} [ERROR]]`, ...args);
+		console.log(`[${this.prefix}] [ERROR]`, ...args);
 	}
 }
