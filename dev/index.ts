@@ -17,5 +17,6 @@ const client = new TriviousClient({
 });
 
 (async () => {
-	await client.start();
+	await client.register();
+	// await client.start(false);
 })();
