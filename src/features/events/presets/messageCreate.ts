@@ -1,3 +1,4 @@
+import { canMemberRunCommand } from "#feature/permissions/methods.permissions.js";
 import { Event } from "#typings";
 import { BitField, GatewayIntentBits } from "discord.js";
 
@@ -34,6 +35,25 @@ export default {
 			return void (await message.reply({
 				content: `Invalid command; does not exist, missing handler, or is inactive.`,
 			}));
+
+		const commandPerms = canMemberRunCommand(client, command, message.member || message.author);
+		const hasPermission = commandPerms[0] ? true : false;
+		if (!hasPermission) {
+			return void (await message.reply({
+				content: "You do not have permission to run this command",
+			}));
+		}
+
+		if (command.flags) {
+			if ("InGuild" in command.flags && !message.member)
+				return void (await message.reply({
+					content: "This command can only be ran inside a guild!",
+				}));
+			if ("OutGuild" in command.flags && message.member)
+				return void (await message.reply({
+					content: "This command **cannot** be ran inside a guild!",
+				}));
+		}
 
 		const expectedArgs = command.arguments?.length || 0;
 		if (rawArgs.length < expectedArgs && command.arguments) {
