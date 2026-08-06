@@ -29,7 +29,7 @@ async function loadPresetEvents(client: TriviousClient) {
 			continue;
 		}
 		client.stores.events.set(event.name, event);
-		client.logger.debug("Registered event:", event.name);
+		client.logger.debug("Registered preset-event:", event.name);
 	}
 }
 
