@@ -17,6 +17,7 @@ import {
 
 export type ChatInputCommandContext = "SlashCommand" | "SlashSubcommand" | "SlashSubcommandGroup";
 export type CommandFlags = "Cached" | "DeferReply" | "EphemeralReply" | "ExpectModal";
+export type MessageCommandFlags = "InGuild" | "OutGuild";
 export type CommandFunction<T extends Interaction> = (
 	client: TriviousClient,
 	interaction: T
@@ -25,14 +26,11 @@ export type CommandFunction<T extends Interaction> = (
 /**
  * Base Trivious command data
  *
- * @param context The command context
- * @param commandType ApplicationCommandType
  * @param active Whether or not to register and recognise the command
- * @param flags Command behaviour modifiers
+ * @param permissions What users and roles can use the command
  */
 export interface BaseCommandData {
 	active: boolean;
-	flags?: CommandFlags[];
 	permissions?: CommandPermissionValues;
 }
 
@@ -43,6 +41,7 @@ export interface BaseCommandData {
  * @param commandType ApplicationCommandType.ChatInput
  */
 export interface BaseChatInputCommandData extends BaseCommandData {
+	flags?: CommandFlags[];
 	context: ChatInputCommandContext;
 	commandType: ApplicationCommandType.ChatInput;
 }
@@ -54,6 +53,7 @@ export interface BaseChatInputCommandData extends BaseCommandData {
  */
 export interface ContextCommandData<T extends "Message" | "User" | null = null>
 	extends BaseCommandData {
+	flags?: CommandFlags[];
 	commandType: T extends null
 		? ApplicationCommandType.Message | ApplicationCommandType.User
 		: T extends "Message"
@@ -143,16 +143,16 @@ export type MessageCommandArgs<Arguments extends ReadOnlyStrArray> =
 
 export interface MessageCommandData<
 	Arguments extends ReadOnlyStrArray = readonly string[] | undefined,
-> {
+	InGuild extends boolean = boolean,
+> extends BaseCommandData {
 	context: "MessageCommand";
-	active: boolean;
-	permissions?: CommandPermissionValues;
 	name: string;
 	arguments?: Arguments;
 	aliases?: string[];
+	flags?: MessageCommandFlags[];
 	execute: (
 		client: TriviousClient,
-		message: Message<boolean>,
+		message: Message<InGuild>,
 		args: MessageCommandArgs<Arguments>
 	) => Promise<void>;
 }
