@@ -1,4 +1,4 @@
-import { createSlashSubcommand } from "#src/index.js";
+import { createSlashSubcommand } from "#trivious";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 import noteCommand from "./note.js";
 

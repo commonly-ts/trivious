@@ -1,4 +1,4 @@
-import { createSelectMenuComponent } from "#src/index.js";
+import { createSelectMenuComponent } from "#trivious";
 
 export default createSelectMenuComponent({
 	identifier: "selectMenu",

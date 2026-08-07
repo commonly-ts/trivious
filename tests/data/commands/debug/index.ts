@@ -1,4 +1,4 @@
-import { createSlashCommand } from "#src/index.js";
+import { createSlashCommand } from "#trivious";
 import { SlashCommandBuilder } from "discord.js";
 
 export default createSlashCommand({

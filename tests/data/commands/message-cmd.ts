@@ -1,4 +1,4 @@
-import { createMessageCommand } from "#src/index.js";
+import { createMessageCommand } from "#trivious";
 
 export default createMessageCommand({
 	active: true,

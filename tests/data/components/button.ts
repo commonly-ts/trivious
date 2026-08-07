@@ -1,4 +1,4 @@
-import { createButtonComponent } from "#src/index.js";
+import { createButtonComponent } from "#trivious";
 
 export default createButtonComponent({
 	identifier: "button",

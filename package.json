@@ -26,7 +26,8 @@
 		"#shared/*": "./lib/shared/*",
 		"#feature/*": "./lib/features/*",
 		"#utility/*": "./lib/utility/*",
-		"#src/*": "./lib/*"
+		"#trivious": "./lib/index.js",
+		"#trivious/*": "./lib/*"
 	},
 	"exports": {
 		".": {

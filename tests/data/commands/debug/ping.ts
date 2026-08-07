@@ -1,4 +1,4 @@
-import { createSlashSubcommand, interactionReply } from "#src/index.js";
+import { createSlashSubcommand, interactionReply } from "#trivious";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 
 export default createSlashSubcommand({
