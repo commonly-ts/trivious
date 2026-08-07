@@ -1,6 +1,6 @@
-import { handleSlashCommand, interactionReply } from "#feature/commands/methods.commands.js";
 import customId from "#feature/customId/methods.customid.js";
 import { canMemberRunCommand } from "#feature/permissions/methods.permissions.js";
+import { handleSlashCommand, interactionReply } from "#trivious";
 import {
 	ComponentContext,
 	SlashCommandData,
