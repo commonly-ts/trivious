@@ -12,11 +12,15 @@ const client = new TriviousClient({
 		clientIdReference: "CLIENT_ID",
 		tokenReference: "BOT_TOKEN",
 	},
-	messageCommandPrefix: "?",
+	messageCommands: {
+		prefix: "?",
+		delimiter: ['"', "#"],
+	},
 	debug: true,
 });
 
 (async () => {
-	await client.register();
-	// await client.start(false);
+	// await client.register();
+	// console.log(client.stores.commands.message);
+	await client.start(false);
 })();
