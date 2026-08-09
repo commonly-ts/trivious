@@ -23,11 +23,11 @@
 	"types": "./dist/index.d.ts",
 	"imports": {
 		"#typings": "./lib/shared/typings.js",
+		"#trivious": "./lib/index.js",
+		"#trivious/*": "./lib/*",
 		"#shared/*": "./lib/shared/*",
 		"#feature/*": "./lib/features/*",
-		"#utility/*": "./lib/utility/*",
-		"#trivious": "./lib/index.js",
-		"#trivious/*": "./lib/*"
+		"#utility/*": "./lib/utility/*"
 	},
 	"exports": {
 		".": {

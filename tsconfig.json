@@ -13,11 +13,11 @@
 		"rootDir": ".",
 		"paths": {
 			"#typings": ["./src/shared/typings.ts"],
+			"#trivious": ["./src/index.ts"],
+			"#trivious/*": ["./src/*"],
 			"#shared/*": ["./src/shared/*"],
 			"#feature/*": ["./src/features/*"],
-			"#utility/*": ["./src/utility/*"],
-			"#trivious": ["./src/index.ts"],
-			"#trivious/*": ["./src/*"]
+			"#utility/*": ["./src/utility/*"]
 		}
 	},
 	"include": ["src", "dev", "tests", "vitest.config.ts", "tsup.config.ts", "eslint.config.ts"],
