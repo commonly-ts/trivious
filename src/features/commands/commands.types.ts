@@ -1,17 +1,20 @@
 import { CommandPermissionValues, TriviousClient } from "#typings";
 import {
 	ApplicationCommandType,
+	Channel,
 	ChatInputCommandInteraction,
 	Collection,
 	ContextMenuCommandBuilder,
 	Interaction,
 	Message,
 	MessageContextMenuCommandInteraction,
+	Role,
 	SlashCommandBuilder,
 	SlashCommandOptionsOnlyBuilder,
 	SlashCommandSubcommandBuilder,
 	SlashCommandSubcommandGroupBuilder,
 	SlashCommandSubcommandsOnlyBuilder,
+	User,
 	UserContextMenuCommandInteraction,
 } from "discord.js";
 
@@ -138,18 +141,39 @@ export type MessageCommandArgs<Arguments extends RO_ArrayType<MessageCommandArgu
 	Arguments extends readonly MessageCommandArgument[]
 		? [Arguments[number]] extends [never]
 			? null
-			: Collection<Arguments[number]["name"], string>
+			: MessageCommandArgumentsMap<Arguments>
 		: null;
 
-export type MessageCommandArgumentType =
-	| "text"
-	| "number"
-	| "timestamp"
-	| "snowflake"
-	| "snowflake/user"
-	| "snowflake/channel"
-	| "snowflake/role"
-	| "duration";
+export type ResolveArgType<Argument extends MessageCommandArgument> =
+	Argument["dataType"] extends keyof MessageCommandArgumentTypeMap
+		? MessageCommandArgumentTypeMap[Argument["dataType"]]
+		: unknown;
+
+export type MessageCommandArgumentType = keyof MessageCommandArgumentTypeMap;
+export interface MessageCommandArgumentTypeMap {
+	"text": string;
+	"number": number;
+	"date": Date;
+	"timestamp": Date;
+	"snowflake": string;
+	"snowflake/user": User;
+	"snowflake/channel": Channel;
+	"snowflake/role": Role;
+	"duration": number;
+}
+
+export interface MessageCommandArgumentsMap<Args extends readonly MessageCommandArgument[]>
+	extends Omit<Collection<string, any>, "get"> {
+	get<K extends Args[number]["name"]>(
+		key: K
+	): Extract<Args[number], { name: K }> extends infer Arg
+		? Arg extends MessageCommandArgument
+			? Arg["required"] extends true
+				? ResolveArgType<Arg>
+				: ResolveArgType<Arg> | undefined
+			: undefined
+		: undefined;
+}
 
 export interface MessageCommandArgument {
 	name: string;
@@ -170,6 +194,11 @@ export interface MessageCommandInteraction<
 	message: Message<InGuild>;
 }
 
+export interface MessageCommandMetadata {
+	regex: RegExp;
+	usage: string;
+}
+
 export interface MessageCommandData<
 	Processed extends boolean = boolean,
 	Arguments extends RO_ArrayType<MessageCommandArgument> =
@@ -179,10 +208,11 @@ export interface MessageCommandData<
 > extends BaseCommandData {
 	context: "MessageCommand";
 	name: string;
+	description: string;
 	arguments?: Arguments;
 	aliases?: string[];
 	flags?: MessageCommandFlags[];
-	regex: Processed extends true ? RegExp : undefined;
+	metadata: Processed extends true ? MessageCommandMetadata : undefined;
 	execute: (
 		client: TriviousClient,
 		interaction: MessageCommandInteraction<Arguments, InGuild>

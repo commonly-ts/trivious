@@ -12,8 +12,8 @@ import { ApplicationCommandType, Collection } from "discord.js";
 export function createMessageCommand<
 	const T extends RO_ArrayType<MessageCommandArgument> = undefined,
 >(
-	command: Omit<MessageCommandData<false, T>, "context" | "regex">
-): Omit<MessageCommandData<false, T>, "regex"> {
+	command: Omit<MessageCommandData<false, T>, "context" | "metadata">
+): Omit<MessageCommandData<false, T>, "metadata"> {
 	return {
 		context: "MessageCommand",
 		...command,
