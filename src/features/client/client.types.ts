@@ -86,7 +86,7 @@ export interface MessageCommandConfiguration {
 	/**
 	 * Recommended value(s): `#` `|` `$`
 	 */
-	delimiter?: string | string[];
+	// delimiter?: string | string[];
 }
 
 /**
