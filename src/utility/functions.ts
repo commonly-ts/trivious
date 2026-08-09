@@ -3,7 +3,7 @@ import path from "path";
 import { pathToFileURL } from "url";
 
 const fileCache = new Map<string, Promise<any | null>>();
-export function importFile<T>(filePath: string) {
+export function importFile<T>(filePath: string): Promise<T | null> | null {
 	if (filePath.endsWith(".d.ts") || filePath.endsWith(".js.map")) return null;
 	const absolutePath = path.resolve(filePath);
 	if (fileCache.has(absolutePath)) return fileCache.get(absolutePath)!;

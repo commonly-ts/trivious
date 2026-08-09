@@ -1,4 +1,4 @@
-import { TriviousError } from "@utility/errors.js";
+import { TriviousError } from "#utility/errors.js";
 import { createHash } from "crypto";
 import { REST, Routes } from "discord.js";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";

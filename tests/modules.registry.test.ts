@@ -1,6 +1,5 @@
-import registerModules from "@feature/modules/registry.modules.js";
-import structure from "@feature/structure/index.structure.js";
-import { Module, TriviousClient } from "@typings";
+import { Module, TriviousClient } from "#typings";
+import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Modules Registry", () => {
@@ -18,7 +17,7 @@ describe("Modules Registry", () => {
 			debug: true,
 		});
 
-		await registerModules(client, structure.resolveRelativePath(client.trivious.corePath));
+		await client.registries.modules.register(client, path.resolve(client.trivious.corePath));
 		exampleModule = client.stores.modules.get("testModule");
 	});
 

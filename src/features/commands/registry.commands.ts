@@ -2,21 +2,27 @@ import {
 	CollatedCommandData,
 	CommandSetData,
 	ContextCommandData,
+	MessageCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 	TriviousClient,
-} from "@typings";
-import { TriviousError } from "@utility/errors.js";
-import { importFile } from "@utility/functions.js";
+} from "#typings";
+import { TriviousError } from "#utility/errors.js";
+import { importFile } from "#utility/functions.js";
 import { ApplicationCommandType, Collection } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path from "path";
+import { processPartialMessageCommand } from "./handlers/message.commands.js";
 
+const parsedCache = new Set<string>();
 async function parseBase<T>(input: string | T, expects?: (base: Partial<T>) => boolean) {
 	let base: T | null = null;
 	if (typeof input === "string") {
+		const absolutePath = path.resolve(input);
+		if (parsedCache.has(absolutePath)) return null;
 		base = await importFile<T>(input);
+		parsedCache.add(absolutePath);
 	} else base = input;
 	if (!base) return null;
 	if (expects && !expects(base)) return null;
@@ -27,7 +33,11 @@ async function parseDirectory(data: CollatedCommandData, directory: string): Pro
 	const files = fs.glob(path.join(directory, "*.{js,ts}"));
 	for await (const file of files) {
 		const base = await parseBase<
-			SlashCommandData | SlashSubcommandData | SlashSubcommandGroupData | ContextCommandData
+			| SlashCommandData
+			| SlashSubcommandData
+			| SlashSubcommandGroupData
+			| ContextCommandData
+			| MessageCommandData
 		>(file);
 		if (!base) continue;
 		const targetSet =
@@ -77,6 +87,7 @@ function getDataFromCommandSet<Data>(
 
 async function setChildrenToParents(data: CollatedCommandData) {
 	for (const [group, directory] of data.SlashSubcommandGroup) {
+		if (group.context !== "SlashSubcommandGroup") continue;
 		const slashCommand =
 			group.parent || getDataFromCommandSet(data.SlashCommand, { matchParentDirectory: directory });
 
@@ -95,6 +106,7 @@ async function setChildrenToParents(data: CollatedCommandData) {
 	}
 
 	for (const [subcommand, directory] of data.SlashSubcommand) {
+		if (!subcommand.active || subcommand.context !== "SlashSubcommand") continue;
 		const parent =
 			subcommand.parent ||
 			getDataFromCommandSet(data.SlashSubcommandGroup, { matchParentDirectory: directory }) ||
@@ -107,7 +119,7 @@ async function setChildrenToParents(data: CollatedCommandData) {
 		if (!parent.subcommands) parent.subcommands = new Collection();
 		if (parent.subcommands.has(subcommand.data.name))
 			console.warn(
-				`[Trivious] Subcommand '${subcommand.data.name}' under SlashCommand/SubcommandGroup '${parent.data.name}' has been overridden by a subcommand with the same name`
+				`[Trivious] Subcommand '${subcommand.data.name}' under parent '${parent.data.name}' has been overridden by a subcommand with the same name`
 			);
 		subcommand.parent = parent;
 		parent.subcommands.set(subcommand.data.name, subcommand);
@@ -118,6 +130,7 @@ async function setChildrenToParents(data: CollatedCommandData) {
 async function registerSlashCommands(client: TriviousClient, data: CollatedCommandData) {
 	await setChildrenToParents(data);
 	for (const [slashCommand] of data.SlashCommand) {
+		if (!slashCommand.active || slashCommand.context !== "SlashCommand") continue;
 		if (client.stores.commands.chatInput.get(slashCommand.data.name))
 			client.logger.warn(
 				`Command '${slashCommand.data.name}' has been overridden by a command with the same name`
@@ -129,6 +142,7 @@ async function registerSlashCommands(client: TriviousClient, data: CollatedComma
 
 async function registerContextMenuCommands(client: TriviousClient, data: CollatedCommandData) {
 	for (const [contextCommand] of data.ContextCommand) {
+		if (!contextCommand.active) continue;
 		if (client.stores.commands.chatInput.get(contextCommand.data.name))
 			client.logger.warn(
 				`Command '${contextCommand.data.name}' has been overridden by a command with the same name`
@@ -143,6 +157,32 @@ async function registerContextMenuCommands(client: TriviousClient, data: Collate
 	}
 }
 
+async function registerMessageCommands(client: TriviousClient, data: CollatedCommandData) {
+	for (const [command] of data.MessageCommand) {
+		if (!command.active || command.context !== "MessageCommand") continue;
+		if (client.stores.commands.chatInput.get(command.name))
+			client.logger.warn(
+				`Message command '${command.name}' has been overridden by a command with the same name`
+			);
+		const processedCommand = processPartialMessageCommand(client, command);
+		client.logger.debug("Registered message command:", command.name);
+		client.stores.commands.message.set(command.name, processedCommand);
+		if (command.aliases)
+			command.aliases.forEach((alias) => {
+				client.logger.debug(
+					"Registered message command alias:",
+					alias.trim().toLowerCase(),
+					"->",
+					command.name.toLowerCase()
+				);
+				client.stores.messageCommandAliases.set(
+					alias.trim().toLowerCase(),
+					command.name.toLowerCase()
+				);
+			});
+	}
+}
+
 export default async function registerCommands(client: TriviousClient, directory: string) {
 	if (!existsSync(directory))
 		throw new TriviousError(
@@ -154,6 +194,7 @@ export default async function registerCommands(client: TriviousClient, directory
 		SlashSubcommand: new Set<CommandSetData<SlashSubcommandData>>(),
 		SlashSubcommandGroup: new Set<CommandSetData<SlashSubcommandGroupData>>(),
 		ContextCommand: new Set<CommandSetData<ContextCommandData>>(),
+		MessageCommand: new Set<CommandSetData<MessageCommandData>>(),
 	};
 	client.logger.debug("Starting command registration in:", directory);
 	const files = fs.glob(path.join(directory, "**/*.{js,ts}"));
@@ -164,6 +205,11 @@ export default async function registerCommands(client: TriviousClient, directory
 		processedDirectories.add(parentDir);
 		await parseDirectory(data, parentDir);
 	}
+	const presetsDirectory = path.resolve(import.meta.dirname, "presets");
+	if (presetsDirectory && client.trivious.messageCommands)
+		await parseDirectory(data, presetsDirectory);
 	await registerSlashCommands(client, data);
+	await registerMessageCommands(client, data);
 	await registerContextMenuCommands(client, data);
+	parsedCache.clear();
 }

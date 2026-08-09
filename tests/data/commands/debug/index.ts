@@ -1,7 +1,7 @@
-import { createSlashCommand } from "@src/index.js";
+import { createSlashCommand } from "#trivious";
 import { SlashCommandBuilder } from "discord.js";
 
 export default createSlashCommand({
 	active: true,
-	data: new SlashCommandBuilder().setName("debug"),
+	data: new SlashCommandBuilder().setName("debug").setDescription("Placeholder"),
 });

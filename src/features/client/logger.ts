@@ -1,5 +1,3 @@
-import chalk from "chalk";
-
 export class Logger {
 	constructor(
 		private prefix = "Trivious",
@@ -8,18 +6,18 @@ export class Logger {
 
 	debug(...args: any[]) {
 		if (!this.debugActive) return;
-		console.log(chalk.gray(`[${this.prefix}] [DEBUG]`), ...args);
+		console.log(`[${this.prefix}] [DEBUG]`, ...args);
 	}
 
 	info(...args: any[]) {
-		console.log(chalk.cyan([`${this.prefix}`]), ...args);
+		console.log(`[${this.prefix}]`, ...args);
 	}
 
 	warn(...args: any[]) {
-		console.log(chalk.yellow([`${this.prefix} [WARN]`]), ...args);
+		console.log(`[${this.prefix}] [WARN]`, ...args);
 	}
 
 	error(...args: any[]) {
-		console.log(chalk.red([`${this.prefix} [ERROR]`]), ...args);
+		console.log(`[${this.prefix}] [ERROR]`, ...args);
 	}
 }

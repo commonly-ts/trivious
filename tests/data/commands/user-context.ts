@@ -1,4 +1,4 @@
-import { createUserContextCommand } from "@src/index.js";
+import { createUserContextCommand } from "#trivious";
 import { ContextMenuCommandBuilder } from "discord.js";
 
 export default createUserContextCommand({

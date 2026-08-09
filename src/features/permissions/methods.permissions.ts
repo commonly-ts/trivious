@@ -1,13 +1,14 @@
-import { BaseCommandData, Component, TriviousClient } from "@typings";
+import { BaseCommandData, Component, MessageCommandData, TriviousClient } from "#typings";
 import { GuildMember, PermissionFlagsBits, User } from "discord.js";
 
 export function canMemberRunCommand(
 	client: TriviousClient,
-	command: BaseCommandData | Component,
-	member: GuildMember
+	command: BaseCommandData | Component | MessageCommandData,
+	member: GuildMember | User
 ): [boolean, string] {
 	const { permissions } = command;
 	if (!permissions) return [true, "No permissions set"];
+	if (!("nickname" in member)) return canUserRunCommand(client, command, member);
 
 	// If the member is a bot owner or has Administrator permissions
 	if (
@@ -42,7 +43,7 @@ export function canMemberRunCommand(
 
 export function canUserRunCommand(
 	client: TriviousClient,
-	command: BaseCommandData | Component,
+	command: BaseCommandData | Component | MessageCommandData,
 	user: User
 ): [boolean, string] {
 	const { permissions } = command;

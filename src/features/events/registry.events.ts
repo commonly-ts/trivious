@@ -1,6 +1,6 @@
-import { Event, TriviousClient } from "@typings";
-import { TriviousError } from "@utility/errors.js";
-import { importFile } from "@utility/functions.js";
+import { Event, TriviousClient } from "#typings";
+import { TriviousError } from "#utility/errors.js";
+import { importFile } from "#utility/functions.js";
 import { ClientEvents } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path, { join } from "path";
@@ -13,15 +13,29 @@ async function loadPresetEvents(client: TriviousClient) {
 	for await (const file of files) {
 		const event = await parseEvent(file);
 		if (!event) continue;
-
+		if (
+			event.conditions &&
+			!event.conditions(client).every(([isValid, description], index) => {
+				if (!isValid)
+					client.logger.debug(
+						"[EVENT REGISTRY]",
+						`Condition #${index + 1} "${description}" for event`,
+						event.name,
+						"not met; this event will not be triggered."
+					);
+				return isValid;
+			})
+		) {
+			continue;
+		}
 		client.stores.events.set(event.name, event);
+		client.logger.debug("Registered preset-event:", event.name);
 	}
 }
 
 async function parseEvent(file: string) {
 	const event = await importFile<Event>(file);
-	if (!event || !("name" in event && "execute" in event)) return null;
-
+	if (!event || !("name" in event && "execute" in event) || "context" in event) return null;
 	return event;
 }
 
