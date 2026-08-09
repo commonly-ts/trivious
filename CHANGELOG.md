@@ -1,3 +1,25 @@
+# [2.4.0](https://github.com/commonly-ts/trivious/compare/v2.3.7...v2.4.0) (2026-08-09)
+
+
+### Bug Fixes
+
+* added data\ to gitignore ([6ac4170](https://github.com/commonly-ts/trivious/commit/6ac4170bfdc553697803ee66a35dadb78ee39f91))
+* added message commands to permissions util funcs ([94bd74c](https://github.com/commonly-ts/trivious/commit/94bd74c8fa21aac001ffd6fce3a032f37fd7e5d2))
+* added proper return type to importFile ([86c1955](https://github.com/commonly-ts/trivious/commit/86c19552a566fc679cefab086a7d2b9a71b3efab))
+* changed #src path to #trivious ([4ae709a](https://github.com/commonly-ts/trivious/commit/4ae709a9a3d95c098d1d7c38cbe4ccf59047579a)), closes [#src](https://github.com/commonly-ts/trivious/issues/src) [#trivious](https://github.com/commonly-ts/trivious/issues/trivious)
+* **debug:** added debug logs for message cmd alises ([cd356a7](https://github.com/commonly-ts/trivious/commit/cd356a7dcb3f283d2a1eade7039371bf11419769))
+* fixed typos ([c2684cf](https://github.com/commonly-ts/trivious/commit/c2684cf4aa00ba36b9cfb74f2fabeafee2f1e8bf))
+* moved slash command methods into own handler file ([b4e9fac](https://github.com/commonly-ts/trivious/commit/b4e9fac5ef74edcbfdb72acf1e87e33f51486e45)), closes [hi#level](https://github.com/hi/issues/level)
+* normalised MessageCommandData attributes ([f052d5d](https://github.com/commonly-ts/trivious/commit/f052d5d3b0508e8c02adc76cb22a1d54e493d490))
+
+
+### Features
+
+* **commands:** added message commands ([04d07ed](https://github.com/commonly-ts/trivious/commit/04d07edc9fc3601dd8ef2a8bcdd5163a3e07a803))
+* **events:** added conditions ([527c687](https://github.com/commonly-ts/trivious/commit/527c687e723ad792d57f967aae848e89756ac3ba))
+* **events:** added messageCreate preset event ([f7ac8a7](https://github.com/commonly-ts/trivious/commit/f7ac8a7679182723a90648739098cd6b2e697913))
+* help preset msg command ([7b1516b](https://github.com/commonly-ts/trivious/commit/7b1516be2e22f1709f51fcd700e2139ad0b74f8d))
+
 ## [2.3.7](https://github.com/commonly-ts/trivious/compare/v2.3.6...v2.3.7) (2026-06-21)
 
 
