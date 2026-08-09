@@ -14,7 +14,7 @@ const client = new TriviousClient({
 	},
 	messageCommands: {
 		prefix: "?",
-		delimiter: ['"', "#"],
+		// delimiter: ['"', "#"],
 	},
 	debug: true,
 });
