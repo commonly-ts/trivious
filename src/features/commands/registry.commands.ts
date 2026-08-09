@@ -13,6 +13,7 @@ import { importFile } from "#utility/functions.js";
 import { ApplicationCommandType, Collection } from "discord.js";
 import { existsSync, promises as fs } from "fs";
 import path from "path";
+import { processPartialMessageCommand } from "./handlers/message.commands.js";
 
 const parsedCache = new Set<string>();
 async function parseBase<T>(input: string | T, expects?: (base: Partial<T>) => boolean) {
@@ -163,8 +164,9 @@ async function registerMessageCommands(client: TriviousClient, data: CollatedCom
 			client.logger.warn(
 				`Message command '${command.name}' has been overridden by a command with the same name`
 			);
+		const processedCommand = processPartialMessageCommand(client, command);
 		client.logger.debug("Registered message command:", command.name);
-		client.stores.commands.message.set(command.name, command);
+		client.stores.commands.message.set(command.name, processedCommand);
 		if (command.aliases)
 			command.aliases.forEach((alias) => {
 				client.logger.debug(

@@ -73,6 +73,23 @@ export interface CommandHashConfiguration {
 }
 
 /**
+ * Message command configuration
+ *
+ * @param prefix Usually a single character (e.g. `?`, `!`, `.`) to identify message commands
+ * @param delimiter Specific character(s) and/or symbol(s) to mark boundary of strings, mainly for use by `sentence` argument types
+ */
+export interface MessageCommandConfiguration {
+	/**
+	 * Recommended value(s): `?` `!` `.`
+	 */
+	prefix: string;
+	/**
+	 * Recommended value(s): `#` `|` `$`
+	 */
+	delimiter?: string | string[];
+}
+
+/**
  * Trivious client options
  *
  * @param credentials Bot login credentials
@@ -86,5 +103,5 @@ export interface TriviousClientOptions extends ClientOptions {
 	ownerUserIds?: string[];
 	commandHashConfig?: CommandHashConfiguration;
 	debug?: boolean;
-	messageCommandPrefix?: string;
+	messageCommands?: MessageCommandConfiguration;
 }

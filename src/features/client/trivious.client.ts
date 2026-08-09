@@ -22,7 +22,7 @@ export default class TriviousClient extends Client {
 		commands: {
 			chatInput: Collection<string, SlashCommandData>;
 			context: Collection<string, ContextCommandData>;
-			message: Collection<string, MessageCommandData>;
+			message: Collection<string, MessageCommandData<true>>;
 		};
 		components: Collection<string, Component>;
 		events: Collection<string, Event>;

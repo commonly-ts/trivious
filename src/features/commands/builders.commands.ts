@@ -1,16 +1,19 @@
 import {
 	ContextCommandData,
+	MessageCommandArgument,
 	MessageCommandData,
-	ReadOnlyStrArray,
+	RO_ArrayType,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
 } from "#typings";
 import { ApplicationCommandType, Collection } from "discord.js";
 
-export function createMessageCommand<const T extends ReadOnlyStrArray = undefined>(
-	command: Omit<MessageCommandData<T>, "context">
-): MessageCommandData<T> {
+export function createMessageCommand<
+	const T extends RO_ArrayType<MessageCommandArgument> = undefined,
+>(
+	command: Omit<MessageCommandData<false, T>, "context" | "regex">
+): Omit<MessageCommandData<false, T>, "regex"> {
 	return {
 		context: "MessageCommand",
 		...command,

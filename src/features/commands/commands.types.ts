@@ -133,16 +133,48 @@ export interface MessageCommandBaseData {
 	permissions?: CommandPermissionValues;
 }
 
-export type ReadOnlyStrArray = readonly string[] | undefined;
-export type MessageCommandArgs<Arguments extends ReadOnlyStrArray> =
-	Arguments extends readonly string[]
+export type RO_ArrayType<T> = readonly T[] | undefined;
+export type MessageCommandArgs<Arguments extends RO_ArrayType<MessageCommandArgument>> =
+	Arguments extends readonly MessageCommandArgument[]
 		? [Arguments[number]] extends [never]
 			? null
-			: Map<Arguments[number], string>
+			: Collection<Arguments[number]["name"], string>
 		: null;
 
+export type MessageCommandArgumentType =
+	| "text"
+	| "number"
+	| "timestamp"
+	| "snowflake"
+	| "snowflake/user"
+	| "snowflake/channel"
+	| "snowflake/role"
+	| "duration";
+
+export interface MessageCommandArgument {
+	name: string;
+	description: string;
+	dataType: MessageCommandArgumentType;
+	required?: boolean;
+	value?: string;
+}
+
+export interface MessageCommandInteraction<
+	Arguments extends RO_ArrayType<MessageCommandArgument> =
+		| readonly MessageCommandArgument[]
+		| undefined,
+	InGuild extends boolean = boolean,
+> {
+	args: MessageCommandArgs<Arguments>;
+	command: MessageCommandData<true>;
+	message: Message<InGuild>;
+}
+
 export interface MessageCommandData<
-	Arguments extends ReadOnlyStrArray = readonly string[] | undefined,
+	Processed extends boolean = boolean,
+	Arguments extends RO_ArrayType<MessageCommandArgument> =
+		| readonly MessageCommandArgument[]
+		| undefined,
 	InGuild extends boolean = boolean,
 > extends BaseCommandData {
 	context: "MessageCommand";
@@ -150,9 +182,9 @@ export interface MessageCommandData<
 	arguments?: Arguments;
 	aliases?: string[];
 	flags?: MessageCommandFlags[];
+	regex: Processed extends true ? RegExp : undefined;
 	execute: (
 		client: TriviousClient,
-		message: Message<InGuild>,
-		args: MessageCommandArgs<Arguments>
+		interaction: MessageCommandInteraction<Arguments, InGuild>
 	) => Promise<void>;
 }
