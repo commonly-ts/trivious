@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/commonly-ts/trivious/compare/v2.4.0...v2.4.1) (2026-08-09)
+
+
+### Bug Fixes
+
+* fixed node.js import paths ([46e3e15](https://github.com/commonly-ts/trivious/commit/46e3e15852c3bef874ffe49c5554b4e8f05f9ac5))
+
 # [2.4.0](https://github.com/commonly-ts/trivious/compare/v2.3.7...v2.4.0) (2026-08-09)
 
 
