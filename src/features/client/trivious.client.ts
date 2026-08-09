@@ -27,7 +27,7 @@ export default class TriviousClient extends Client {
 		components: Collection<string, Component>;
 		events: Collection<string, Event>;
 		modules: Collection<string, Module>;
-		messageCommandAlises: Collection<string, string>;
+		messageCommandAliases: Collection<string, string>;
 	};
 	logger: Logger;
 
@@ -45,7 +45,7 @@ export default class TriviousClient extends Client {
 			components: new Collection(),
 			events: new Collection(),
 			modules: new Collection(),
-			messageCommandAlises: new Collection(),
+			messageCommandAliases: new Collection(),
 		};
 	}
 

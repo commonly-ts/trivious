@@ -175,7 +175,7 @@ async function registerMessageCommands(client: TriviousClient, data: CollatedCom
 					"->",
 					command.name.toLowerCase()
 				);
-				client.stores.messageCommandAlises.set(
+				client.stores.messageCommandAliases.set(
 					alias.trim().toLowerCase(),
 					command.name.toLowerCase()
 				);
@@ -205,6 +205,8 @@ export default async function registerCommands(client: TriviousClient, directory
 		processedDirectories.add(parentDir);
 		await parseDirectory(data, parentDir);
 	}
+	const presetsDirectory = path.resolve(import.meta.dirname, "presets");
+	if (presetsDirectory) await parseDirectory(data, presetsDirectory);
 	await registerSlashCommands(client, data);
 	await registerMessageCommands(client, data);
 	await registerContextMenuCommands(client, data);
