@@ -1,6 +1,5 @@
-import registerComponents from "#feature/components/registry.components.js";
-import structure from "#feature/structure/index.structure.js";
 import { Component, TriviousClient } from "#typings";
+import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Components Registry", () => {
@@ -21,7 +20,7 @@ describe("Components Registry", () => {
 			debug: true,
 		});
 
-		await registerComponents(client, structure.resolveRelativePath(client.trivious.corePath));
+		await client.registries.components.register(client, path.resolve(client.trivious.corePath));
 		buttonComponent = client.stores.components.get("button");
 		modalComponent = client.stores.components.get("modal");
 		selectMenuComponent = client.stores.components.get("selectMenu");

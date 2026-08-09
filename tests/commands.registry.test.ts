@@ -1,6 +1,6 @@
-import registerCommands from "#feature/commands/registry.commands.js";
 import {
 	ContextCommandData,
+	MessageCommandData,
 	SlashCommandData,
 	SlashSubcommandData,
 	SlashSubcommandGroupData,
@@ -21,6 +21,11 @@ describe("Commands Registry", () => {
 	let messageContextCommand: ContextCommandData | undefined;
 	let userContextCommand: ContextCommandData | undefined;
 
+	let helpMessageCommand: MessageCommandData<true> | undefined;
+	let helpMessageCommandAlias: string | undefined;
+	let testMessageCommand: MessageCommandData<true> | undefined;
+	let testMessageCommandAlias: string | undefined;
+
 	beforeAll(async () => {
 		client = new TriviousClient({
 			intents: [],
@@ -29,10 +34,13 @@ describe("Commands Registry", () => {
 				clientIdReference: "",
 				tokenReference: "",
 			},
+			messageCommands: {
+				prefix: "?",
+			},
 			debug: true,
 		});
 
-		await registerCommands(client, path.resolve(client.trivious.corePath));
+		await client.registries.commands.register(client, path.resolve(client.trivious.corePath));
 		debugCommand = client.stores.commands.chatInput.get("debug");
 		noteCommand = client.stores.commands.chatInput.get("note");
 		debugConfigGroup = debugCommand?.subcommandGroups?.get("config");
@@ -41,6 +49,11 @@ describe("Commands Registry", () => {
 		editSubcommand = debugConfigGroup?.subcommands.get("edit");
 		messageContextCommand = client.stores.commands.context.get("message-context");
 		userContextCommand = client.stores.commands.context.get("user-context");
+
+		helpMessageCommand = client.stores.commands.message.get("help");
+		helpMessageCommandAlias = client.stores.messageCommandAliases.get("h");
+		testMessageCommand = client.stores.commands.message.get("ping-test");
+		testMessageCommandAlias = client.stores.messageCommandAliases.get("pt");
 	});
 
 	it("should have registered slash commands", () => {
@@ -64,5 +77,15 @@ describe("Commands Registry", () => {
 	it("should have registered context menu commands", () => {
 		expect(!!messageContextCommand).toBe(true);
 		expect(!!userContextCommand).toBe(true);
+	});
+
+	it("should have registered message commands", () => {
+		expect(!!helpMessageCommand).toBe(true);
+		expect(!!testMessageCommand).toBe(true);
+	});
+
+	it("should have registered message command aliases", () => {
+		expect(!!helpMessageCommandAlias).toBe(true);
+		expect(!!testMessageCommandAlias).toBe(true);
 	});
 });
