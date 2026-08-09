@@ -206,7 +206,8 @@ export default async function registerCommands(client: TriviousClient, directory
 		await parseDirectory(data, parentDir);
 	}
 	const presetsDirectory = path.resolve(import.meta.dirname, "presets");
-	if (presetsDirectory) await parseDirectory(data, presetsDirectory);
+	if (presetsDirectory && client.trivious.messageCommands)
+		await parseDirectory(data, presetsDirectory);
 	await registerSlashCommands(client, data);
 	await registerMessageCommands(client, data);
 	await registerContextMenuCommands(client, data);
