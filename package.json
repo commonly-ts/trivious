@@ -22,12 +22,12 @@
 	"main": "./dist/index.cjs",
 	"types": "./dist/index.d.ts",
 	"imports": {
-		"#typings": "./lib/shared/typings.js",
-		"#trivious": "./lib/index.js",
-		"#trivious/*": "./lib/*",
-		"#shared/*": "./lib/shared/*",
-		"#feature/*": "./lib/features/*",
-		"#utility/*": "./lib/utility/*"
+		"#typings": "./dist/shared/typings.js",
+		"#trivious": "./dist/index.js",
+		"#trivious/*": "./dist/*",
+		"#shared/*": "./dist/shared/*",
+		"#feature/*": "./dist/features/*",
+		"#utility/*": "./dist/utility/*"
 	},
 	"exports": {
 		".": {
