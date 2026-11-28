@@ -40,7 +40,11 @@ export async function interactionReply(options: {
 
 	if (interaction.deferred || interaction.replied) {
 		if (flags?.includes("FollowUp")) return await interaction.followUp(payload);
-		return await interaction.editReply(payload as InteractionEditReplyOptions);
+		try {
+			return await interaction.editReply(payload as InteractionEditReplyOptions);
+		} catch {
+			return await interaction.reply(payload);
+		}
 	}
 
 	return await interaction.reply(payload);
