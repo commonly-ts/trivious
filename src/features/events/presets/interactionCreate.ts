@@ -29,27 +29,25 @@ function validateMemberPermissionsForSubcommand(
 		| MessageContextMenuCommandInteraction
 		| UserContextMenuCommandInteraction
 ): [boolean, string] {
-	if (!("subcommands" in command)) return [false, "Cannot validate subcommand permissions"];
-	if (!interaction.isChatInputCommand()) return [false, "Cannot validate subcommand permissions"];
-
+	if (!("subcommands" in command)) return [true, "No subcommands to validate permissions for"];
+	if (!interaction.isChatInputCommand())
+		return [true, "No subcommands to validate permissions for"];
 	const { options } = interaction;
 
 	const subcommandName = options.getSubcommand(false);
 	const groupName = options.getSubcommandGroup(false);
-	if (!subcommandName) return [false, "Cannot validate subcommand permissions"];
+	if (!subcommandName) return [true, "No subcommand to validate permissions for"];
 
 	if (groupName) {
 		const group = command.subcommandGroups?.get(groupName);
-		if (!group) return [false, "Cannot validate subcommand permissions"];
-
+		if (!group) return [true, "No subcommand group to validate permissions for"];
 		const subcommand = group.subcommands.get(subcommandName);
-		if (!subcommand) return [false, "Cannot validate subcommand permissions"];
-
+		if (!subcommand) return [true, "No subcommand to validate permissions for"];
 		return canMemberRunCommand(client, subcommand, interaction.member as GuildMember);
 	}
 
 	const subcommand = command.subcommands?.get(subcommandName);
-	if (!subcommand) return [false, "Cannot validate subcommand permissions"];
+	if (!subcommand) return [true, "No subcommand to validate permissions for"];
 
 	return canMemberRunCommand(client, subcommand, interaction.member as GuildMember);
 }
