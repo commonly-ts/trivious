@@ -1,3 +1,11 @@
+## [2.4.2](https://github.com/commonly-ts/trivious/compare/v2.4.1...v2.4.2) (2026-11-28)
+
+
+### Bug Fixes
+
+* **permissions:** evaluation for subcommand permissions ([24524f8](https://github.com/commonly-ts/trivious/commit/24524f8ab51d381970ca2df3aceac2e16a203d9d))
+* try catch in interactionReply ([3ed30c4](https://github.com/commonly-ts/trivious/commit/3ed30c4580641e2fab19d00aa7d44c275ca3b9c5))
+
 ## [2.4.1](https://github.com/commonly-ts/trivious/compare/v2.4.0...v2.4.1) (2026-08-09)
 
 
